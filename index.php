@@ -117,8 +117,6 @@
     <div class="calendar">
       <div class="calendar-header">
       <?php foreach ($days_of_week as $week); ?>
-
-      ?>
       </div>
     </div>
 
