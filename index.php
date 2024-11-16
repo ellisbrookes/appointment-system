@@ -6,92 +6,121 @@
 </head>
 <body>
     <?php
-        // Get the current month and year, or the ones passed via URL
-        $month = isset($_GET['month']) ? (int)$_GET['month'] : date("m");
-        $year = isset($_GET['year']) ? (int)$_GET['year'] : date("Y");
-        
-        // Handle month and year wrapping
-        if ($month < 1) {
-            $month = 12;
-            $year--;
-        } elseif ($month > 12) {
-            $month = 1;
-            $year++;
+    // Get the current month and year, or the ones passed via URL
+    $month = isset($_GET["month"]) ? (int) $_GET["month"] : date("m");
+    $year = isset($_GET["year"]) ? (int) $_GET["year"] : date("Y");
+
+    // Handle month and year wrapping
+    // if ($month < 1) {
+    //   $month = 12;
+    //   $year--;
+    // } elseif ($month > 12) {
+    //   $month = 1;
+    //   $year++;
+    // }
+
+    // Start generating the calendar
+    // Get the number of days in the current month
+    $calendar_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+    // Array for the days of the week
+    $days_of_week = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+
+    // Get the name of the current month and the first day of the month
+    $monthName = date("F", strtotime("$year-$month"));
+    $firstDayOfMonth = date("w", strtotime("$year-$month-01"));
+
+    echo "<h1>$monthName $year</h1>";
+
+    echo "<table>";
+    echo "<thead>
+      <tr>
+        <th>Sunday</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+      <tr>
+    </thead>";
+
+    echo "<tr>";
+
+    // Print empty cells for days before the first day of the month
+    for ($i = 0; $i < $firstDayOfMonth; $i++) {
+      echo "<td></td>";
+    }
+
+    // // Print the days of the month
+    $day = 1;
+    for ($i = $firstDayOfMonth; $i < 7; $i++) {
+      if ($day <= $calendar_days) {
+        echo "<td onclick='openForm($day-$month-$year)'>$day</td>";
+        $day++;
+      }
+    }
+    echo "</tr>";
+
+    // // Print the remaining weeks
+    while ($day <= $calendar_days) {
+      echo "<tr>";
+
+      for ($i = 0; $i < 7; $i++) {
+        if ($day <= $calendar_days) {
+          echo "<td onclick='openForm($day)'>$day</td>";
+          $day++;
+        } else {
+          echo "<td></td>";
         }
+      }
 
-        // Get the number of days in the current month
-        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+      echo "</tr>";
+    }
 
-        // Get the name of the current month and the first day of the month
-        $monthName = date("F", strtotime("$year-$month-01"));
-        $firstDayOfMonth = date("w", strtotime("$year-$month-01"));
+    echo "</table>";
 
-        echo "<h1>$monthName $year</h1>";
-        echo "<table>";
-        echo "<tr>
-                <th>Sunday</th>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-                <th>Saturday</th>
-              </tr>";
-        
-        // Start generating the calendar
-        $day = 1;
-        echo "<tr>";
+    // Generate pagination links for previous and next month
+    $prevMonth = $month - 1;
+    $prevYear = $year;
 
-        // Print empty cells for days before the first day of the month
-        for ($i = 0; $i < $firstDayOfMonth; $i++) {
-            echo "<td></td>";
-        }
+    if ($prevMonth < 1) {
+      $prevMonth = 12;
+      $prevYear--;
+    }
 
-        // Print the days of the month
-        for ($i = $firstDayOfMonth; $i < 7; $i++) {
-            if ($day <= $daysInMonth) {
-                echo "<td onclick='openForm($day)'>$day</td>";
-                $day++;
-            }
-        }
-        echo "</tr>";
+    $nextMonth = $month + 1;
+    $nextYear = $year;
+    if ($nextMonth > 12) {
+      $nextMonth = 1;
+      $nextYear++;
+    }
 
-        // Print the remaining weeks
-        while ($day <= $daysInMonth) {
-            echo "<tr>";
-            for ($i = 0; $i < 7; $i++) {
-                if ($day <= $daysInMonth) {
-                    echo "<td onclick='openForm($day)'>$day</td>";
-                    $day++;
-                } else {
-                    echo "<td></td>";
-                }
-            }
-            echo "</tr>";
-        }
-
-        echo "</table>";
-
-        // Generate pagination links for previous and next month
-        $prevMonth = $month - 1;
-        $prevYear = $year;
-        if ($prevMonth < 1) {
-            $prevMonth = 12;
-            $prevYear--;
-        }
-
-        $nextMonth = $month + 1;
-        $nextYear = $year;
-        if ($nextMonth > 12) {
-            $nextMonth = 1;
-            $nextYear++;
-        }
-
-        echo '<div class="pagination">';
-        echo '<a href="?month=' . $prevMonth . '&year=' . $prevYear . '">Previous</a>';
-        echo '<a href="?month=' . $nextMonth . '&year=' . $nextYear . '">Next</a>';
-        echo '</div>';
+    echo '<div class="pagination">';
+    echo '<a href="?month=' .
+      $prevMonth .
+      "&year=" .
+      $prevYear .
+      '">Previous</a>';
+    echo '<a href="?month=' . $nextMonth . "&year=" . $nextYear . '">Next</a>';
+    echo "</div>";
     ?>
+
+    <div class="calendar">
+      <div class="calendar-header">
+      <?php foreach ($days_of_week as $week); ?>
+
+      ?>
+      </div>
+    </div>
 
     <!-- Appointment Form Popup -->
     <div class="form-popup" id="appointmentForm">
