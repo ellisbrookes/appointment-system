@@ -114,6 +114,11 @@
             <?php endforeach; ?>
           </tr>
         <thead>
+
+        <!-- Print empty cells for days before the first day of the month  -->
+        <?php for ($i = 0; $i < $firstDayOfMonth; $i++) { ?>
+          <?php echo "<td></td>"; ?>
+        <?php } ?>
       </table>
     </div>
 
