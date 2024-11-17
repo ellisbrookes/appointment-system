@@ -1,6 +1,5 @@
 <?php
-  require_once "./setup.php";
-?>
+require_once "./setup.php"; ?>
 
 <!DOCTYPE html>
 <html>
@@ -13,16 +12,6 @@
     // Get the current month and year, or the ones passed via URL
     $month = isset($_GET["month"]) ? (int) $_GET["month"] : date("m");
     $year = isset($_GET["year"]) ? (int) $_GET["year"] : date("Y");
-
-    // Start generating the calendar
-    // Handle month and year wrapping
-    // if ($month < 1) {
-    //   $month = 12;
-    //   $year--;
-    // } elseif ($month > 12) {
-    //   $month = 1;
-    //   $year++;
-    // }
 
     // Get the number of days in the current month
     $calendar_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
@@ -72,18 +61,16 @@
       <table>
         <thead>
           <tr>
-            <?php foreach ($days_of_week as $week): ?>
-              <th>
-                <?php echo $week; ?>
-              </th>
-            <?php endforeach; ?>
+            <?php foreach ($days_of_week as $week) {
+              echo "<th>$week</th>";
+            } ?>
           </tr>
         <thead>
 
         <!-- Print empty cells for days before the first day of the month  -->
-        <?php for ($i = 0; $i < $firstDayOfMonth; $i++) { ?>
-          <?php echo "<td></td>"; ?>
-        <?php } ?>
+        <?php for ($i = 0; $i < $firstDayOfMonth; $i++) {
+          echo "<td></td>";
+        } ?>
 
         <!-- Print the days of the month -->
         <?php for ($i = $firstDayOfMonth; $i < 7; $i++) { ?>
@@ -94,20 +81,18 @@
         <?php } ?>
 
         <!-- Print the remaining weeks -->
-        <?php while ($day <= $calendar_days) { ?>
+        <?php while ($day <= $calendar_days): ?>
           <tr>
-
-          <?php for ($i = 0; $i < 7; $i++) { ?>
-            <?php if ($day <= $calendar_days) { ?>
-              <?php echo "<td onclick='openForm($day)'>$day</td>"; ?>
-              <?php $day++; ?>
-            <?php } else { ?>
-              <?php echo "<td></td>"; ?>
-            <?php } ?>
-            <?php } ?>
-
+            <?php for ($i = 0; $i < 7; $i++): ?>
+              <?php if ($day <= $calendar_days) { ?>
+                <?php echo "<td onclick='openForm($day)'>$day</td>"; ?>
+                <?php $day++; ?>
+              <?php } else { ?>
+                <?php echo "<td></td>"; ?>
+              <?php } ?>
+            <?php endfor; ?>
           </tr>
-        <?php } ?>
+        <?php endwhile; ?>
       </table>
     </div>
 
