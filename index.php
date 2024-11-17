@@ -1,3 +1,7 @@
+<?php
+  require_once "./setup.php";
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
