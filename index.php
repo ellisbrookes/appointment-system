@@ -38,20 +38,7 @@
     $monthName = date("F", strtotime("$year-$month"));
     $firstDayOfMonth = date("w", strtotime("$year-$month-01"));
 
-    echo "<h1>$monthName $year</h1>";
-
     echo "<table>";
-    echo "<thead>
-      <tr>
-        <th>Sunday</th>
-        <th>Monday</th>
-        <th>Tuesday</th>
-        <th>Wednesday</th>
-        <th>Thursday</th>
-        <th>Friday</th>
-        <th>Saturday</th>
-      <tr>
-    </thead>";
 
     echo "<tr>";
 
@@ -115,9 +102,19 @@
     ?>
 
     <div class="calendar">
-      <div class="calendar-header">
-      <?php foreach ($days_of_week as $week); ?>
-      </div>
+      <h1><?php echo "$monthName $year"; ?></h1>
+
+      <table>
+        <thead>
+          <tr>
+            <?php foreach ($days_of_week as $week): ?>
+              <th>
+                <?php echo $week; ?>
+              </th>
+            <?php endforeach; ?>
+          </tr>
+        <thead>
+      </table>
     </div>
 
     <!-- Appointment Form Popup -->
