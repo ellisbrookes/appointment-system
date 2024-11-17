@@ -73,12 +73,12 @@ require_once "./setup.php"; ?>
         } ?>
 
         <!-- Print the days of the month -->
-        <?php for ($i = $firstDayOfMonth; $i < 7; $i++) { ?>
-          <?php if ($day <= $calendar_days) { ?>
+        <?php for ($i = $firstDayOfMonth; $i < 7; $i++): ?>
+          <?php if ($day <= $calendar_days): ?>
             <?php echo "<td onclick='openForm($day-$month-$year)'>$day</td>"; ?>
             <?php $day++; ?>
-          <?php } ?>
-        <?php } ?>
+          <?php endif; ?>
+        <?php endfor; ?>
 
         <!-- Print the remaining weeks -->
         <?php while ($day <= $calendar_days): ?>
