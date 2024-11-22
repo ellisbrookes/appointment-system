@@ -101,14 +101,24 @@ require_once "./setup.php"; ?>
       <form action="save_appointment.php" method="post">
         <h2>Add Appointment</h2>
         <label for="service">Service:</label>
-        <input type="text" id="service" name="service" required>
+        
+        <br />
+        
+        <select name="service" id="service" reqired>
+          <option name="General council">General council (£59)</option>
+          <option name="General nurse">General nurse (£999)</option>
+          <option name="Ambulance ride">Ambulance ride (£10,000) US only</option>
+        </select>
+
+        <br />
         
         <label for="date">Appointment Date:</label>
-        <input type="date" id="date" name="date" required>
+        <input type="date" id="date" name="date" value="" required>
         
         <input type="hidden" name="user_id" value="1">
         
         <button type="submit">Save</button>
+        <button type="button" class="close" onclick="closeForm()">Cancel</button>
       </form>
     </div>
 

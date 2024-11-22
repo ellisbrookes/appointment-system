@@ -18,8 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $toName = $userDetails['name'];
     $toEmail = $userDetails['email'];
 
-    $stmt = $conn->prepare("INSERT INTO appointments (service, date, id) VALUES (?, ?, ?)");
-    $stmt->bind_param("ssi", $service, $date, $userId);
+    $stmt = $conn->prepare("INSERT INTO appointments (id, service, date, user_id) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $id, $service, $date, $userId);
 
     if ($stmt->execute()) {
         sendAppointmentEmail($toEmail, $toName, [

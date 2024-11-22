@@ -37,7 +37,7 @@ $conn->select_db($dbname);
 // Add users table if it doesn't exist
 $create_users_table_query = "
   CREATE TABLE IF NOT EXISTS users (
-    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(30) DEFAULT '',
     email VARCHAR(50) NOT NULL UNIQUE,
     tel VARCHAR(15) UNIQUE,
@@ -50,12 +50,13 @@ if ($conn->query($create_users_table_query) !== true) {
 
 $create_appointments_table_query = "
   CREATE TABLE IF NOT EXISTS appointments (
-    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     service VARCHAR(100) NOT NULL,
     date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
+    user_id INT UNSIGNED NOT NULL,
+    CONSTRAINT appoint_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   )";
 
 if ($conn->query($create_appointments_table_query) !== true) {
