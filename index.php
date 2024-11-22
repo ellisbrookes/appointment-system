@@ -99,6 +99,7 @@
     <div class="form-popup" id="appointmentForm">
       <form action="save_appointment.php" method="post">
         <h2>Add Appointment</h2>
+        
         <label for="service">Service:</label>
         
         <br />
@@ -115,7 +116,6 @@
         <input type="date" id="date" name="date" value="" required>
         
         <input type="hidden" name="user_id" value="1">
-        
         <button type="submit">Save</button>
         <button type="button" class="close" onclick="closeForm()">Cancel</button>
       </form>
