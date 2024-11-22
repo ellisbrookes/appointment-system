@@ -1,5 +1,4 @@
-<?php
-require_once "./setup.php"; ?>
+<?php require_once "./setup.php"; ?>
 
 <!DOCTYPE html>
 <html>
