@@ -1,10 +1,11 @@
 <?php require_once "./setup.php"; ?>
+<?php $today = date('Y-m=d'); ?>
 
 <!DOCTYPE html>
 <html>
   <head>
       <title>Appointments Calendar</title>
-      <link rel="stylesheet" href="stylesheets/styles.css">
+      <link rel="stylesheet" href="./assets/stylesheets/styles.css">
   </head>
   <body>
     <?php
@@ -27,9 +28,9 @@
     ];
 
     // Get the name of the current month and the first day of the month
-    $monthName = date("F", strtotime("$year-$month"));
-    $firstDayOfMonth = date("w", strtotime("$year-$month-01"));
     $day = 1;
+    $monthName = date("F", strtotime("$year-$month"));
+    $firstDayOfMonth = date("w", strtotime("$year-$month-$day"));
 
     // Generate pagination links for previous and next month
     $prevMonth = $month - 1;
@@ -74,7 +75,7 @@
         <!-- Print the days of the month -->
         <?php for ($i = $firstDayOfMonth; $i < 7; $i++): ?>
           <?php if ($day <= $calendar_days): ?>
-            <?php echo "<td onclick='openForm($day-$month-$year)'>$day</td>"; ?>
+            <?php echo "<td onclick='openForm($year, $month, $day)'>$day</td>"; ?>
             <?php $day++; ?>
           <?php endif; ?>
         <?php endfor; ?>
@@ -84,7 +85,7 @@
           <tr>
             <?php for ($i = 0; $i < 7; $i++): ?>
               <?php if ($day <= $calendar_days) { ?>
-                <?php echo "<td onclick='openForm($day)'>$day</td>"; ?>
+                <?php echo "<td onclick='openForm($year, $month, $day)'>$day</td>"; ?>
                 <?php $day++; ?>
               <?php } else { ?>
                 <?php echo "<td></td>"; ?>
@@ -113,7 +114,7 @@
         <br />
         
         <label for="date">Appointment Date:</label>
-        <input type="date" id="date" name="date" value="" required>
+        <input type="date" id="appointmentDate" name="date" required>
         
         <input type="hidden" name="user_id" value="1">
 
@@ -122,15 +123,6 @@
       </form>
     </div>
 
-    <script>
-      function openForm(day) {
-        document.getElementById("appointmentForm").style.display = "block";
-        document.getElementById("appointmentDay").value = day;
-      }
-
-      function closeForm() {
-        document.getElementById("appointmentForm").style.display = "none";
-      }
-    </script>
+    <script src="./assets/js/app.js"></script>
   </body>
 </html>

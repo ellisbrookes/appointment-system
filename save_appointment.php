@@ -27,8 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'service' => $service,
         ]);
 
-        header("Location: index.php");
-        echo "<script>alert('Appointment Successfully Booked!');</script>";
+         echo "<script>
+                alert('Appointment Successfully Booked!');
+                window.location.href = 'index.php';  // Redirect after the alert
+            </script>";
         exit();
     } else {
         echo "Error Saving Appointment: " . $stmt->error;
