@@ -116,7 +116,7 @@
         <input type="date" id="date" name="date" value="" required>
         
         <input type="hidden" name="user_id" value="1">
-        
+
         <button type="submit">Save</button>
         <button type="button" class="close" onclick="closeForm()">Cancel</button>
       </form>
