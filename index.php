@@ -99,6 +99,7 @@
     <div class="form-popup" id="appointmentForm">
       <form action="save_appointment.php" method="post">
         <h2>Add Appointment</h2>
+        
         <label for="service">Service:</label>
         
         <br />
