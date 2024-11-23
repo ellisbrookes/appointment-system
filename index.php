@@ -16,9 +16,15 @@ include "./partials/shared/alerts.php";
       session_start(); // Start the session
     }
 
+    if (isset($_SESSION['name'])) {
+      $user_name = $_SESSION['name'];  // Get the name from the session
+    } else {
+        $user_name = null;  // No user is logged in
+    }
+
     // Get the current month and year, or the ones passed via URL
-    $month = isset($_GET["month"]) ? (int) $_GET["month"] : date("m");
-    $year = isset($_GET["year"]) ? (int) $_GET["year"] : date("Y");
+    $month = isset($_GET["month"]) ? (int)$_GET["month"] : date("m");
+    $year = isset($_GET["year"]) ? (int)$_GET["year"] : date("Y");
 
     // Get the number of days in the current month
     $calendar_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
@@ -59,49 +65,61 @@ include "./partials/shared/alerts.php";
     Alert::renderAlert();
     ?>
 
+    <?php if ($user_name): ?>
+        <p>Hello, <?php echo htmlspecialchars($user_name); ?>! Welcome back.</p>
+    <?php else: ?>
+        <p>You are not logged in. <a href="/users/login.php">Login here</a>.</p>
+    <?php endif; ?>
+
     <div class="calendar">
       <h1><?php echo "$monthName $year"; ?></h1>
 
       <div class="pagination">
-        <a href="?month=' . <?php $prevMonth; ?> . "&year=" . <?php $prevYear; ?> . '">Previous</a>
-        <a href="?month=' . <?php $nextMonth; ?> . "&year=" . <?php $nextYear; ?> . '">Next</a>
+        <a href="?month=<?php echo $prevMonth; ?>&year=<?php echo $prevYear; ?>">Previous</a>
+        <a href="?month=<?php echo $nextMonth; ?>&year=<?php echo $nextYear; ?>">Next</a>
       </div>
 
       <table>
         <thead>
           <tr>
-            <?php foreach ($days_of_week as $week) {
-              echo "<th>$week</th>";
-            } ?>
+            <?php foreach ($days_of_week as $week): ?>
+              <th><?php echo $week; ?></th>
+            <?php endforeach; ?>
           </tr>
-        <thead>
+        </thead>
 
-        <!-- Print empty cells for days before the first day of the month  -->
-        <?php for ($i = 0; $i < $firstDayOfMonth; $i++) {
-          echo "<td></td>";
-        } ?>
+        <tbody>
+          <!-- Print empty cells for days before the first day of the month  -->
+          <?php for ($i = 0; $i < $firstDayOfMonth; $i++): ?>
+            <td></td>
+          <?php endfor; ?>
 
-        <!-- Print the days of the month -->
-        <?php for ($i = $firstDayOfMonth; $i < 7; $i++): ?>
-          <?php if ($day <= $calendar_days): ?>
-            <?php echo "<td onclick='openForm($year, $month, $day)'>$day</td>"; ?>
-            <?php $day++; ?>
-          <?php endif; ?>
-        <?php endfor; ?>
+          <!-- Print the days of the month -->
+          <?php for ($i = $firstDayOfMonth; $i < 7; $i++): ?>
+            <?php if ($day <= $calendar_days): ?>
+              <td onclick="openForm(<?php echo $year; ?>, <?php echo $month; ?>, <?php echo $day; ?>)">
+                <?php echo $day; ?>
+              </td>
+              <?php $day++; ?>
+            <?php endif; ?>
+          <?php endfor; ?>
 
-        <!-- Print the remaining weeks -->
-        <?php while ($day <= $calendar_days): ?>
-          <tr>
-            <?php for ($i = 0; $i < 7; $i++): ?>
-              <?php if ($day <= $calendar_days) { ?>
-                <?php echo "<td onclick='openForm($year, $month, $day)'>$day</td>"; ?>
-                <?php $day++; ?>
-              <?php } else { ?>
-                <?php echo "<td></td>"; ?>
-              <?php } ?>
-            <?php endfor; ?>
-          </tr>
-        <?php endwhile; ?>
+          <!-- Print the remaining weeks -->
+          <?php while ($day <= $calendar_days): ?>
+            <tr>
+              <?php for ($i = 0; $i < 7; $i++): ?>
+                <?php if ($day <= $calendar_days): ?>
+                  <td onclick="openForm(<?php echo $year; ?>, <?php echo $month; ?>, <?php echo $day; ?>)">
+                    <?php echo $day; ?>
+                  </td>
+                  <?php $day++; ?>
+                <?php else: ?>
+                  <td></td>
+                <?php endif; ?>
+              <?php endfor; ?>
+            </tr>
+          <?php endwhile; ?>
+        </tbody>
       </table>
     </div>
 
@@ -111,16 +129,13 @@ include "./partials/shared/alerts.php";
         <h2>Add Appointment</h2>
         
         <label for="service">Service:</label>
-        
-        <br />
-        
-        <select name="service" id="service" reqired>
-          <option name="General council">General council (£59)</option>
-          <option name="General nurse">General nurse (£999)</option>
-          <option name="Ambulance ride">Ambulance ride (£10,000) US only</option>
+        <br>
+        <select name="service" id="service" required>
+          <option value="General council">General council (£59)</option>
+          <option value="General nurse">General nurse (£999)</option>
+          <option value="Ambulance ride">Ambulance ride (£10,000) US only</option>
         </select>
-
-        <br />
+        <br>
         
         <label for="date">Appointment Date:</label>
         <input type="date" id="appointmentDate" name="date" required>
