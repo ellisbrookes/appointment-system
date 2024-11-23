@@ -1,5 +1,4 @@
-<?php
-require_once "./setup.php"; ?>
+<?php require_once "./setup.php"; ?>
 
 <!DOCTYPE html>
 <html>
@@ -100,13 +99,24 @@ require_once "./setup.php"; ?>
     <div class="form-popup" id="appointmentForm">
       <form action="save_appointment.php" method="post">
         <h2>Add Appointment</h2>
-        <input type="hidden" id="appointmentDay" name="day">
-        <label for="title">Name:</label>
-        <input type="text" id="name" name="name" required>
-        <label for="email">Email</label>
-        <input type="email" name="email" required></input>
-        <label for="email">Phone Number</label>
-        <input type="tel" name="phone" required></input>
+        
+        <label for="service">Service:</label>
+        
+        <br />
+        
+        <select name="service" id="service" reqired>
+          <option name="General council">General council (£59)</option>
+          <option name="General nurse">General nurse (£999)</option>
+          <option name="Ambulance ride">Ambulance ride (£10,000) US only</option>
+        </select>
+
+        <br />
+        
+        <label for="date">Appointment Date:</label>
+        <input type="date" id="date" name="date" value="" required>
+        
+        <input type="hidden" name="user_id" value="1">
+
         <button type="submit">Save</button>
         <button type="button" class="close" onclick="closeForm()">Cancel</button>
       </form>
