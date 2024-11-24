@@ -2,6 +2,11 @@
 require 'vendor/autoload.php';
 use SendGrid\Mail\Mail;
 require_once "./setup.php";
+include "./partials/shared/alerts.php";
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Start the session
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $service = $_POST['service'];
@@ -27,10 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'service' => $service,
         ]);
 
-         echo "<script>
-                alert('Appointment Successfully Booked!');
-                window.location.href = 'index.php';  // Redirect after the alert
-            </script>";
+        Alert::setAlert(
+            AlertVariants::SUCCESS,
+            "Your appointment has been booked successfully"
+        );
+        
+        header('Location: index.php');
         exit();
     } else {
         echo "Error Saving Appointment: " . $stmt->error;

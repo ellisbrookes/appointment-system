@@ -1,14 +1,21 @@
-<?php require_once "./setup.php"; ?>
-<?php $today = date('Y-m=d'); ?>
+<?php 
+require_once "./setup.php";
+include "./partials/shared/alerts.php";
+?>
 
 <!DOCTYPE html>
 <html>
   <head>
       <title>Appointments Calendar</title>
       <link rel="stylesheet" href="./assets/stylesheets/styles.css">
+      <link rel="stylesheet" href="./assets/stylesheets/alerts.css">
   </head>
   <body>
     <?php
+    if (session_status() === PHP_SESSION_NONE) {
+      session_start(); // Start the session
+    }
+
     // Get the current month and year, or the ones passed via URL
     $month = isset($_GET["month"]) ? (int) $_GET["month"] : date("m");
     $year = isset($_GET["year"]) ? (int) $_GET["year"] : date("Y");
@@ -48,6 +55,8 @@
       $nextMonth = 1;
       $nextYear++;
     }
+
+    Alert::renderAlert();
     ?>
 
     <div class="calendar">
@@ -118,7 +127,7 @@
         
         <input type="hidden" name="user_id" value="1">
 
-        <button type="submit">Save</button>
+        <button type="submit">Submit</button>
         <button type="button" class="close" onclick="closeForm()">Cancel</button>
       </form>
     </div>
