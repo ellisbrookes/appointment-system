@@ -1,6 +1,8 @@
 <?php 
 
 require_once "../setup.php";
+include "../partials/shared/alerts.php";
+
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
@@ -24,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Check if the email exists in the database
         if ($stmt->num_rows > 0) {
             // Fetch user data
-            $stmt->bind_result($name, $hashed_password);
+            $stmt->bind_result($email, $hashed_password);
             $stmt->fetch();
 
             // Verify the password using password_hash() comparison
@@ -35,19 +37,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit;
             } else {
                 // Incorrect password
-                $error_message = "Invalid password.";
+                Alert::SetAlert(
+                    AlertVariants::DANGER,
+                    "Invalid Password"
+                );
             }
         } else {
             // No user found with that email
-            $error_message = "No user found with that email.";
+            Alert::SetAlert(
+                AlertVariants::DANGER,
+                "No user found with that email"
+            );
         }
         $stmt->close();
     } else {
         // Missing email or password
-        $error_message = "Please enter both email and password.";
+        Alert::SetAlert(
+            AlertVariants::DANGER,
+            "Please enter both email and password"
+        );
     }
 }
 
+Alert::renderAlert();  // Display alerts if any
 ?>
 
 <!DOCTYPE html>
@@ -63,10 +75,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h2>Login</h2>
     <form action="login.php" method="post">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
+        <input type="email" id="email" name="email"><br><br>
 
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
+        <input type="password" id="password" name="password"><br><br>
 
         <button type="submit">Login</button>
     </form>

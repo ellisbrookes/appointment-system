@@ -2,7 +2,7 @@
 require '../vendor/autoload.php';
 use SendGrid\Mail\Mail;
 require_once "../setup.php";
-include "../partials/shared/alerts.php"; // Include alert handling class
+include "../partials/shared/alerts.php";
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {

@@ -23,8 +23,8 @@ include "./partials/shared/alerts.php";
     }
 
     // Get the current month and year, or the ones passed via URL
-    $month = isset($_GET["month"]) ? (int)$_GET["month"] : date("m");
-    $year = isset($_GET["year"]) ? (int)$_GET["year"] : date("Y");
+    $month = isset($_GET["month"]) ? (int) $_GET["month"] : date("m");
+    $year = isset($_GET["year"]) ? (int) $_GET["year"] : date("Y");
 
     // Get the number of days in the current month
     $calendar_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
