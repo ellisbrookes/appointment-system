@@ -151,8 +151,8 @@ Alert::renderAlert();  // Display alerts if any
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="../assets/stylesheets/alerts.css">
-    <link rel="stylesheet" href="../assets/stylesheets/auth.css">
+    <link rel="stylesheet" href="../assets/css/alerts.css">
+    <link rel="stylesheet" href="../assets/css/auth.css">
 </head>
 <body>
 

@@ -7,8 +7,8 @@ include "./partials/shared/alerts.php";
 <html>
   <head>
       <title>Appointments Calendar</title>
-      <link rel="stylesheet" href="./assets/stylesheets/styles.css">
-      <link rel="stylesheet" href="./assets/stylesheets/alerts.css">
+      <link rel="stylesheet" href="./assets/css/styles.css">
+      <link rel="stylesheet" href="./assets/css/alerts.css">
   </head>
   <body>
     <?php
