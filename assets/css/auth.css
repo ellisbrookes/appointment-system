@@ -1,55 +1,15 @@
- /* forms */
- form {
+.auth-container {
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
+  height: 100%;
+}
+
+.auth-form {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
   background: white;
   padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
   margin: auto;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-textarea {
-  resize: none;
-  width: 100%;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="tel"] {
-  width: 100;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  box-sizing: border-box; 
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-  border-color: #007BFF;
-  outline: none;
-}
-
-/* button Styles */
-button {
-  width: 100%;
-  padding: 10px;
-  background: #333;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-button:hover {
-  text-decoration: underline;
+  width: 300px;
 }

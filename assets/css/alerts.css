@@ -25,22 +25,22 @@
 
   &.alert-success {
     background-color: #15803d; /* 700 */
-    border: 2px solid #14532d; /** 900 */
+    border: 2px solid #14532d; /* 900 */
   }
 
   &.alert-danger {
     background-color: #b91c1c; /* 700 */
-    border: 2px solid #7f1d1d; /** 900 */
+    border: 2px solid #7f1d1d; /* 900 */
   }
 
   &.alert-warning {
     background-color: #a16207; /* 700 */
-    border: 2px solid #713f12; /** 900 */
+    border: 2px solid #713f12; /* 900 */
   }
 
   &.alert-info {
     background-color: #1d4ed8; /* 700 */
-    border: 2px solid #1e3a8a; /** 900 */
+    border: 2px solid #1e3a8a; /* 900 */
   }
 }
 

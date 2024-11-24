@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once "./setup.php";
 include "./partials/shared/alerts.php";
 ?>
@@ -16,10 +16,10 @@ include "./partials/shared/alerts.php";
       session_start(); // Start the session
     }
 
-    if (isset($_SESSION['name'])) {
-      $user_name = $_SESSION['name'];  // Get the name from the session
+    if (isset($_SESSION["name"])) {
+      $user_name = $_SESSION["name"]; // Get the name from the session
     } else {
-        $user_name = null;  // No user is logged in
+      $user_name = null; // No user is logged in
     }
 
     // Get the current month and year, or the ones passed via URL
@@ -123,27 +123,27 @@ include "./partials/shared/alerts.php";
       </table>
     </div>
 
-    <!-- Appointment Form Popup -->
-    <div class="form-popup" id="appointmentForm">
+    <!-- Appointment Form modal -->
+    <div class="modal" id="appointmentForm">
       <form action="save_appointment.php" method="post">
         <h2>Add Appointment</h2>
-        
+
         <label for="service">Service:</label>
-        <br>
         <select name="service" id="service" required>
           <option value="General council">General council (£59)</option>
           <option value="General nurse">General nurse (£999)</option>
           <option value="Ambulance ride">Ambulance ride (£10,000) US only</option>
         </select>
-        <br>
-        
+
         <label for="date">Appointment Date:</label>
         <input type="date" id="appointmentDate" name="date" required>
-        
+
         <input type="hidden" name="user_id" value="1">
 
-        <button type="submit">Submit</button>
-        <button type="button" class="close" onclick="closeForm()">Cancel</button>
+        <div class="btn-group">
+          <button type="submit" class="btn btn-action">Submit</button>
+          <button type="button" class="btn btn-close" onclick="closeForm()">Cancel</button>
+        </div>
       </form>
     </div>
 
