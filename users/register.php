@@ -1,4 +1,5 @@
 <?php
+use Pelago\Emogrifier\cssInliner;
 use SendGrid\Mail\Mail;
 require_once "../setup.php";
 include "../partials/shared/alerts.php";
@@ -106,6 +107,23 @@ function emailExists($email, $conn)
 
   $stmt->close();
   return $exists;
+}
+
+function loadEmailTemplate($templateName, $data) {
+  $templatePath = __DIR__ . "../emails/welcome-email.php";
+  $cssPath = __DIR__ . "../assets/css/emails.css";
+
+  if (!file_exists($templatePath)) {
+    Alert::setAlert(AlertVariants::WARNING, "Template not found: $templateName");
+  }
+
+  if (!file_exists($cssPath)) {
+    Alert::setAlert(AlertVariants::WARNING, "CSS file not found: emails.css");
+  }
+
+  // Load the html template and css
+  $templateContent = file_get_contents($templatePath);
+  $cssContent - file_get_contents($cssPath);
 }
 
 // Function to send welcome email after registration
