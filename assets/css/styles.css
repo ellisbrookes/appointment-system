@@ -2,7 +2,7 @@
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
-  padding: 20px;
+  padding: 0;
   margin: 0;
 }
 
@@ -11,8 +11,7 @@ body {
 }
 
 /* container styles */
-.container {
-}
+.container {}
 
 /* table styles */
 table {
@@ -55,7 +54,7 @@ td {
   transition: background-color 0.3s;
   background-color: #007bff;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 2px;
   padding: 10px 20px;
   margin: 0 10px;
   color: white;
@@ -88,7 +87,7 @@ input[type="tel"] {
   box-sizing: border-box;
   border: 1px solid #ccc;
   margin-bottom: 15px;
-  border-radius: 3px;
+  border-radius: 2px;
   padding: 10px;
   width: 100%;
 }
@@ -106,7 +105,7 @@ input[type]:focus {
 
 .btn {
   background-color: #333;
-  border-radius: 3px;
+  border-radius: 2px;
   cursor: pointer;
   font-size: 16px;
   padding: 10px;
@@ -121,7 +120,7 @@ input[type]:focus {
 
 .btn.btn-action {
   background-color: #007bff;
-  border-radius: 5px;
+  border-radius: 2px;
   padding: 10px 20px;
 }
 

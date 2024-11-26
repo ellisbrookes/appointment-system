@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
   // Get user input
   $email = trim($_POST["email"]);
   $password = trim($_POST["password"]);
@@ -69,17 +69,25 @@ Alert::renderAlert();
 </head>
 <body>
   <div class="auth-container">
-    <form action="login.php" method="POST" class="auth-form">
-      <h1 class="text-center">Login</h1>
+    <!--  -->
+    <aside class="auth-banner"></aside>
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email">
+    <!-- right form -->
+    <div class="auth-form">
+      <form action="login.php" method="POST" class="auth-form-form">
+        <h1 class="text-center">Login</h1>
 
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
 
-      <button type="submit" class="btn">Login</button>
-    </form>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+
+        <p>Forgot account?<a href="forgot.php"><b>Forgot password</b></a></p>
+
+        <button type="submit" class="btn">Login</button>
+      </form>
+    </div>
   </div>
 </body>
 </html>

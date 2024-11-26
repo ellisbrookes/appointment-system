@@ -1,5 +1,4 @@
 <?php
-require "../vendor/autoload.php";
 use SendGrid\Mail\Mail;
 require_once "../setup.php";
 include "../partials/shared/alerts.php";
@@ -121,7 +120,7 @@ function sendWelcomeEmail($toEmail, $toName, $accountDetails)
 
   // Create the email content
   $emailContent = "
-        <h1>Welcome, {$toName}!</h1>
+        <p>Welcome, {$toName}!</p>
         <p>Thank you for signing up. We're excited to have you on board.</p>
         <p>Your registered email address is: <strong>{$accountDetails["email"]}</strong>.</p>
     ";
@@ -132,7 +131,7 @@ function sendWelcomeEmail($toEmail, $toName, $accountDetails)
 
   try {
     $response = $sendgrid->send($email);
-    if ($response->statusCode() >= 200 && $response->statusCode() < 300) {
+    if ($response->statusCode() === 200) {
       return true; // Email sent successfully
     } else {
       error_log(
