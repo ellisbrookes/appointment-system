@@ -14,47 +14,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $email = trim($_POST["email"]);
   $password = trim($_POST["password"]);
 
-  // Validate input
+  // Validate input for both fields with the same alert
   if (!empty($email) && !empty($password)) {
+    Alert::SetAlert(
+      AlertVariants::DANGER,
+      "Please enter both email and password"
+    );
+  }
+
+  // If email and password fields have been filled out
+  if ($email && $password) {
     // Prepare and execute a query to fetch user data
     $stmt = $conn->prepare("SELECT name, password FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
 
-    // Check if the email exists in the database
-    if ($stmt->num_rows > 0) {
-      // Fetch user data
-      $stmt->bind_result($email, $hashed_password);
-      $stmt->fetch();
-
-      // Verify the password using password_hash() comparison
-      if (password_verify($password, $hashed_password)) {
-        // Password is correct, set session and redirect to protected page
-        $_SESSION["user_name"] = $name;
-        header("Location: ../index.php"); // Redirect to a dashboard or home page
-        exit();
-      } else {
-        // Incorrect password
-        Alert::SetAlert(AlertVariants::DANGER, "Invalid Password");
-      }
-    } else {
-      // No user found with that email
-      Alert::SetAlert(AlertVariants::DANGER, "No user found with that email");
-    }
+    // Fetch user data
+    $stmt->bind_result($email, $hashed_password);
+    $stmt->fetch();
     $stmt->close();
+
+    // Verify the password using password_hash() comparison
+    if (password_verify($password, $hashed_password)) {
+      $_SESSION["user_name"] = $name; // Correct password, session is set
+      header("Location: ../index.php"); // Redirect to index
+      exit();
+    } else {
+      Alert::SetAlert(AlertVariants::DANGER, "Invalid Password");
+    }
   } else {
-    // Missing email or password
-    Alert::SetAlert(
-      AlertVariants::DANGER,
-      "Please enter both email and password"
-    );
+    Alert::SetAlert(AlertVariants::DANGER, "No user found with that email");
   }
 }
 
-Alert::renderAlert();
-
 // Display alerts if any
+Alert::renderAlert();
 ?>
 
 <!DOCTYPE html>
