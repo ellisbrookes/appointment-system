@@ -1,171 +1,162 @@
 <?php
-use Pelago\Emogrifier\cssInliner;
 use SendGrid\Mail\Mail;
 require_once "../setup.php";
 include "../partials/shared/alerts.php";
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
-  session_start();
+    session_start();
 }
 
 // Only proceed with POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  $name = $_POST["name"];
-  $email = $_POST["email"];
-  $tel = $_POST["tel"];
-  $password = $_POST["password"];
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $tel = $_POST["tel"];
+    $password = $_POST["password"];
 
-  // Attempt to register the user
-  $userId = registerUser($conn, $name, $email, $tel, $password);
+    // Validate required fields
+    if (!$name || !$email || !$tel || !$password) {
+        Alert::setAlert(
+            AlertVariants::WARNING,
+            "All fields are required."
+        );
+        
+        header("Location: register.php");
 
-  if ($userId) {
-    // User was successfully created, now attempt to send the welcome email
-    $emailSent = sendWelcomeEmail($email, $name, [
-      "email" => $email,
-      "name" => $name,
-    ]);
-
-    if ($emailSent) {
-      // If email is sent successfully, show the success alert
-      Alert::setAlert(
-        AlertVariants::SUCCESS,
-        "Your account has been created successfully."
-      );
-      header("Location: ../index.php");
-      exit();
-    } else {
-      // If email failed, show a warning alert but still redirect to register page
-      Alert::setAlert(
-        AlertVariants::WARNING,
-        "User created, but email sending failed."
-      );
-      header("Location: register.php");
-      exit();
+        exit();
     }
-  } else {
-    // User creation failed, show error alert
-    Alert::setAlert(AlertVariants::WARNING, "Error saving user.");
-    header("Location: register.php"); // Redirect back to register page on failure
-    exit();
-  }
+
+    try {
+        // Attempt to register the user
+        $userId = registerUser($conn, $name, $email, $tel, $password);
+
+        if ($userId) {
+            Alert::setAlert(
+                AlertVariants::WARNING,
+                "User registered successfully. User ID: $userId"
+            );
+
+            // Send the welcome email
+            $emailSent = sendWelcomeEmail($email, $name);
+
+            if ($emailSent) {
+                Alert::setAlert(
+                    AlertVariants::SUCCESS,
+                    "Your account has been created successfully."
+                );
+
+                header("Location: ../index.php");
+                
+                exit();
+            } else {
+                Alert::setAlert(
+                    AlertVariants::SUCCESS,
+                    "User created, but email sending failed."
+                );
+
+                header("Location: register.php");
+                
+                exit();
+            }
+        } else {
+            Alert::setAlert(AlertVariants::WARNING,"Error saving user.");
+
+            header("Location: register.php");
+            
+            exit();
+        }
+    } catch (Exception $e) {
+        error_log("Exception during registration: " . $e->getMessage());
+        Alert::setAlert(AlertVariants::DANGER, "An unexpected error occurred. Please try again later.");
+        header("Location: register.php");
+        exit();
+    }
 }
 
-// Function to handle user registration
+// Function to send the welcome email
+function sendWelcomeEmail($toEmail, $toName)
+{
+    $apiKey = $_ENV['SENDGRID_API_KEY'];
+    $sendgrid = new \SendGrid($apiKey);
+    $emailTemplate = file_get_contents("../emails/welcome-email.html");
+
+    $data = [
+        '{{toName}}' => $toName,
+        '{{toEmail}}' => $toEmail,
+        '{{year}}' => date("Y")
+    ];
+
+    $htmlContent = str_replace(array_keys($data), array_values($data), $emailTemplate);
+
+    $email = new Mail();
+    $email->setFrom('hello@ebrookes.dev', 'Appointment System');
+    $email->setSubject('Welcome to Appointment System');
+    $email->addTo($toEmail, $toName);
+    $email->addContent('text/html', $htmlContent);
+
+    try {
+        $response = $sendgrid->send($email);
+        return $response->statusCode() >= 200 && $response->statusCode() < 300;
+    } catch (Exception $e) {
+        error_log('Email Error: ' . $e->getMessage());
+        return false;
+    }
+}
+
+// Function to register a new user
 function registerUser($conn, $name, $email, $tel, $password)
 {
-  // Check if email already exists
-  if (emailExists($email, $conn)) {
-    Alert::setAlert(
-      AlertVariants::WARNING,
-      "This email is already registered."
-    );
-    return false; // Return false if email exists
-  }
+    if (emailExists($email, $conn)) {
+        Alert::setAlert(AlertVariants::WARNING, "This email is already registered.");
+        return false;
+    }
 
-  // Hash the password
-  $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-  // Prepare SQL statement to insert new user into the database
-  $stmt = $conn->prepare(
-    "INSERT INTO users (name, email, tel, password) VALUES (?, ?, ?, ?)"
-  );
-  if ($stmt === false) {
-    error_log("MySQL error: " . $conn->error);
+    $stmt = $conn->prepare("INSERT INTO users (name, email, tel, password) VALUES (?, ?, ?, ?)");
+    if ($stmt === false) {
+        error_log("SQL Prepare Error: " . $conn->error);
+        return false;
+    }
+
+    $stmt->bind_param("ssss", $name, $email, $tel, $hashed_password);
+
+    if ($stmt->execute()) {
+        $userId = $conn->insert_id;
+        $stmt->close();
+        return $userId;
+    } else {
+        error_log("SQL Execution Error: " . $stmt->error);
+    }
+
+    $stmt->close();
     return false;
-  }
-
-  $stmt->bind_param("ssss", $name, $email, $tel, $hashed_password);
-
-  if ($stmt->execute()) {
-    return $conn->insert_id; // Return user ID after successful registration
-  } else {
-    // Log detailed SQL error
-    error_log("SQL execute error: " . $stmt->error);
-  }
-
-  $stmt->close();
-  return false;
 }
 
-// Function to check if the email already exists
+// Function to check if email already exists
 function emailExists($email, $conn)
 {
-  // Check if email exists in the database
-  $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
-  if ($stmt === false) {
-    error_log("SQL prepare error: " . $conn->error);
-    return true; // Return true to avoid further processing if there is a query error
-  }
-
-  $stmt->bind_param("s", $email);
-  $stmt->execute();
-
-  // Store the result and check if any rows exist
-  $stmt->store_result();
-  $exists = $stmt->num_rows > 0;
-
-  $stmt->close();
-  return $exists;
-}
-
-function loadEmailTemplate($templateName, $data) {
-  $templatePath = __DIR__ . "../emails/welcome-email.php";
-  $cssPath = __DIR__ . "../assets/css/emails.css";
-
-  if (!file_exists($templatePath)) {
-    Alert::setAlert(AlertVariants::WARNING, "Template not found: $templateName");
-  }
-
-  if (!file_exists($cssPath)) {
-    Alert::setAlert(AlertVariants::WARNING, "CSS file not found: emails.css");
-  }
-
-  // Load the html template and css
-  $templateContent = file_get_contents($templatePath);
-  $cssContent - file_get_contents($cssPath);
-}
-
-// Function to send welcome email after registration
-function sendWelcomeEmail($toEmail, $toName, $accountDetails)
-{
-  $apiKey = $_ENV["SENDGRID_API_KEY"];
-  $email = new Mail();
-
-  $email->setFrom("hello@ebrookes.dev", "Appointment System");
-  $email->setSubject("Account Details");
-  $email->addTo($toEmail, $toName);
-
-  // Create the email content
-  $emailContent = "
-        <p>Welcome, {$toName}!</p>
-        <p>Thank you for signing up. We're excited to have you on board.</p>
-        <p>Your registered email address is: <strong>{$accountDetails["email"]}</strong>.</p>
-    ";
-
-  $email->addContent("text/html", $emailContent);
-
-  $sendgrid = new \SendGrid($apiKey);
-
-  try {
-    $response = $sendgrid->send($email);
-    if ($response->statusCode() === 200) {
-      return true; // Email sent successfully
-    } else {
-      error_log(
-        "Email sending failed. Status Code: " . $response->statusCode()
-      );
-      return false; // Email sending failed
+    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+    if ($stmt === false) {
+        error_log("SQL Prepare Error: " . $conn->error);
+        return true; // Return true to block further processing if query fails
     }
-  } catch (Exception $e) {
-    error_log("Email error: " . $e->getMessage());
-    return false; // Email sending failed due to exception
-  }
+
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+
+    $stmt->store_result();
+    $exists = $stmt->num_rows > 0;
+
+    $stmt->close();
+    return $exists;
 }
+?>
 
+<?php
+// Render alerts if any
 Alert::renderAlert();
-
-// Display alerts if any
 ?>
 
 <!DOCTYPE html>
