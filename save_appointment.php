@@ -27,10 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->bind_param("sssi", $id, $service, $date, $userId);
 
     if ($stmt->execute()) {
-        sendAppointmentEmail($toEmail, $toName, [
-            'date' => $date,
-            'service' => $service,
-        ]);
+        sendAppointmentEmail($toEmail, $toName);
 
         Alert::setAlert(
             AlertVariants::SUCCESS,
@@ -60,10 +57,19 @@ function getUserDetails($userId, $conn) {
     }
 }
 
-function sendAppointmentEmail($toEmail, $toName, $appointmentDetails) {
+function sendAppointmentEmail($toEmail, $toName) {
     $apiKey = $_ENV['SENDGRID_API_KEY'];
-    $email = new Mail();
+    $sendgrid = new \SendGrid($apiKey);
+    $emailTemplate = file_get_contents("../emails/create-appointment.html");
 
+    $data = [
+      "{{name}}" => $toName,
+      "{{date}}" => $date,
+      "{{service}}" => $service,
+      "{{year}}" => $year,
+    ];
+
+    $email = new Mail();
     $email->setFrom('hello@ebrookes.dev', 'Appointment System');
     $email->setSubject('Appointment Confirmation');
     $email->addTo($toEmail, $toName);
@@ -78,7 +84,6 @@ function sendAppointmentEmail($toEmail, $toName, $appointmentDetails) {
     ";
     $email->addContent("text/html", $emailContent);
 
-    $sendgrid = new \SendGrid($apiKey);
 
     try {
         $response = $sendgrid->send($email);

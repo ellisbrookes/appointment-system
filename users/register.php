@@ -79,12 +79,12 @@ function sendWelcomeEmail($toEmail, $toName)
 {
     $apiKey = $_ENV['SENDGRID_API_KEY'];
     $sendgrid = new \SendGrid($apiKey);
-    $emailTemplate = file_get_contents("../emails/welcome-email.html");
+    $emailTemplate = file_get_contents("../emails/welcome.html");
 
     $data = [
-        '{{toName}}' => $toName,
-        '{{toEmail}}' => $toEmail,
-        '{{year}}' => date("Y")
+      "{{name}}" => $toName,
+      "{{email}}" => $toEmail,
+      "{{year}}" => date("Y")
     ];
 
     $htmlContent = str_replace(array_keys($data), array_values($data), $emailTemplate);
