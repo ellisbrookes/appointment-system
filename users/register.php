@@ -161,24 +161,33 @@ Alert::renderAlert();
     <link rel="stylesheet" href="../assets/css/auth.css">
 </head>
 <body>
-  <div class="auth-container">
-    <form action="register.php" method="POST" class="auth-form">
-      <h1 class="text-center">Register</h1>
+    <div class="auth-container">
+        <!-- Left banner -->
+        <aside class="auth-banner"></aside>
 
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required>
+        <!-- Right form -->
+        <div class="auth-form">
+            <form action="register.php" method="POST" class="auth-form-form">
+                <h1 class="text-center">Register</h1>
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
 
-      <label for="tel">Phone Number:</label>
-      <input type="tel" id="tel" name="tel" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
 
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
+                <label for="tel">Phone Number:</label>
+                <input type="tel" id="tel" name="tel" required>
 
-      <button type="submit" class="btn">Register</button>
-    </form>
-  </div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <p>Already have an account?<a href="login.php"><b>Login in</b></a></p>
+
+                <button type="submit" class="btn">Register</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
+
