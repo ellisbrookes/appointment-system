@@ -108,31 +108,33 @@ function SendForgotEmail($toEmail, $toName, $token)
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="../assets/css/alerts.css">
-    <link rel="stylesheet" href="../assets/css/auth.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/alerts.css">
+  <link rel="stylesheet" href="../assets/css/auth.css">
 </head>
 <body>
-    <div class="auth-container">
-        <!-- Left banner -->
-        <aside class="auth-banner"></aside>
+  <div class="auth-container">
+    <!-- Left banner -->
+    <aside class="auth-banner"></aside>
 
-        <!-- Right form -->
-        <div class="auth-form">
-            <form action="forgot.php" method="POST" class="auth-form-form">
-                <label for="email">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter your email address"
-                    required>
-                <button type="submit" class="btn">Send Reset Link</button>
-            </form>
-        </div>
+    <!-- Right form -->
+    <div class="auth-form">
+      <form action="forgot.php" method="POST" class="auth-form-form">
+        <h1 class="text-center">Reset your password</h1>
+
+        <label for="email">Email</label>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email address"
+            required>
+        <button type="submit" class="btn">Send Reset Link</button>
+      </form>
     </div>
+  </div>
 </body>
 </html>
