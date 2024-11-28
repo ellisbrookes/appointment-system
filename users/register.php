@@ -190,4 +190,3 @@ Alert::renderAlert();
     </div>
 </body>
 </html>
-

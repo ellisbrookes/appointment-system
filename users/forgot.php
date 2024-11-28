@@ -1,15 +1,15 @@
 <?php
-require_once '../setup.php';
+require_once "../setup.php";
 use SendGrid\Mail\Mail;
 include "../partials/shared/alerts.php";
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  $email = trim($_POST['email']);
+  $email = trim($_POST["email"]);
 
   // validate email
-  if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      Alert::SetAlert(AlertVariants::DANGER, "Invalid email format");
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    Alert::SetAlert(AlertVariants::DANGER, "Invalid email format");
   } else {
     // Check if email exists in the users table
     $stmt = $conn->prepare("SELECT id, name FROM users WHERE email = ?");
@@ -24,11 +24,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
       // Generate a secure reset token
       $token = bin2hex(random_bytes(50));
-      $expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
+      $expiry = date("Y-m-d H:i:s", strtotime("+1 hour"));
 
       // update the database with the reset token and expiry
       $stmt->close();
-      $stmt = $conn->prepare("UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE id = ? ");
+      $stmt = $conn->prepare(
+        "UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE id = ? "
+      );
       $stmt->bind_param("ssi", $token, $expiry, $id);
       $stmt->execute();
 
@@ -60,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   }
 }
 
-function SendForgotEmail($toEmail, $toName, $token) 
+function SendForgotEmail($toEmail, $toName, $token)
 {
   $apiKey = $_ENV["SENDGRID_API_KEY"];
   $email = new Mail();
@@ -86,16 +88,18 @@ function SendForgotEmail($toEmail, $toName, $token)
       return true;
     } else {
       Alert::SetAlert(
-        AlertVariants::DANGER, "Failed to send email, account created!"
+        AlertVariants::DANGER,
+        "Failed to send email, account created!"
       );
 
       return false;
     }
   } catch (Exception $e) {
     Alert::SetAlert(
-      AlertVariants::DANGER, "Failed to send email, " . $e->getMessage()
+      AlertVariants::DANGER,
+      "Failed to send email, " . $e->getMessage()
     );
-    
+
     return false;
   }
 }
@@ -120,11 +124,11 @@ function SendForgotEmail($toEmail, $toName, $token)
         <div class="auth-form">
             <form action="forgot.php" method="POST" class="auth-form-form">
                 <label for="email">Email</label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    placeholder="Enter your email address" 
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email address"
                     required>
                 <button type="submit" class="btn">Send Reset Link</button>
             </form>
