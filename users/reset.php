@@ -1,14 +1,16 @@
 <?php
-require_once '../setup.php';
+require_once "../setup.php";
 use SendGrid\Mail\Mail;
 include "../partials/shared/alerts.php";
 
 // Check if the token is present
-if (isset($_GET['token'])) {
-  $token = $_GET['token'];
+if (isset($_GET["token"])) {
+  $token = $_GET["token"];
 
   // Verify the token in the database
-  $stmt = $conn->prepare("SELECT id, reset_token_expiry FROM users WHERE reset_token = ?");
+  $stmt = $conn->prepare(
+    "SELECT id, reset_token_expiry FROM users WHERE reset_token = ?"
+  );
   $stmt->bind_param("s", $token);
   $stmt->execute();
   $stmt->store_result();
@@ -18,39 +20,49 @@ if (isset($_GET['token'])) {
     $stmt->bind_result($id, $expiry);
     $stmt->fetch();
 
-    if(strtotime($expiry) < time()) {
-      Alert::SetAlert(AlertVariants::DANGER, "The reset link has expired. Please request a new one");
+    if (strtotime($expiry) < time()) {
+      Alert::SetAlert(
+        AlertVariants::DANGER,
+        "The reset link has expired. Please request a new one"
+      );
     } else {
       // If form is submitted, update the password
       if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $password = $_POST['password'];
+        $password = $_POST["password"];
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // Update the password in the databse and clear the token
         $stmt->close();
-        $stmt = $conn->prepare("UPDATE users SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?");
+        $stmt = $conn->prepare(
+          "UPDATE users SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?"
+        );
         $stmt->bind_param("si", $hashed_password, $id);
 
         if ($stmt->execute()) {
-            Alert::SetAlert(AlertVariants::SUCCESS, "Your password has been reset successfully");
-            header("Location: login.php");
-            exit();
+          Alert::SetAlert(
+            AlertVariants::SUCCESS,
+            "Your password has been reset successfully"
+          );
+          header("Location: login.php");
+          exit();
         } else {
-            Alert::SetAlert(AlertVariants::DANGER, "There was an error updating your password. Please try again");
+          Alert::SetAlert(
+            AlertVariants::DANGER,
+            "There was an error updating your password. Please try again"
+          );
         }
       }
     }
   } else {
     Alert::SetAlert(AlertVariants::DANGER, "Invalid reset token");
   }
-  
+
   $stmt->close();
 } else {
-    Alert::SetAlert(AlertVariants::DANGER, "No token provided");
+  Alert::SetAlert(AlertVariants::DANGER, "No token provided");
 }
 
 Alert::renderAlert();
-
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +77,9 @@ Alert::renderAlert();
   </head>
   <body>
     <div class="auth-container">
-      <form action="reset.php?token=<?php echo $_GET['token']; ?>" method="POST">
+      <form action="reset.php?token=<?php echo $_GET[
+        "token"
+      ]; ?>" method="POST">
         <label for="password">New Password</label>
         <input type="password" id="password" name="password" required placeholder="Enter your new password">
 
