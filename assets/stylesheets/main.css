@@ -79,6 +79,7 @@ h1, h2, h3, p {
 .features {
     background-color: #e7f3ff;
     padding: 3rem 1rem;
+    border-bottom: 2px solid #e0e0e0;
 }
 
 .features h2 {
@@ -105,6 +106,7 @@ h1, h2, h3, p {
 .pricing {
     background-color: #fff;
     padding: 3rem 1rem;
+    border-bottom: 2px solid #e0e0e0;
 }
 
 .pricing h2 {
@@ -120,7 +122,7 @@ h1, h2, h3, p {
 }
 
 .plan {
-    background: #fff; /* Removed gray background */
+    background: #fff;
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -167,6 +169,7 @@ h1, h2, h3, p {
 .statistics {
     background-color: #f9f9f9;
     padding: 3rem 1rem;
+    border-bottom: 2px solid #e0e0e0;
 }
 
 .statistics h2 {
@@ -211,6 +214,7 @@ h1, h2, h3, p {
     background-color: #e7f3ff;
     padding: 3rem 1rem;
     text-align: center;
+    border-bottom: 2px solid #e0e0e0;
 }
 
 .contact h2 {
