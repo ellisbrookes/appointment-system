@@ -4,12 +4,6 @@ session_start(); // Start the session
 require_once "./setup.php";
 include "./partials/shared/alerts.php";
 
-if (isset($_SESSION["name"])) {
-  $user_name = $_SESSION["name"]; // Get the name from the session
-} else {
-  $user_name = null; // No user is logged in
-}
-
 // Get the current month and year, or the ones passed via URL
 $month = isset($_GET["month"]) ? (int) $_GET["month"] : date("m");
 $year = isset($_GET["year"]) ? (int) $_GET["year"] : date("Y");
