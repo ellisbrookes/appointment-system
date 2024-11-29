@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment Homepage</title>
     <link rel="stylesheet" href="../assets/stylesheets/main.css">
-  </head>
-
-  <body>
+</head>
+<body>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="container">
@@ -39,7 +38,7 @@
                 <div class="pricing-table">
                     <div class="plan">
                         <h3>Basic</h3>
-                        <p>$10/month</p>
+                        <p>£20/month</p>
                         <ul>
                             <li>Feature 1</li>
                             <li>Feature 2</li>
@@ -49,7 +48,7 @@
                     </div>
                     <div class="plan">
                         <h3>Advanced</h3>
-                        <p>$20/month</p>
+                        <p>£40/month</p>
                         <ul>
                             <li>Feature 1</li>
                             <li>Feature 2</li>
@@ -59,7 +58,7 @@
                     </div>
                     <div class="plan">
                         <h3>Pro</h3>
-                        <p>$30/month</p>
+                        <p>£80/month</p>
                         <ul>
                             <li>Feature 1</li>
                             <li>Feature 2</li>
@@ -78,19 +77,19 @@
                 <div class="features-grid">
                     <div class="feature-item">
                         <h3>Feature 1</h3>
-                        <p>Testing</p>
+                        <p>Description of feature 1.</p>
                     </div>
                     <div class="feature-item">
                         <h3>Feature 2</h3>
-                        <p>Testing.</p>
+                        <p>Description of feature 2.</p>
                     </div>
                     <div class="feature-item">
                         <h3>Feature 3</h3>
-                        <p>Testing</p>
+                        <p>Description of feature 3.</p>
                     </div>
                     <div class="feature-item">
                         <h3>Feature 4</h3>
-                        <p>Testing</p>
+                        <p>Description of feature 4.</p>
                     </div>
                 </div>
             </div>
@@ -104,3 +103,4 @@
         </div>
     </footer>
 </body>
+</html>

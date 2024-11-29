@@ -69,44 +69,75 @@ main {
 /* Pricing Section */
 .pricing {
     padding: 2rem 0;
-    text-align: center;
     background-color: #fff;
+    text-align: center;
 }
+
 .pricing h2 {
     margin-bottom: 1.5rem;
     font-size: 2rem;
 }
+
 .pricing-table {
     display: flex;
     gap: 1rem;
     justify-content: center;
+    padding: 0 2rem; /* Add padding for sides */
 }
+
 .plan {
+    flex: 1; /* Each plan takes equal space */
     border: 1px solid #ddd;
-    padding: 1rem;
-    border-radius: 5px;
+    padding: 1.5rem;
+    border-radius: 10px;
+    background-color: #f9f9f9;
     max-width: 300px;
+    margin: 0 auto;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
+
+.plan:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 .plan h3 {
     margin-bottom: 0.5rem;
-}
-.plan p {
     font-size: 1.5rem;
-    margin: 0.5rem 0;
+    color: #333;
 }
+
+.plan p {
+    font-size: 1.8rem;
+    margin: 0.5rem 0;
+    color: #007bff;
+}
+
 .plan ul {
     margin: 1rem 0;
+    padding: 0;
 }
+
 .plan ul li {
     margin: 0.5rem 0;
+    color: #666;
+    font-size: 1rem;
 }
+
 .plan button {
     background-color: #007bff;
     color: #fff;
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
 }
+
+.plan button:hover {
+    background-color: #0056b3;
+}
+
 
 /* Features Section */
 .features {
