@@ -85,10 +85,10 @@ Alert::renderAlert();
 </head>
 <body>
   <div class="auth-container">
-    <!-- Left banner -->
+    <!-- left banner -->
     <aside class="auth-banner"></aside>
 
-    <!-- Right form -->
+    <!-- right form -->
     <div class="auth-form">
       <form action="reset.php?token=<?php echo htmlspecialchars(
         $_GET["token"]

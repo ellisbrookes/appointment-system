@@ -3,10 +3,7 @@ use SendGrid\Mail\Mail;
 require_once "../setup.php";
 include "../partials/shared/alerts.php";
 
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-  session_start();
-}
+session_start(); // start the session
 
 // Only proceed with POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -59,6 +56,7 @@ function registerUser($conn, $name, $email, $tel, $password)
       AlertVariants::WARNING,
       "This email is already registered."
     );
+
     return false; // Return false if email exists
   }
 
@@ -69,6 +67,7 @@ function registerUser($conn, $name, $email, $tel, $password)
   $stmt = $conn->prepare(
     "INSERT INTO users (name, email, tel, password) VALUES (?, ?, ?, ?)"
   );
+
   if ($stmt === false) {
     error_log("MySQL error: " . $conn->error);
     return false;
@@ -145,9 +144,8 @@ function sendWelcomeEmail($toEmail, $toName, $accountDetails)
   }
 }
 
-Alert::renderAlert();
-
 // Display alerts if any
+Alert::renderAlert();
 ?>
 
 <!DOCTYPE html>
@@ -162,10 +160,10 @@ Alert::renderAlert();
 </head>
 <body>
   <div class="auth-container">
-    <!-- Left banner -->
+    <!-- left banner -->
     <aside class="auth-banner"></aside>
 
-    <!-- Right form -->
+    <!-- right form -->
     <div class="auth-form">
       <form action="register.php" method="POST" class="auth-form-form">
         <h1 class="text-center">Register</h1>

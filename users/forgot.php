@@ -117,10 +117,10 @@ function SendForgotEmail($toEmail, $toName, $token)
 </head>
 <body>
   <div class="auth-container">
-    <!-- Left banner -->
+    <!-- left banner -->
     <aside class="auth-banner"></aside>
 
-    <!-- Right form -->
+    <!-- right form -->
     <div class="auth-form">
       <form action="forgot.php" method="POST" class="auth-form-form">
         <h1 class="text-center">Reset your password</h1>

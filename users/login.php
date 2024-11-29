@@ -1,21 +1,17 @@
 <?php
+session_start(); // Start the session
 
 require_once "../setup.php";
 include "../partials/shared/alerts.php";
 
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-  session_start(); // Start the session
-}
-
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   // Get user input
-  $email = trim($_POST["email"]);
-  $password = trim($_POST["password"]);
+  $email = $_POST["email"];
+  $password = $_POST["password"];
 
   // Validate input for both fields with the same alert
-  if (!empty($email) && !empty($password)) {
+  if (!$email && !$password) {
     Alert::SetAlert(
       AlertVariants::DANGER,
       "Please enter both email and password"
@@ -25,26 +21,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   // If email and password fields have been filled out
   if ($email && $password) {
     // Prepare and execute a query to fetch user data
-    $stmt = $conn->prepare("SELECT name, password FROM users WHERE email = ?");
+    $stmt = $conn->prepare(
+      "SELECT id, name, password FROM users WHERE email = ?"
+    );
     $stmt->bind_param("s", $email);
     $stmt->execute();
-    $stmt->store_result();
+    $result = $stmt->get_result();
 
     // Fetch user data
-    $stmt->bind_result($email, $hashed_password);
-    $stmt->fetch();
-    $stmt->close();
+    $user = $result->fetch_assoc();
+    $storedHashedPassword = $user["password"];
 
     // Verify the password using password_hash() comparison
-    if (password_verify($password, $hashed_password)) {
-      $_SESSION["user_name"] = $name; // Correct password, session is set
+    if (password_verify($password, $storedHashedPassword)) {
+      $_SESSION["user_id"] = $user["id"];
+      $_SESSION["user_name"] = $user["name"];
+      $_SESSION["user_email"] = $email;
+
       header("Location: ../index.php"); // Redirect to index
+
       exit();
     } else {
-      Alert::SetAlert(AlertVariants::DANGER, "Invalid Password");
+      Alert::SetAlert(AlertVariants::DANGER, "Invalid email or password");
     }
-  } else {
-    Alert::SetAlert(AlertVariants::DANGER, "No user found with that email");
   }
 }
 
@@ -55,16 +54,16 @@ Alert::renderAlert();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="../assets/css/alerts.css">
-    <link rel="stylesheet" href="../assets/css/auth.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/alerts.css">
+  <link rel="stylesheet" href="../assets/css/auth.css">
 </head>
 <body>
   <div class="auth-container">
-    <!--  -->
+    <!-- left banner -->
     <aside class="auth-banner"></aside>
 
     <!-- right form -->
