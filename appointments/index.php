@@ -1,14 +1,14 @@
 <?php 
-require_once "./setup.php";
-include "./partials/shared/alerts.php";
+require_once "../setup.php";
+include "../partials/shared/alerts.php";
 ?>
 
 <!DOCTYPE html>
 <html>
   <head>
       <title>Appointments Calendar</title>
-      <link rel="stylesheet" href="./assets/stylesheets/styles.css">
-      <link rel="stylesheet" href="./assets/stylesheets/alerts.css">
+      <link rel="stylesheet" href="../assets/stylesheets/styles.css">
+      <link rel="stylesheet" href="../assets/stylesheets/alerts.css">
   </head>
   <body>
     <?php
@@ -107,7 +107,7 @@ include "./partials/shared/alerts.php";
 
     <!-- Appointment Form Popup -->
     <div class="form-popup" id="appointmentForm">
-      <form action="save_appointment.php" method="post">
+      <form action="appointments/save.php" method="post">
         <h2>Add Appointment</h2>
         
         <label for="service">Service:</label>

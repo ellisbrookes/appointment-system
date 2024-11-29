@@ -1,8 +1,7 @@
 <?php
-require 'vendor/autoload.php';
 use SendGrid\Mail\Mail;
-require_once "./setup.php";
-include "./partials/shared/alerts.php";
+require_once "../setup.php";
+include "../partials/shared/alerts.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start(); // Start the session
