@@ -1,19 +1,75 @@
-/* general styles */
+/* General Styles */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0.5rem 0;
+}
+
+/* Utility classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 90%;
 }
 
 .text-center {
   text-align: center;
 }
 
-/* container styles */
-.container {}
+/* Navigation Bar */
+.navbar {
+  background-color: #333;
+  padding: 1rem 0;
+  color: white;
+}
 
-/* table styles */
+.navbar .container {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.navbar .logo {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.navbar .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.navbar .nav-links li {
+  display: inline-block;
+}
+
+.navbar .nav-links a {
+  text-decoration: none;
+  font-size: 1.1rem;
+  color: white;
+}
+
+.navbar .btn {
+  background-color: #007bff;
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 0.5rem 1.5rem;
+  color: white;
+}
+
+/* tables - is calendar */
 table {
   border-collapse: collapse;
   background-color: #fff;
@@ -64,7 +120,7 @@ td {
   }
 }
 
-/* form styles */
+/* Form styles */
 form {
   margin-bottom: 0;
 }
@@ -140,4 +196,12 @@ input[type]:focus {
   z-index: 10;
   left: 50%;
   top: 50%;
+}
+
+/* Footer */
+footer {
+  background-color: #333;
+  text-align: center;
+  padding: 1rem;
+  color: white;
 }
