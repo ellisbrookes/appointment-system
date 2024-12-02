@@ -1,266 +1,329 @@
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 .container {
-    width: 90%;
-    margin: 0 auto;
-    max-width: 1200px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 90%;
 }
 
-h1, h2, h3, p {
-    margin: 0.5rem 0;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0.5rem 0;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
 }
 
 /* Navigation Bar */
 .navbar {
-    background-color: #333;
-    color: white;
-    padding: 1rem 0;
+  background-color: #333;
+  padding: 1rem 0;
+  color: white;
 }
 
 .navbar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
 }
 
 .navbar .logo {
-    font-size: 1.5rem;
-    color: white;
+  font-size: 1.5rem;
+  color: white;
 }
 
 .navbar .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 2rem;
+  list-style: none;
+  display: flex;
+  gap: 2rem;
 }
 
 .navbar .nav-links li {
-    display: inline-block;
+  display: inline-block;
 }
 
 .navbar .nav-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.1rem;
+  text-decoration: none;
+  font-size: 1.1rem;
+  color: white;
 }
 
 .navbar .btn {
-    background-color: #007bff;
-    color: white;
-    padding: 0.5rem 1.5rem;
-    text-decoration: none;
-    border-radius: 5px;
+  background-color: #007bff;
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 0.5rem 1.5rem;
+  color: white;
 }
 
 /* Hero Section */
 .hero {
-    background-color: #f1f1f1;
-    padding: 4rem 0;
-    text-align: center;
+  background-color: #f1f1f1;
+  text-align: center;
+  padding: 4rem 0;
 }
 
 .hero h1 {
-    font-size: 2.5rem;
-    color: #333;
+  font-size: 2.5rem;
+  color: #333;
 }
 
 .hero p {
-    color: #777;
-    font-size: 1.1rem;
+  font-size: 1.1rem;
+  color: #777;
 }
 
 /* Features Section */
 .features {
-    background-color: #e7f3ff;
-    padding: 3rem 1rem;
-    border-bottom: 2px solid #e0e0e0;
+  background-color: #e7f3ff;
+  border-bottom: 2px solid #e0e0e0;
+  padding: 3rem 1rem;
 }
 
 .features h2 {
-    font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 2.5rem;
 }
 
 .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    text-align: center;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  text-align: center;
+  display: grid;
+  gap: 2rem;
 }
 
 .feature-item {
-    padding: 1.5rem;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  padding: 1.5rem;
 }
 
 /* Pricing Section */
 .pricing {
-    background-color: #fff;
-    padding: 3rem 1rem;
-    border-bottom: 2px solid #e0e0e0;
+  background-color: #fff;
+  border-bottom: 2px solid #e0e0e0;
+  padding: 3rem 1rem;
 }
 
 .pricing h2 {
-    font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 2.5rem;
 }
 
 .pricing-table {
-    display: flex;
-    justify-content: space-around;
-    gap: 2rem;
+  justify-content: space-around;
+  display: flex;
+  gap: 2rem;
 }
 
 .plan {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    flex: 1;
-    max-width: 300px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background: #fff;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  max-width: 300px;
+  padding: 2rem;
+  flex: 1;
 }
 
 .plan h3 {
-    font-size: 1.8rem;
+  font-size: 1.8rem;
 }
 
 .plan p {
-    font-size: 1.2rem;
-    color: #333;
+  font-size: 1.2rem;
+  color: #333;
 }
 
 .plan ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .plan button {
-    background-color: #007bff;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
+  background-color: #007bff;
+  border-radius: 5px;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  border: none;
+  color: white;
 }
 
 .plan:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
+  transform: translateY(-10px);
 }
 
 .plan button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 /* Statistics Section */
 .statistics {
-    background-color: #f9f9f9;
-    padding: 3rem 1rem;
-    border-bottom: 2px solid #e0e0e0;
+  background-color: #f9f9f9;
+  border-bottom: 2px solid #e0e0e0;
+  padding: 3rem 1rem;
 }
 
 .statistics h2 {
-    font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 2.5rem;
 }
 
 .stats-grid {
-    display: flex;
-    justify-content: space-around;
-    gap: 2rem;
-    text-align: center;
+  justify-content: space-around;
+  text-align: center;
+  display: flex;
+  gap: 2rem;
 }
 
 .stat-item {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    flex: 1;
-    max-width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  max-width: 300px;
+  padding: 2rem;
+  flex: 1;
 }
 
 .stat-item i {
-    color: #007bff;
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
+  color: #007bff;
 }
 
 .stat-item h3 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
 }
 
 .stat-item p {
-    font-size: 1.1rem;
-    color: #777;
+  font-size: 1.1rem;
+  color: #777;
 }
 
 /* Contact Section */
 .contact {
-    background-color: #e7f3ff;
-    padding: 3rem 1rem;
-    text-align: center;
-    border-bottom: 2px solid #e0e0e0;
+  background-color: #e7f3ff;
+  border-bottom: 2px solid #e0e0e0;
+  text-align: center;
+  padding: 3rem 1rem;
 }
 
 .contact h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
 }
 
 .contact-form {
-    max-width: 500px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  flex-direction: column;
+  max-width: 500px;
+  display: flex;
+  margin: 0 auto;
+  gap: 1rem;
 }
 
 .contact-form input,
 .contact-form textarea {
-    width: 100%;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  width: 100%;
 }
 
 .contact-form textarea {
-    resize: none;
+  resize: none;
 }
 
 .contact-form button {
-    background-color: #007bff;
-    color: white;
-    padding: 0.75rem;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
+  background-color: #007bff;
+  border-radius: 5px;
+  font-size: 1rem;
+  padding: 0.75rem;
+  cursor: pointer;
+  border: none;
+  color: white;
 }
 
 .contact-form button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
+}
+
+/* tables - is calendar */
+table {
+  background-color: #fff;
+  border-collapse: collapse;
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  border: 1px solid #ddd;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  width: 14.28%; /* 100/7 days of the week */
+}
+
+th {
+  background-color: #f0f0f0;
+}
+
+td {
+  background-color: #f9f9f9;
+}
+
+td:hover {
+  background-color: #e0e0e0;
+}
+
+.pagination {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.pagination a {
+  background-color: #007bff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  padding: 10px 20px;
+  margin: 0 10px;
+  color: white;
+}
+
+.pagination a:hover {
+  background-color: #0056b3;
 }
 
 /* Footer */
 footer {
-    background-color: #333;
-    color: white;
-    padding: 1rem;
-    text-align: center;
+  background-color: #333;
+  text-align: center;
+  padding: 1rem;
+  color: white;
 }
