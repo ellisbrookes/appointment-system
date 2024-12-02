@@ -41,7 +41,9 @@ $create_users_table_query = "
     name VARCHAR(30) DEFAULT '',
     email VARCHAR(50) NOT NULL UNIQUE,
     tel VARCHAR(15) UNIQUE,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    reset_token VARCHAR(255) UNIQUE,
+    reset_token_expiry DATETIME
   )";
 
 if ($conn->query($create_users_table_query) !== true) {
