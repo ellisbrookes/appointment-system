@@ -1,90 +1,97 @@
 <?php
+require "vendor/autoload.php";
 use SendGrid\Mail\Mail;
 require_once "../setup.php";
 include "../partials/shared/alerts.php";
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start(); // Start the session
-}
+session_start(); // Start the session
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $service = $_POST['service'];
-    $date = $_POST['date'];
-    $userId = $_POST['user_id'];
+  $service = $_POST["service"];
+  $date = $_POST["date"];
+  $userId = $_POST["user_id"];
 
-    $userDetails = getUserDetails($userId, $conn);
+  $userDetails = getUserDetails($userId, $conn);
 
-    if (!$userDetails) {
-        echo "Error: User not found.";
-        exit();
-    }
+  if (!$userDetails) {
+    echo "Error: User not found.";
+    exit();
+  }
 
-    $toName = $userDetails['name'];
-    $toEmail = $userDetails['email'];
+  $toName = $userDetails["name"];
+  $toEmail = $userDetails["email"];
 
-    $stmt = $conn->prepare("INSERT INTO appointments (id, service, date, user_id) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sssi", $id, $service, $date, $userId);
+  $stmt = $conn->prepare(
+    "INSERT INTO appointments (id, service, date, user_id) VALUES (?, ?, ?, ?)"
+  );
+  $stmt->bind_param("sssi", $id, $service, $date, $userId);
 
-    if ($stmt->execute()) {
-        sendAppointmentEmail($toEmail, $toName, [
-            'date' => $date,
-            'service' => $service,
-        ]);
+  if ($stmt->execute()) {
+    sendAppointmentEmail($toEmail, $toName, [
+      "date" => $date,
+      "service" => $service,
+    ]);
 
-        Alert::setAlert(
-            AlertVariants::SUCCESS,
-            "Your appointment has been booked successfully"
-        );
-        
-        header('Location: index.php');
-        exit();
-    } else {
-        echo "Error Saving Appointment: " . $stmt->error;
-    }
+    Alert::setAlert(
+      AlertVariants::SUCCESS,
+      "Your appointment has been booked successfully"
+    );
 
-    $stmt->close();
-    $conn->close();
+    header("Location: index.php");
+    exit();
+  } else {
+    echo "Error Saving Appointment: " . $stmt->error;
+  }
+
+  $stmt->close();
+  $conn->close();
 }
 
-function getUserDetails($userId, $conn) {
-    $stmt = $conn->prepare("SELECT name, email FROM users WHERE id = ?");
-    $stmt->bind_param("i", $userId);
-    $stmt->execute();
+function getUserDetails($userId, $conn)
+{
+  $stmt = $conn->prepare("SELECT name, email FROM users WHERE id = ?");
+  $stmt->bind_param("i", $userId);
+  $stmt->execute();
 
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        return $result->fetch_assoc();
-    } else {
-        return null;
-    }
+  $result = $stmt->get_result();
+  if ($result->num_rows > 0) {
+    return $result->fetch_assoc();
+  } else {
+    return null;
+  }
 }
 
-function sendAppointmentEmail($toEmail, $toName, $appointmentDetails) {
-    $apiKey = $_ENV['SENDGRID_API_KEY'];
-    $email = new Mail();
+function sendAppointmentEmail($toEmail, $toName)
+{
+  $apiKey = $_ENV["SENDGRID_API_KEY"];
+  $sendgrid = new \SendGrid($apiKey);
+  $emailTemplate = file_get_contents("../emails/create-appointment.html");
 
-    $email->setFrom('hello@ebrookes.dev', 'Appointment System');
-    $email->setSubject('Appointment Confirmation');
-    $email->addTo($toEmail, $toName);
+  $data = [
+    "{{name}}" => $toName,
+    "{{appointment_date}}" => $date,
+    "{{appointment_service}}" => $service,
+    "{{year}}" => date("Y"),
+  ];
 
-    $emailContent = "
-        <h1>Appointment Confirmed</h1>
-        <p>Dear $toName,</p>
-        <p>Your appointment has been confirmed. Here are the details:</p>
-        <p><strong>Date:</strong> {$appointmentDetails['date']}</p>
-        <p><strong>Service:</strong> {$appointmentDetails['service']}</p>
-        <p>We look forward to seeing you!</p>
-    ";
-    $email->addContent("text/html", $emailContent);
+  $htmlContent = str_replace(
+    array_keys($data),
+    array_values($data),
+    $emailTemplate
+  );
 
-    $sendgrid = new \SendGrid($apiKey);
+  $email = new Mail();
+  $email->setFrom("hello@ebrookes.dev", "Appointment System");
+  $email->setSubject("Appointment Confirmation");
+  $email->addTo($toEmail, $toName);
+  $email->addContent("text/html", $htmlContent);
 
-    try {
-        $response = $sendgrid->send($email);
-        return $response->statusCode();
-    } catch (Exception $e) {
-        error_log('Email error: ' . $e->getMessage());
-        return false;
-    }
+  try {
+    $response = $sendgrid->send($email);
+    return $response->statusCode();
+  } catch (Exception $e) {
+    error_log("Email error: " . $e->getMessage());
+    return false;
+  }
 }
 ?>
