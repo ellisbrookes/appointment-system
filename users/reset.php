@@ -29,32 +29,41 @@ if (isset($_GET["token"])) {
       // If form is submitted, update the password
       if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $password = $_POST["password"];
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $confirm_password = $_POST["confirm_password"];
 
-        // Update the password in the databse and clear the token
-        $stmt->close();
-        $stmt = $conn->prepare(
-          "UPDATE users SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?"
-        );
-        $stmt->bind_param("si", $hashed_password, $id);
-
-        if ($stmt->execute()) {
-          Alert::SetAlert(
-            AlertVariants::SUCCESS,
-            "Your password has been reset successfully"
-          );
-          header("Location: login.php");
-          exit();
-        } else {
+        if ($password !== $confirm_password) {
           Alert::SetAlert(
             AlertVariants::DANGER,
-            "There was an error updating your password. Please try again"
+            "Passwords do not match. Please try again."
           );
+        } else {
+          $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+          // Update the password in the database and clear the token
+          $stmt->close();
+          $stmt = $conn->prepare(
+            "UPDATE users SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?"
+          );
+          $stmt->bind_param("si", $hashed_password, $id);
+
+          if ($stmt->execute()) {
+            Alert::SetAlert(
+              AlertVariants::SUCCESS,
+              "Your password has been reset successfully."
+            );
+            header("Location: login.php");
+            exit();
+          } else {
+            Alert::SetAlert(
+              AlertVariants::DANGER,
+              "There was an error updating your password. Please try again."
+            );
+          }
         }
       }
     }
   } else {
-    Alert::SetAlert(AlertVariants::DANGER, "Invalid reset token");
+    Alert::SetAlert(AlertVariants::DANGER, "Invalid reset token.");
   }
 
   $stmt->close();
@@ -67,24 +76,33 @@ Alert::renderAlert();
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="../assets/css/alerts.css">
-    <link rel="stylesheet" href="../assets/css/auth.css">
-  </head>
-  <body>
-    <div class="auth-container">
-      <form action="reset.php?token=<?php echo $_GET[
-        "token"
-      ]; ?>" method="POST">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Password</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/alerts.css">
+  <link rel="stylesheet" href="../assets/css/auth.css">
+</head>
+<body>
+  <div class="auth-container">
+    <!-- left banner -->
+    <aside class="auth-banner"></aside>
+
+    <!-- right form -->
+    <div class="auth-form">
+      <form action="reset.php?token=<?php echo htmlspecialchars(
+        $_GET["token"]
+      ); ?>" method="POST" class="auth-form-form">
         <label for="password">New Password</label>
         <input type="password" id="password" name="password" required placeholder="Enter your new password">
 
-        <button type="submit">Reset Password</button>
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm your new password">
+
+        <button type="submit" class="btn">Reset Password</button>
       </form>
     </div>
-  </body>
+  </div>
+</body>
 </html>

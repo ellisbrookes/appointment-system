@@ -3,10 +3,7 @@ use SendGrid\Mail\Mail;
 require_once "../setup.php";
 include "../partials/shared/alerts.php";
 
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-  session_start();
-}
+session_start(); // start the session
 
 // Only proceed with POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -116,7 +113,8 @@ function registerUser($conn, $name, $email, $tel, $password)
       AlertVariants::WARNING,
       "This email is already registered."
     );
-    return false;
+
+    return false; // Return false if email exists
   }
 
   $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -124,6 +122,7 @@ function registerUser($conn, $name, $email, $tel, $password)
   $stmt = $conn->prepare(
     "INSERT INTO users (name, email, tel, password) VALUES (?, ?, ?, ?)"
   );
+
   if ($stmt === false) {
     error_log("SQL Prepare Error: " . $conn->error);
     return false;
@@ -161,40 +160,48 @@ function emailExists($email, $conn)
   $stmt->close();
   return $exists;
 }
-?>
 
-<?php // Render alerts if any
-Alert::renderAlert(); ?>
+// Display alerts if any
+Alert::renderAlert();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="../assets/css/alerts.css">
-    <link rel="stylesheet" href="../assets/css/auth.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/alerts.css">
+  <link rel="stylesheet" href="../assets/css/auth.css">
 </head>
 <body>
   <div class="auth-container">
-    <form action="register.php" method="POST" class="auth-form">
-      <h1 class="text-center">Register</h1>
+    <!-- left banner -->
+    <aside class="auth-banner"></aside>
 
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required>
+    <!-- right form -->
+    <div class="auth-form">
+      <form action="register.php" method="POST" class="auth-form-form">
+        <h1 class="text-center">Register</h1>
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
 
-      <label for="tel">Phone Number:</label>
-      <input type="tel" id="tel" name="tel" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
 
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
+        <label for="tel">Phone Number:</label>
+        <input type="tel" id="tel" name="tel" required>
 
-      <button type="submit" class="btn">Register</button>
-    </form>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <p>Already have an account?<a href="login.php"><b>Login in</b></a></p>
+
+        <button type="submit" class="btn">Register</button>
+      </form>
+    </div>
   </div>
 </body>
 </html>

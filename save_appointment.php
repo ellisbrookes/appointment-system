@@ -4,9 +4,7 @@ use SendGrid\Mail\Mail;
 require_once "./setup.php";
 include "./partials/shared/alerts.php";
 
-if (session_status() === PHP_SESSION_NONE) {
-  session_start(); // Start the session
-}
+session_start(); // Start the session
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $service = $_POST["service"];
@@ -29,7 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $stmt->bind_param("sssi", $id, $service, $date, $userId);
 
   if ($stmt->execute()) {
-    sendAppointmentEmail($toEmail, $toName);
+    sendAppointmentEmail($toEmail, $toName, [
+      "date" => $date,
+      "service" => $service,
+    ]);
 
     Alert::setAlert(
       AlertVariants::SUCCESS,

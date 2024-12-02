@@ -1,6 +1,50 @@
 <?php
+session_start(); // Start the session
+
 require_once "./setup.php";
 include "./partials/shared/alerts.php";
+
+// Get the current month and year, or the ones passed via URL
+$month = isset($_GET["month"]) ? (int) $_GET["month"] : date("m");
+$year = isset($_GET["year"]) ? (int) $_GET["year"] : date("Y");
+
+// Get the number of days in the current month
+$calendar_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+// Array for the days of the week
+$days_of_week = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
+// Get the name of the current month and the first day of the month
+$day = 1;
+$monthName = date("F", strtotime("$year-$month"));
+$firstDayOfMonth = date("w", strtotime("$year-$month-$day"));
+
+// Generate pagination links for previous and next month
+$prevMonth = $month - 1;
+$prevYear = $year;
+
+if ($prevMonth < 1) {
+  $prevMonth = 12;
+  $prevYear--;
+}
+
+$nextMonth = $month + 1;
+$nextYear = $year;
+
+if ($nextMonth > 12) {
+  $nextMonth = 1;
+  $nextYear++;
+}
+
+Alert::renderAlert();
 ?>
 
 <!DOCTYPE html>
@@ -11,62 +55,14 @@ include "./partials/shared/alerts.php";
       <link rel="stylesheet" href="./assets/css/alerts.css">
   </head>
   <body>
-    <?php
-    if (session_status() === PHP_SESSION_NONE) {
-      session_start(); // Start the session
-    }
+    <?php if ($_SESSION["user_name"]): ?>
+        <p>Hello, <?php
+        echo "id: ", htmlspecialchars($_SESSION["user_id"]);
+        echo "email: ", htmlspecialchars($_SESSION["user_email"]);
+        echo "name: ", htmlspecialchars($_SESSION["user_name"]);
+        ?>!</p>
 
-    if (isset($_SESSION["name"])) {
-      $user_name = $_SESSION["name"]; // Get the name from the session
-    } else {
-      $user_name = null; // No user is logged in
-    }
-
-    // Get the current month and year, or the ones passed via URL
-    $month = isset($_GET["month"]) ? (int) $_GET["month"] : date("m");
-    $year = isset($_GET["year"]) ? (int) $_GET["year"] : date("Y");
-
-    // Get the number of days in the current month
-    $calendar_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-
-    // Array for the days of the week
-    $days_of_week = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-
-    // Get the name of the current month and the first day of the month
-    $day = 1;
-    $monthName = date("F", strtotime("$year-$month"));
-    $firstDayOfMonth = date("w", strtotime("$year-$month-$day"));
-
-    // Generate pagination links for previous and next month
-    $prevMonth = $month - 1;
-    $prevYear = $year;
-
-    if ($prevMonth < 1) {
-      $prevMonth = 12;
-      $prevYear--;
-    }
-
-    $nextMonth = $month + 1;
-    $nextYear = $year;
-
-    if ($nextMonth > 12) {
-      $nextMonth = 1;
-      $nextYear++;
-    }
-
-    Alert::renderAlert();
-    ?>
-
-    <?php if ($user_name): ?>
-        <p>Hello, <?php echo htmlspecialchars($user_name); ?>! Welcome back.</p>
+        <a href="/users/logout.php">Logout</a>
     <?php else: ?>
         <p>You are not logged in. <a href="/users/login.php">Login here</a>.</p>
     <?php endif; ?>
