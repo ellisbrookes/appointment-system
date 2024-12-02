@@ -65,9 +65,10 @@ if (isset($_GET["token"])) {
   } else {
     Alert::SetAlert(AlertVariants::DANGER, "Invalid reset token.");
   }
+
   $stmt->close();
 } else {
-  Alert::SetAlert(AlertVariants::DANGER, "No token provided.");
+  Alert::SetAlert(AlertVariants::DANGER, "No token provided");
 }
 
 Alert::renderAlert();

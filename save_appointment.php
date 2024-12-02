@@ -61,26 +61,30 @@ function getUserDetails($userId, $conn)
   }
 }
 
-function sendAppointmentEmail($toEmail, $toName, $appointmentDetails)
+function sendAppointmentEmail($toEmail, $toName)
 {
   $apiKey = $_ENV["SENDGRID_API_KEY"];
-  $email = new Mail();
+  $sendgrid = new \SendGrid($apiKey);
+  $emailTemplate = file_get_contents("../emails/create-appointment.html");
 
+  $data = [
+    "{{name}}" => $toName,
+    "{{appointment_date}}" => $date,
+    "{{appointment_service}}" => $service,
+    "{{year}}" => date("Y"),
+  ];
+
+  $htmlContent = str_replace(
+    array_keys($data),
+    array_values($data),
+    $emailTemplate
+  );
+
+  $email = new Mail();
   $email->setFrom("hello@ebrookes.dev", "Appointment System");
   $email->setSubject("Appointment Confirmation");
   $email->addTo($toEmail, $toName);
-
-  $emailContent = "
-        <h1>Appointment Confirmed</h1>
-        <p>Dear $toName,</p>
-        <p>Your appointment has been confirmed. Here are the details:</p>
-        <p><strong>Date:</strong> {$appointmentDetails["date"]}</p>
-        <p><strong>Service:</strong> {$appointmentDetails["service"]}</p>
-        <p>We look forward to seeing you!</p>
-    ";
-  $email->addContent("text/html", $emailContent);
-
-  $sendgrid = new \SendGrid($apiKey);
+  $email->addContent("text/html", $htmlContent);
 
   try {
     $response = $sendgrid->send($email);

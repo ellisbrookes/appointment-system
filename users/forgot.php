@@ -34,11 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       $stmt->bind_param("ssi", $token, $expiry, $id);
       $stmt->execute();
 
-      $emailSent = SendForgotEmail($email, $name, $token, [
-        "email" => $email,
-        "name" => $name,
-        "token" => $token,
-      ]);
+      $emailSent = SendForgotEmail($email, $name, $token);
 
       if ($emailSent) {
         // If email is sent successfully, show the success alert
@@ -46,14 +42,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           AlertVariants::SUCCESS,
           "Reset password email sent successfully."
         );
+
         header("Location: ../index.php");
+
         exit();
       } else {
-        // If email failed, show a warning alert but still redirect to register page
         Alert::setAlert(
           AlertVariants::WARNING,
           "There was an error sending your reset password email, please try again."
         );
+
+        header("Location: forgot.php");
+
         exit();
       }
 
@@ -65,21 +65,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 function SendForgotEmail($toEmail, $toName, $token)
 {
   $apiKey = $_ENV["SENDGRID_API_KEY"];
-  $email = new Mail();
+  $sendgrid = new \SendGrid($apiKey);
+  $emailTemplate = file_get_contents("../emails/forgot.html");
 
+  $data = [
+    "{{name}}" => $toName,
+    "{{email}}" => $toEmail,
+    "{{token}}" => $token,
+    "{{year}}" => date("Y"),
+  ];
+
+  $htmlContent = str_replace(
+    array_keys($data),
+    array_values($data),
+    $emailTemplate
+  );
+
+  $email = new Mail();
   $email->setFrom("hello@ebrookes.dev", "Appointment System");
   $email->setSubject("Forgot Password Instructions");
-  $email->AddTo($toEmail, $toName);
-
-  $emailContent = "
-    <p>Hello,<br><br>You requested to reset your password. Click the link below to reset it:<br><br></p>
-    <a href='http://localhost:8000/users/reset.php?token={$token}'>Reset Password</a><br><br>Note: The link will expire in 1 hour.<br><br>
-    <p>If you did not request this password reset please ignore this email</p>
-  ";
-
-  $email->addContent("text/html", $emailContent);
-
-  $sendgrid = new \SendGrid($apiKey);
+  $email->addTo($toEmail, $toName);
+  $email->addContent("text/html", $htmlContent);
 
   try {
     $response = $sendgrid->send($email);
@@ -135,6 +141,5 @@ function SendForgotEmail($toEmail, $toName, $token)
         <button type="submit" class="btn">Send Reset Link</button>
       </form>
     </div>
-  </div>
-</body>
+  </body>
 </html>
