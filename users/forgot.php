@@ -1,7 +1,11 @@
 <?php
 require_once "../setup.php";
 use SendGrid\Mail\Mail;
+
+$title = "Forgot Password";
 include "../partials/shared/alerts.php";
+include "../partials/shared/head.php";
+
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

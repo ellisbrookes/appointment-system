@@ -1,8 +1,11 @@
 <?php
-session_start(); // Start the session
+session_start();
 
 require_once "../setup.php";
+
+$title = "Login";
 include "../partials/shared/alerts.php";
+include "../partials/shared/head.php";
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
