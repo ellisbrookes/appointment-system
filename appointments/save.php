@@ -1,5 +1,5 @@
 <?php
-require "vendor/autoload.php";
+require "../vendor/autoload.php";
 use SendGrid\Mail\Mail;
 require_once "../setup.php";
 include "../partials/shared/alerts.php";
