@@ -177,6 +177,10 @@ input[type]:focus {
   border: none;
   color: white;
 
+  &.btn-full {
+    width: 100%;
+  }
+
   &:hover {
     text-decoration: underline;
   }
