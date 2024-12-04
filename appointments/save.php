@@ -1,8 +1,8 @@
 <?php
-require "../vendor/autoload.php";
-use SendGrid\Mail\Mail;
 require_once "../setup.php";
 include "../partials/shared/alerts.php";
+
+use SendGrid\Mail\Mail;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $service = $_POST["service"];

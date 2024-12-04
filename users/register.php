@@ -1,13 +1,12 @@
 <?php
-use SendGrid\Mail\Mail;
 require_once "../setup.php";
 
 $title = "Register";
+
 include "../partials/shared/alerts.php";
 include "../partials/shared/head.php";
 
-
-session_start(); // start the session
+use SendGrid\Mail\Mail;
 
 // Only proceed with POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

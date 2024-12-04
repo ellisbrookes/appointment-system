@@ -1,11 +1,12 @@
 <?php
 require_once "../setup.php";
-use SendGrid\Mail\Mail;
 
 $title = "Reset Password";
+
 include "../partials/shared/alerts.php";
 include "../partials/shared/head.php";
 
+use SendGrid\Mail\Mail;
 
 // Check if the token is present
 if (isset($_GET["token"])) {

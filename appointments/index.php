@@ -5,7 +5,7 @@ $title = "Dashboard";
 
 include "../partials/shared/head.php";
 include "../partials/shared/alerts.php";
-include "../partials/shared/sidebar.php";
+include "../partials/dashboard/sidebar.php";
 
 // Get the current month and year, or the ones passed via URL
 $month = isset($_GET["month"]) ? (int) $_GET["month"] : date("m");
@@ -15,7 +15,15 @@ $year = isset($_GET["year"]) ? (int) $_GET["year"] : date("Y");
 $calendar_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
 // Array for the days of the week
-$days_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+$days_of_week = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 // Get the name of the current month and the first day of the month
 $day = 1;

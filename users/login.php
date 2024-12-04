@@ -1,9 +1,8 @@
 <?php
-session_start();
-
 require_once "../setup.php";
 
 $title = "Login";
+
 include "../partials/shared/alerts.php";
 include "../partials/shared/head.php";
 
