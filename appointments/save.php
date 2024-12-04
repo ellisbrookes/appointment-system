@@ -1,10 +1,8 @@
 <?php
-require "vendor/autoload.php";
-use SendGrid\Mail\Mail;
-require_once "./setup.php";
-include "./partials/shared/alerts.php";
+require_once "../setup.php";
+include "../partials/shared/alerts.php";
 
-session_start(); // Start the session
+use SendGrid\Mail\Mail;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $service = $_POST["service"];
@@ -24,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $stmt = $conn->prepare(
     "INSERT INTO appointments (id, service, date, user_id) VALUES (?, ?, ?, ?)"
   );
+
   $stmt->bind_param("sssi", $id, $service, $date, $userId);
 
   if ($stmt->execute()) {

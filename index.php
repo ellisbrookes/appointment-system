@@ -1,148 +1,138 @@
 <?php
-session_start(); // Start the session
-
 require_once "./setup.php";
+
+$title = "Homepage";
+
+include "./partials/shared/head.php";
 include "./partials/shared/alerts.php";
-
-// Get the current month and year, or the ones passed via URL
-$month = isset($_GET["month"]) ? (int) $_GET["month"] : date("m");
-$year = isset($_GET["year"]) ? (int) $_GET["year"] : date("Y");
-
-// Get the number of days in the current month
-$calendar_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-
-// Array for the days of the week
-$days_of_week = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-
-// Get the name of the current month and the first day of the month
-$day = 1;
-$monthName = date("F", strtotime("$year-$month"));
-$firstDayOfMonth = date("w", strtotime("$year-$month-$day"));
-
-// Generate pagination links for previous and next month
-$prevMonth = $month - 1;
-$prevYear = $year;
-
-if ($prevMonth < 1) {
-  $prevMonth = 12;
-  $prevYear--;
-}
-
-$nextMonth = $month + 1;
-$nextYear = $year;
-
-if ($nextMonth > 12) {
-  $nextMonth = 1;
-  $nextYear++;
-}
-
-Alert::renderAlert();
+include "./partials/shared/navigation.php";
 ?>
 
-<!DOCTYPE html>
-<html>
-  <head>
-      <title>Appointments Calendar</title>
-      <link rel="stylesheet" href="./assets/css/styles.css">
-      <link rel="stylesheet" href="./assets/css/alerts.css">
-  </head>
-  <body>
-    <?php if ($_SESSION["user_name"]): ?>
-        <p>Hello, <?php
-        echo "id: ", htmlspecialchars($_SESSION["user_id"]);
-        echo "email: ", htmlspecialchars($_SESSION["user_email"]);
-        echo "name: ", htmlspecialchars($_SESSION["user_name"]);
-        ?>!</p>
-
-        <a href="/users/logout.php">Logout</a>
-    <?php else: ?>
-        <p>You are not logged in. <a href="/users/login.php">Login here</a>.</p>
-    <?php endif; ?>
-
-    <div class="calendar">
-      <h1><?php echo "$monthName $year"; ?></h1>
-
-      <div class="pagination">
-        <a href="?month=<?php echo $prevMonth; ?>&year=<?php echo $prevYear; ?>">Previous</a>
-        <a href="?month=<?php echo $nextMonth; ?>&year=<?php echo $nextYear; ?>">Next</a>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <?php foreach ($days_of_week as $week): ?>
-              <th><?php echo $week; ?></th>
-            <?php endforeach; ?>
-          </tr>
-        </thead>
-
-        <tbody>
-          <!-- Print empty cells for days before the first day of the month  -->
-          <?php for ($i = 0; $i < $firstDayOfMonth; $i++): ?>
-            <td></td>
-          <?php endfor; ?>
-
-          <!-- Print the days of the month -->
-          <?php for ($i = $firstDayOfMonth; $i < 7; $i++): ?>
-            <?php if ($day <= $calendar_days): ?>
-              <td onclick="openForm(<?php echo $year; ?>, <?php echo $month; ?>, <?php echo $day; ?>)">
-                <?php echo $day; ?>
-              </td>
-              <?php $day++; ?>
-            <?php endif; ?>
-          <?php endfor; ?>
-
-          <!-- Print the remaining weeks -->
-          <?php while ($day <= $calendar_days): ?>
-            <tr>
-              <?php for ($i = 0; $i < 7; $i++): ?>
-                <?php if ($day <= $calendar_days): ?>
-                  <td onclick="openForm(<?php echo $year; ?>, <?php echo $month; ?>, <?php echo $day; ?>)">
-                    <?php echo $day; ?>
-                  </td>
-                  <?php $day++; ?>
-                <?php else: ?>
-                  <td></td>
-                <?php endif; ?>
-              <?php endfor; ?>
-            </tr>
-          <?php endwhile; ?>
-        </tbody>
-      </table>
+<!-- Main Content -->
+<main>
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <h1 class="text-center">Manage Your Appointments Effortlessly</h1>
+      <p>
+        Streamline your scheduling process and save time with our intuitive
+        platform.
+      </p>
     </div>
+  </header>
 
-    <!-- Appointment Form modal -->
-    <div class="modal" id="appointmentForm">
-      <form action="save_appointment.php" method="post">
-        <h2>Add Appointment</h2>
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <div class="container">
+      <h2>Features</h2>
 
-        <label for="service">Service:</label>
-        <select name="service" id="service" required>
-          <option value="General council">General council (£59)</option>
-          <option value="General nurse">General nurse (£999)</option>
-          <option value="Ambulance ride">Ambulance ride (£10,000) US only</option>
-        </select>
-
-        <label for="date">Appointment Date:</label>
-        <input type="date" id="appointmentDate" name="date" required>
-
-        <input type="hidden" name="user_id" value="1">
-
-        <div class="btn-group">
-          <button type="submit" class="btn btn-action">Submit</button>
-          <button type="button" class="btn btn-close" onclick="closeForm()">Cancel</button>
+      <div class="features-grid">
+        <div class="feature-item">
+          <h3>Feature 1</h3>
+          <p>Description of feature 1.</p>
         </div>
+
+        <div class="feature-item">
+          <h3>Feature 2</h3>
+          <p>Description of feature 2.</p>
+        </div>
+
+        <div class="feature-item">
+          <h3>Feature 3</h3>
+          <p>Description of feature 3.</p>
+        </div>
+
+        <div class="feature-item">
+          <h3>Feature 4</h3>
+          <p>Description of feature 4.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="pricing">
+    <div class="container">
+      <h2>Pricing</h2>
+
+      <div class="pricing-table">
+        <div class="plan">
+          <h3>Basic</h3>
+          <p>£10/month</p>
+
+          <ul>
+            <li>Feature 1</li>
+            <li>Feature 2</li>
+            <li>Feature 3</li>
+          </ul>
+
+          <button>Choose Plan</button>
+        </div>
+
+        <div class="plan">
+          <h3>Advanced</h3>
+          <p>£20/month</p>
+
+          <ul>
+            <li>Feature 1</li>
+            <li>Feature 2</li>
+            <li>Feature 3</li>
+          </ul>
+
+          <button>Choose Plan</button>
+        </div>
+
+        <div class="plan">
+          <h3>Pro</h3>
+          <p>£40/month</p>
+
+          <ul>
+            <li>Feature 1</li>
+            <li>Feature 2</li>
+            <li>Feature 3</li>
+          </ul>
+
+          <button>Choose Plan</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statistics Section -->
+  <section id="statistics" class="statistics">
+    <div class="container">
+      <h2>Our Achievements</h2>
+
+      <div class="stats-grid">
+        <div class="stat-item">
+          <i class="fas fa-users fa-3x"></i>
+          <h3>10,000+</h3>
+          <p>Users</p>
+        </div>
+
+        <div class="stat-item">
+          <i class="fas fa-calendar-check fa-3x"></i>
+          <h3>50,000+</h3>
+          <p>Appointments Scheduled</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <h2>Contact Us</h2>
+      <p>Have questions or need support? We're here to help!</p>
+
+      <form class="contact-form">
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit">Send Message</button>
       </form>
     </div>
+  </section>
+</main>
 
-    <script src="./assets/js/app.js"></script>
-  </body>
-</html>
+<?php include "./partials/shared/footer.php"; ?>
