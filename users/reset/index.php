@@ -1,10 +1,10 @@
 <?php
-require_once "../setup.php";
+require_once "../../setup.php";
 
 $title = "Reset Password";
 
-include "../partials/shared/alerts.php";
-include "../partials/shared/head.php";
+include "../../partials/shared/alerts.php";
+include "../../partials/shared/head.php";
 
 Alert::renderAlert();
 ?>
@@ -26,7 +26,7 @@ Alert::renderAlert();
 
     <!-- right form -->
     <div class="auth-form">
-      <form action="reset_handler.php?token=<?php echo htmlspecialchars(
+      <form action="./submit.php?token=<?php echo htmlspecialchars(
         $_GET["token"]
       ); ?>" method="POST" class="auth-form-form">
         <label for="password">New Password</label>

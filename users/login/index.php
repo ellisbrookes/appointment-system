@@ -1,10 +1,10 @@
 <?php
-require_once "../setup.php";
+require_once "../../setup.php";
 
 $title = "Login";
 
-include "../partials/shared/alerts.php";
-include "../partials/shared/head.php";
+include "../../partials/shared/alerts.php";
+include "../../partials/shared/head.php";
 
 // Display alerts if any
 Alert::renderAlert();
@@ -27,7 +27,7 @@ Alert::renderAlert();
 
     <!-- right form -->
     <div class="auth-form">
-      <form action="login_handler.php" method="POST" class="auth-form-form">
+      <form action="./submit.php" method="POST" class="auth-form-form">
         <h1 class="text-center">Login</h1>
 
         <label for="email">Email:</label>
@@ -36,7 +36,7 @@ Alert::renderAlert();
         <label for="password">Password:</label>
         <input type="password" id="password" name="password">
 
-        <p>Forgot account?<a href="forgot.php"><b>Forgot password</b></a></p>
+        <p>Forgot account?<a href="../../users/forgot"><b>Forgot password</b></a></p>
 
         <button type="submit" class="btn">Login</button>
       </form>

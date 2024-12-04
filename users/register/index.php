@@ -1,10 +1,10 @@
 <?php
-require_once "../setup.php";
+require_once "../../setup.php";
 
 $title = "Register";
 
-include "../partials/shared/alerts.php";
-include "../partials/shared/head.php";
+include "../../partials/shared/alerts.php";
+include "../../partials/shared/head.php";
 
 // Display alerts if any
 Alert::renderAlert();
@@ -27,7 +27,7 @@ Alert::renderAlert();
 
     <!-- right form -->
     <div class="auth-form">
-      <form action="register_handler.php" method="POST" class="auth-form-form">
+      <form action="./submit.php" method="POST" class="auth-form-form">
         <h1 class="text-center">Register</h1>
 
         <label for="name">Name:</label>
@@ -42,7 +42,7 @@ Alert::renderAlert();
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
 
-        <p>Already have an account?<a href="login.php"><b>Login in</b></a></p>
+        <p>Already have an account?<a href="../../users/login"><b>Login</b></a></p>
 
         <button type="submit" class="btn">Register</button>
       </form>
