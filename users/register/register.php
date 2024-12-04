@@ -1,8 +1,8 @@
 <?php
-use SendGrid\Mail\Mail;
 require_once "../setup.php";
 
 $title = "Register";
+
 include "../partials/shared/alerts.php";
 include "../partials/shared/head.php";
 

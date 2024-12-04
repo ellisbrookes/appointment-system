@@ -1,6 +1,5 @@
 <?php
 require_once "../setup.php";
-
 include "../partials/shared/alerts.php";
 
 use SendGrid\Mail\Mail;
