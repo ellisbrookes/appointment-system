@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       $_SESSION["user_name"] = $user["name"];
       $_SESSION["user_email"] = $email;
 
-      header("Location: ../index.php"); // Redirect to index
+      header("Location: ../appointments/index.php"); // Redirect to index
 
       exit();
     } else {
