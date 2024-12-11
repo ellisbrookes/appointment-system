@@ -9,6 +9,6 @@
       <li><a href="#" class="hover:text-blue-400 transition-colors">Contact</a></li>
     </ul>
 
-    <a href="#" class="bg-blue-600 text-white rounded-md border px-6 py-2 hover:bg-blue-700 transition-colors">Get Started</a>
+    <a href="/dashboard" class="bg-blue-600 text-white rounded-md border px-6 py-2 hover:bg-blue-700 transition-colors">Get Started</a>
   </div>
 </nav>
