@@ -1,14 +1,14 @@
-<nav class="navbar">
-  <div class="container">
-    <p class="logo">Appointment System</p>
+<nav class="bg-gray-800 text-black py-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <p class="logo text-xl font-bold">Appointment System</p>
 
-    <ul class="nav-links">
-      <li><a href="/">Home</a></li>
-      <li><a href="#">Features</a></li>
-      <li><a href="#">Pricing</a></li>
-      <li><a href="#">Contact</a></li>
+    <ul class="flex gap-4">
+      <li><a href="/" class="hover:text-blue-500">Home</a></li>
+      <li><a href="#" class="hover:text-blue-500">Features</a></li>
+      <li><a href="#" class="hover:text-blue-500">Pricing</a></li>
+      <li><a href="#" class="hover:text-blue-500">Contact</a></li>
     </ul>
 
-    <a href="#" class="btn">Get Started</a>
+    <a href="#" class="bg-gray-800 text-black rounded-md px-4 py-2 hover:underline">Get Started</a>
   </div>
 </nav>
