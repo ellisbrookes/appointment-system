@@ -1,14 +1,14 @@
-<nav class="bg-gray-800 text-white py-4">
+<nav class="bg-gray-800 text-white py-4 fixed top-0 left-0 w-full z-50 shadow-lg rounded-b-lg">
   <div class="container mx-auto flex justify-between items-center">
-    <p class="logo text-xl font-bold">Appointment System</p>
+    <p class="logo text-xl font-bold text-white">Appointment System</p>
 
-    <ul class="flex gap-4">
-      <li><a href="/" class="hover:text-blue-500">Home</a></li>
-      <li><a href="#" class="hover:text-blue-500">Features</a></li>
-      <li><a href="#" class="hover:text-blue-500">Pricing</a></li>
-      <li><a href="#" class="hover:text-blue-500">Contact</a></li>
+    <ul class="flex gap-6">
+      <li><a href="/" class="hover:text-blue-400 transition-colors">Home</a></li>
+      <li><a href="#" class="hover:text-blue-400 transition-colors">Features</a></li>
+      <li><a href="#" class="hover:text-blue-400 transition-colors">Pricing</a></li>
+      <li><a href="#" class="hover:text-blue-400 transition-colors">Contact</a></li>
     </ul>
 
-    <a href="#" class="bg-blue-800 text-white rounded-md border px-4 py-2 bg-hover:underline">Get Started</a>
+    <a href="#" class="bg-blue-600 text-white rounded-md border px-6 py-2 hover:bg-blue-700 transition-colors">Get Started</a>
   </div>
 </nav>
