@@ -1,4 +1,4 @@
-<nav class="bg-gray-800 text-black py-4">
+<nav class="bg-gray-800 text-white py-4">
   <div class="container mx-auto flex justify-between items-center">
     <p class="logo text-xl font-bold">Appointment System</p>
 
@@ -9,6 +9,6 @@
       <li><a href="#" class="hover:text-blue-500">Contact</a></li>
     </ul>
 
-    <a href="#" class="bg-gray-800 text-black rounded-md px-4 py-2 hover:underline">Get Started</a>
+    <a href="#" class="bg-blue-800 text-white rounded-md border px-4 py-2 bg-hover:underline">Get Started</a>
   </div>
 </nav>
