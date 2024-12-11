@@ -14,7 +14,7 @@
         @include('dashboard.navigation')
 
         <!-- Main Content Area -->
-        <main class="ml-64 flex-grow p-8">
+        <main class="ml-64 flex-grow p-8 bg-gray-800 text-white">
             @yield('content')
         </main>
     </div>
