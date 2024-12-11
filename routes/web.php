@@ -13,3 +13,7 @@ Route::get('/test', function () {
 Route::get('/dashboard', function() {
     return view('dashboard.index');
 });
+
+Route::get('appointments', function() {
+    return view('appointments.index');
+});
