@@ -14,6 +14,6 @@ Route::get('/dashboard', function() {
     return view('dashboard.index');
 });
 
-Route::get('appointments', function() {
-    return view('appointments.index');
+Route::get('/dashboard/appointments', function() {
+    return view('dashboard.appointments.index');
 });
