@@ -9,7 +9,7 @@
         class="flex items-center p-4 text-lg font-bold w-full hover:bg-blue-700"
     >
         <span :class="open ? '' : 'hidden'" class="text-lg font-bold">Appointment System</span>
-        <i :class="open ? 'fas fa-arrow-left' : 'fas fa-bars'"></i> <!-- FontAwesome icon (hamburger / arrow) -->
+        <i :class="open ? 'fas fa-arrow-left' : 'fas fa-bars'"></i>
     </button>
 
     <!-- Navigation links -->
@@ -25,17 +25,52 @@
                 <span :class="open ? '' : 'hidden'">Home</span>
             </a>
         </li>
+
         <!-- Appointments Link -->
-        <li :class="open ? 'justify-between' : 'justify-center'">
+        <li :class="open ? 'justify-between' : 'justify-center'" x-data="{ dropdownOpen: false }">
+            <!-- Main link -->
             <a
-                href="/appointments"
+                href="#"
+                @click.prevent="dropdownOpen = !dropdownOpen"
                 :class="open ? 'rounded-md px-4 py-2' : 'justify-center rounded-none p-4'"
                 class="flex items-center w-full space-x-4 hover:bg-blue-700"
             >
                 <i class="fas fa-calendar-check text-lg"></i>
                 <span :class="open ? '' : 'hidden'">Appointments</span>
+                <!-- Arrow icon that flips -->
+                <i
+                    class="fas fa-chevron-down text-sm ml-auto transition-transform duration-300"
+                    :class="dropdownOpen ? 'rotate-180' : ''"
+                ></i>
             </a>
+
+            <!-- Dropdown menu -->
+            <ul
+                x-show="dropdownOpen"
+                x-transition
+                class="mt-2 rounded-md shadow-lg w-full"
+            >
+                <li>
+                    <a
+                        href="/appointments"
+                        class="block px-4 py-2 text-white flex items-center space-x-2 hover:bg-blue-700"
+                    >
+                        <i class="fas fa-eye"></i>
+                        <span>View Appointments</span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="/appointments/create?date={{ date('Y-m-d') }}"
+                        class="block px-4 py-2 text-white flex items-center space-x-2 hover:bg-blue-700"
+                    >
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Create Appointment</span>
+                    </a>
+                </li>
+            </ul>
         </li>
+
         <!-- Admin Link -->
         <li :class="open ? 'justify-between' : 'justify-center'">
             <a
@@ -57,7 +92,7 @@
                 class="flex items-center p-4 w-full hover:bg-blue-700"
             >
                 <div :class="open ? '' : 'justify-center'" class="flex items-center space-x-2">
-                    <i class="fas fa-user-circle text-lg"></i> <!-- User Icon -->
+                    <i class="fas fa-user-circle text-lg"></i>
                     <span :class="open ? '' : 'hidden'">User Name</span>
                 </div>
                 <!-- Dropdown arrow -->
