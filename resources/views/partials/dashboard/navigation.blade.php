@@ -28,7 +28,6 @@
 
         <!-- Appointments Link -->
         <li :class="open ? 'justify-between' : 'justify-center'" x-data="{ dropdownOpen: false }">
-            <!-- Main link -->
             <a
                 href="#"
                 @click.prevent="dropdownOpen = !dropdownOpen"
@@ -37,7 +36,6 @@
             >
                 <i class="fas fa-calendar-check text-lg"></i>
                 <span :class="open ? '' : 'hidden'">Appointments</span>
-                <!-- Arrow icon that flips -->
                 <i
                     class="fas fa-chevron-down text-sm ml-auto transition-transform duration-300"
                     :class="dropdownOpen ? 'rotate-180' : ''"
@@ -53,7 +51,7 @@
                 <li>
                     <a
                         href="/appointments"
-                        class="block px-4 py-2 text-white flex items-center space-x-2 hover:bg-blue-700"
+                        class="px-4 py-2 text-white flex items-center space-x-2 hover:bg-blue-700"
                     >
                         <i class="fas fa-eye"></i>
                         <span>View Appointments</span>
@@ -61,8 +59,8 @@
                 </li>
                 <li>
                     <a
-                        href="/appointments/create?date={{ date('Y-m-d') }}"
-                        class="block px-4 py-2 text-white flex items-center space-x-2 hover:bg-blue-700"
+                        href="/appointments/create?date={{ date('m-d-Y') }}"
+                        class="px-4 py-2 text-white flex items-center space-x-2 hover:bg-blue-700"
                     >
                         <i class="fas fa-plus-circle"></i>
                         <span>Create Appointment</span>
