@@ -36,7 +36,7 @@
   <!-- Display Time Slots if a day is selected -->
   @isset($selectedDay)
   <div class="mt-6">
-    <h2 class="text-xl font-semibold text-gray-800">Available Time Slots for {{ $fullDate }}</h2>
+    <h2 class="text-xl font-semibold text-gray-800">Time Slots for {{ $fullDate }}</h2>
     <div class="w-full grid grid-cols-4 gap-4 text-sm text-gray-600 mt-4">
       @foreach(['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'] as $time)
         <div class="py-2 px-4 bg-gray-100 rounded-md shadow hover:bg-blue-200 cursor-pointer transition-all duration-300 ease-in-out">
@@ -47,7 +47,7 @@
   </div>
   @endisset
 
-  <!-- Labels (Booked, Blocked, Unavailable) at the Bottom -->
+  <!-- Labels (Booked, Blocked, Unavailable) -->
   <div class="mt-8 w-full flex justify-around">
     <div class="flex items-center space-x-2 bg-green-100 text-green-600 rounded-lg px-4 py-2 shadow-md cursor-pointer hover:bg-green-200">
       <span class="text-sm font-semibold">Booked</span>
