@@ -14,9 +14,13 @@ class AppointmentController extends Controller
         $firstDayOfMonth = $currentDate->copy()->startOfMonth()->dayOfWeek;
 
         // Get the selected day from the request (if any)
-        $selectedDay = $request->query('selected_day', null); // Default to null if no day is selected
+        $selectedDay = $request->query('selected_day', $currentDate->day); // Default to today's day if no day is selected
 
-        return view('dashboard.appointments.index', compact('currentDate', 'daysInMonth', 'firstDayOfMonth', 'selectedDay'));
+        // Get the full date for the selected day
+        $fullDate = Carbon::create($currentDate->year, $currentDate->month, $selectedDay)->format('l, F j, Y');
+
+        // Pass the data to the view
+        return view('dashboard.appointments.index', compact('currentDate', 'daysInMonth', 'firstDayOfMonth', 'selectedDay', 'fullDate'));
     }
 }
 ?>
