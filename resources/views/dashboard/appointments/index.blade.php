@@ -1,4 +1,4 @@
-@extends('dashboard.layout')
+@extends('partials.dashboard.layout')
 
 @section('content')
     <section id="hero">
