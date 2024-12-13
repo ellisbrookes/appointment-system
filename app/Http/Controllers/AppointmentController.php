@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
-    public function showAppointments(Request $request)
+    public function index(Request $request)
     {
         // Get the current month and year
         $currentDate = Carbon::now();
