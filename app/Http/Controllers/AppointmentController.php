@@ -41,25 +41,28 @@ class AppointmentController extends Controller
 
     public function postCreateStepOne(Request $request)
     {
+        // Validate the data
         $validatedData = $request->validate([
             'service' => 'required',
             'date' => 'required|date',
             'time' => 'required',
         ]);
 
+        // Get the session appointment or create a new one
         if (empty($request->session()->get('appointment'))) {
             $appointment = new Appointment();
-            $appointment->fill($validatedData);
-            $request->session()->put('appointment', $appointment);
+            $appointment->fill($validatedData);  // Using the fill method to assign data
+            $request->session()->put('appointment', $appointment);  // Store in session
         } else {
             $appointment = $request->session()->get('appointment');
-            $appointment->fill($validatedData);
-            $request->session()->put('appointment', $appointment);
+            $appointment->fill($validatedData);  // Update appointment data
+            $request->session()->put('appointment', $appointment);  // Store updated data in session
         }
 
+        // Redirect to next step
         return redirect()->route('appointments.create.step.two');
     }
-
+    
     public function createStepTwo(Request $request)
     {
         $appointment = $request->session()->get('appointment');

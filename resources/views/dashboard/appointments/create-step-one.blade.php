@@ -35,7 +35,7 @@
 
         <!-- Step Navigation Buttons -->
         <div class="mt-6 text-center">
-            <a href="{{ route('appointments.create.step.one.post') }}" class="btn btn-danger pull-right">Previous</a>
+            <a href="{{ route('appointments.index') }}" class="btn btn-danger pull-right">Previous</a>
             <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded-md">Next</button>
         </div>
       </div>
