@@ -17,20 +17,15 @@ Route::get('/dashboard', function() {
     return view('dashboard.index');
 });
 
-// Route::get('/appointments', [
-//     AppointmentController::class, 'index'
-// ])->name('appointments.view');
-
-Route::get('dashboard/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
-
-// For displaying the form with the calendar
-Route::get('dashboard/appointments/create-step-one', [AppointmentController::class, 'createStepOne'])->name('appointments.create.step.one');
-
-// For handling the form submission
-Route::post('dashboard/appointments/create-step-one', [AppointmentController::class, 'postCreateStepOne'])->name('appointments.create.step.one.post');
-
-// Route::get('appointments/create-step-two', 'AppointmentController@createStepTwo')->name('appointments.create.step.two');
-// Route::post('appointments/create-step-two', 'AppointmentController@postCreateStepTwo')->name('appointments.create.step.two.post');
-
-// Route::get('appointments/create-step-three', 'AppointmentController@createStepThree')->name('appointments.create.step.three');
-// Route::post('appointments/create-step-three', 'AppointmentController@postCreateStepThree')->name('appointments.create.step.three.post');
+Route::controller(AppointmentController::class)->group(function() {
+    Route::get('/dashboard/appointments', 'index');
+    // Step one
+    Route::get('/dashboard/appointments/create-step-one', 'createStepOne')->name('dashboard.appointments.create.step.one');
+    Route::post('/dashboard/appointments/create-step-one', 'createPostStepOne')->name('dashboard.appointments.create.step.one.post');
+    // Step two
+    Route::get('/dashboard/appointments/create-step-two', 'createStepTwo')->name('dashboard.appointments.create.step.two');
+    Route::post('/dashboard/appointments/create-step-two', 'createPostStepTwo')->name('dashboard.appointments.create.step.two.post');
+    // Step three
+    Route::get('/dashboard/appointments/create-step-three', 'createStepThree')->name('dashboard.appointments.create.step.three');
+    Route::post('/dashboard/appointments/create-step-three', 'createPostStepThree')->name('dashboard.appointments.create.step.three.post');
+});

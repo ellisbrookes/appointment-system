@@ -7,99 +7,114 @@ use App\Models\Appointment;
 
 class AppointmentController extends Controller
 {
+    /**
+    * Render the index page with a list of appointments
+    * @return \Illuminate\Contracts\View\View
+    */
     public function index(Request $request)
     {
-        // Get the current month and year
-        $currentDate = Carbon::now();
-        $daysInMonth = $currentDate->daysInMonth;
-        $firstDayOfMonth = $currentDate->copy()->startOfMonth()->dayOfWeek;
-
-        // Get the selected day from the request (if any)
-        $selectedDay = $request->query('selected_day', $currentDate->day); // Default to today's day if no day is selected
-
-        // Get the full date for the selected day
-        $fullDate = Carbon::create($currentDate->year, $currentDate->month, $selectedDay)->format('l, F j, Y');
-
-        // Pass the data to the view
-        return view('dashboard.appointments.index', compact('currentDate', 'daysInMonth', 'firstDayOfMonth', 'selectedDay', 'fullDate'));
+        $appointments = Appointment::all();
+        return view('dashboard.appointments.index', compact('appointments'));
     }
 
+    /**
+    * Show step one of creating an appointment, selecting the service
+    * @return \Illuminate\Http\Response
+    */
     public function createStepOne(Request $request)
     {
+        $appointment = $request->session()->get('appointment');
+        return view('dashboard.appointments.create-step-one',compact('appointment'));
+    }
+
+    /**
+    * Post request to store the service in the session
+    * @param  \Illuminate\Http\Request $request
+    * @return \Illuminate\Http\RedirectResponse
+    */
+    public function createPostStepOne(Request $request)
+    {
+        $validatedData = $request->validate([
+            'service' => 'required',
+        ]);
+
+        if (empty($request->session()->get('appointment'))) {
+            $appointment = new Appointment();
+            $appointment->fill($validatedData);
+            $request->session()->put('appointment', $appointment);
+        } else {
+            $appointment = $request->session()->get('appointment');
+            $appointment->fill($validatedData);
+            $request->session()->put('appointment', $appointment);
+        }
+
+        return redirect()->route('dashboard.appointments.create.step.two');
+    }
+
+    /**
+    * Show step two of creating an appointment, date and time
+    * @return \Illuminate\Http\Response
+    */
+    public function createStepTwo(Request $request)
+    {
+        $appointment = $request->session()->get('appointment');
+
         // Calendar Data
         $currentDate = Carbon::now();
         $daysInMonth = $currentDate->daysInMonth;
         $firstDayOfMonth = $currentDate->copy()->startOfMonth()->dayOfWeek;
 
         // Get the selected day from the request (if any)
-        $selectedDay = $request->query('selected_day', $currentDate->day); 
+        $selectedDay = $request->query('date', $currentDate->day);
 
-        $appointment = $request->session()->get('appointment');
+        // Get the full date for the selected day
+        $fullDate = Carbon::create($currentDate->year, $currentDate->month, $selectedDay)->format('l, F j, Y');
 
-        return view('dashboard.appointments.create-step-one', compact('appointment', 'currentDate', 'daysInMonth', 'firstDayOfMonth', 'selectedDay'));
+        return view('dashboard.appointments.create-step-two', compact('appointment', 'currentDate', 'daysInMonth', 'firstDayOfMonth', 'selectedDay', 'fullDate'));
     }
 
-    public function postCreateStepOne(Request $request)
-    {
-        // Validate the data
-        $validatedData = $request->validate([
-            'service' => 'required',
-            'date' => 'required|date',
-            'time' => 'required',
-        ]);
-
-        // Get the session appointment or create a new one
-        if (empty($request->session()->get('appointment'))) {
-            $appointment = new Appointment();
-            $appointment->fill($validatedData);  // Using the fill method to assign data
-            $request->session()->put('appointment', $appointment);  // Store in session
-        } else {
-            $appointment = $request->session()->get('appointment');
-            $appointment->fill($validatedData);  // Update appointment data
-            $request->session()->put('appointment', $appointment);  // Store updated data in session
-        }
-
-        // Redirect to next step
-        return redirect()->route('appointments.create.step.two');
-    }
-    
-    public function createStepTwo(Request $request)
-    {
-        $appointment = $request->session()->get('appointment');
-        return view('dashboard.appointments.create-step-two', compact('appointment'));
-    }
-
-    public function postCreateStepTwo(Request $request)
+    /**
+    * Post request to store the service, time and date in the session
+    * @param  \Illuminate\Http\Request $request
+    * @return \Illuminate\Http\RedirectResponse
+    */
+    public function createPostStepTwo(Request $request)
     {
         $validatedData = $request->validate([
-            'date' => 'required|date',
+            'date' => 'required',
+            'timeslot' => 'required',
         ]);
 
-        if (empty($request->session()->get('appointment'))) {
-            $appointment = new Appointment();
-            $appointment->fill($validatedData);
-            $request->session()->put('appointment', $appointment);
-        } else {
-            $appointment = $request->session()->get('appointment');
-            $appointment->fill($validatedData);
-            $request->session()->put('appointment', $appointment);
-        }
+        $appointment = $request->session()->get('appointment');
+        $appointment->fill($validatedData);
+        $request->session()->put('appointment', $appointment);
 
-        return redirect()->route('appointments.create.step.three');
+        return redirect()->route('/dashboard/appointments/create-step-three');
     }
 
+    /**
+    * Show step two of creating an appointment, review
+    * @return \Illuminate\Http\Response
+    */
     public function createStepThree(Request $request)
     {
         $appointment = $request->session()->get('appointment');
-        return view('dashboard.appointments.create-step-three', compact('appointment'));
+        return view('appointments.create-step-three',compact('appointment'));
     }
 
-    public function postCreateStepThree(Request $request)
+    /**
+    * Post request to create the appoointment using the session data
+    * @param  \Illuminate\Http\Request $request
+    * @return \Illuminate\Http\RedirectResponse
+    */
+    public function createPostStepThree(Request $request)
     {
         $appointment = $request->session()->get('appointment');
         $appointment->save();
 
-        return redirect()->route('appointments.index');
+        $request->session()->forget('appointment');
+
+        return redirect()->route('/dashboard/appointments');
     }
 }
 ?>

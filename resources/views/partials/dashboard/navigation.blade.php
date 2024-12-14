@@ -50,7 +50,7 @@
             >
                 <li>
                     <a
-                        href="/appointments"
+                        href="/dashboard/appointments"
                         class="px-4 py-2 text-white flex items-center space-x-2 hover:bg-blue-700"
                     >
                         <i class="fas fa-eye"></i>
@@ -59,7 +59,7 @@
                 </li>
                 <li>
                     <a
-                        href="/appointments/create?date={{ date('m-d-Y') }}"
+                        href="/dashboard/appointments/create-step-one"
                         class="px-4 py-2 text-white flex items-center space-x-2 hover:bg-blue-700"
                     >
                         <i class="fas fa-plus-circle"></i>
