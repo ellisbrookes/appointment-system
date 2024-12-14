@@ -43,7 +43,7 @@
                             class="p-4 rounded-md text-md text-white transition-all duration-250 ease-in-out cursor-pointer hover:bg-blue-700 focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105
                                 {{ $day == $currentDate->day ? 'cursor-pointer font-bold' : '' }}
                                 {{ isset($selectedDay) && $selectedDay == $day ? 'bg-blue-700 shadow-lg transform scale-105 font-bold' : 'bg-gray-800 hover:bg-blue-700' }}"
-                            onclick="updateHiddenField('{{ $day }}')"
+                            onclick="updateDateField('{{ $day }}')"
                         >
                             <span>{{ $day }}</span>
                         </button>
@@ -56,12 +56,15 @@
                 <div class="border-2 border-gray-500 rounded-md p-6">
                     <h2 class="text-xl font-bold text-gray-800">Time Slots for {{ $fullDate }}</h2>
 
+                    <input type="hidden" id="timeslot" name="timeslot">
+
                     <div class="grid grid-cols-4 gap-4 mt-6">
                         @foreach(['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'] as $time)
                             <button
                                 type="button"
                                 name="timeslot"
                                 class="bg-gray-800 p-4 rounded-md text-md text-white transition-all duration-250 ease-in-out cursor-pointer hover:bg-blue-700 focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105"
+                                onclick="updateTimeslotField('{{ $time }}')"
                             >
                                 {{ $time }}
                             </button>
@@ -95,8 +98,12 @@
 </div>
 
 <script>
-    function updateHiddenField(value) {
+    function updateDateField(value) {
         document.getElementById('date').value = value;
+    }
+
+    function updateTimeslotField(value) {
+        document.getElementById('timeslot').value = value;
     }
 </script>
 @endsection
