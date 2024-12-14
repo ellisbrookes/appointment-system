@@ -60,17 +60,34 @@ class AppointmentController extends Controller
         $appointment = $request->session()->get('appointment');
 
         // Calendar Data
-        $currentDate = Carbon::now();
-        $daysInMonth = $currentDate->daysInMonth;
-        $firstDayOfMonth = $currentDate->copy()->startOfMonth()->dayOfWeek;
+        $date = $request->get('date', now()->format('d-m-Y'));
+        $currentDate = Carbon::parse($date);
 
-        // Get the selected day from the request (if any)
+        // Timeslots
+        $timeslots = [
+            '9:00 AM',
+            '10:00 AM',
+            '11:00 AM',
+            '12:00 PM',
+            '1:00 PM',
+            '2:00 PM',
+            '3:00 PM',
+            '4:00 PM',
+            '5:00 PM'
+        ];
+
+        // Selected date
         $selectedDay = $request->query('date', $currentDate->day);
 
-        // Get the full date for the selected day
-        $fullDate = Carbon::create($currentDate->year, $currentDate->month, $selectedDay)->format('l, F j, Y');
+        // First and last day of the month
+        $firstDay = $currentDate->copy()->startOfMonth();
+        $lastDay = $currentDate->copy()->endOfMonth();
 
-        return view('dashboard.appointments.create-step-two', compact('appointment', 'currentDate', 'daysInMonth', 'firstDayOfMonth', 'selectedDay', 'fullDate'));
+        // Days for the calendar
+        $daysInMonth = $lastDay->day;
+        $startDayOfWeek = $firstDay->dayOfWeek;
+
+        return view('dashboard.appointments.create-step-two', compact('appointment', 'currentDate', 'daysInMonth', 'startDayOfWeek', 'selectedDay', 'timeslots'));
     }
 
     /**
