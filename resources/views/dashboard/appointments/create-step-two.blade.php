@@ -87,7 +87,7 @@
                         </div>
 
                         <div class="flex items-center space-x-2 bg-yellow-100 text-yellow-600 rounded-md px-4 py-2 cursor-pointer hover:bg-yellow-200">
-                            <span class="font-bold">Blocked</span>
+                            <span class="font-bold">Limited</span>
                         </div>
 
                         <div class="flex items-center space-x-2 bg-red-100 text-red-600 rounded-md px-4 py-2 cursor-pointer hover:bg-red-200">
@@ -98,9 +98,9 @@
             @endisset
 
             <!-- Step Navigation Buttons -->
-            <div class="mt-6 text-center">
-                <a href="{{ route('dashboard.appointments.create.step.one') }}" class="btn btn-danger pull-right">Previous</a>
-                <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded-md">Next</button>
+            <div class="text-center">
+                <a href="{{ route('dashboard.appointments.create.step.one') }}" class="px-6 py-2 text-white bg-gray-600 rounded-md">Previous Step</a>
+                <a href="#" class="px-6 py-2 text-white bg-blue-600 rounded-md">Next Step</a>
             </div>
         </form>
     </div>
