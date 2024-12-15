@@ -17,6 +17,10 @@ Route::get('/dashboard', function() {
     return view('dashboard.index');
 });
 
+Route::get('/dashboard/admin', function() {
+    return view('dashboard.admin.index');
+});
+
 Route::controller(AppointmentController::class)->group(function() {
     Route::get('/dashboard/appointments', 'index');
     // Step one

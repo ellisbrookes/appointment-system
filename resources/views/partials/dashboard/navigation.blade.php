@@ -72,7 +72,7 @@
         <!-- Admin Link -->
         <li :class="open ? 'justify-between' : 'justify-center'">
             <a
-                href="/admin"
+                href="/dashboard/admin"
                 :class="open ? 'rounded-md px-4 py-2' : 'justify-center rounded-none p-4'"
                 class="flex items-center w-full space-x-4 hover:bg-blue-700"
             >
