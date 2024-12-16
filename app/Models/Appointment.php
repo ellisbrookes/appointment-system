@@ -10,6 +10,5 @@ class Appointment extends Model
         'service',
         'date',
         'timeslot',
-        'user_id'
     ];
 }

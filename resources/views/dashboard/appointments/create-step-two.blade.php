@@ -19,8 +19,6 @@
                 </div>
             @endif
 
-            <input type="hidden" id="user_id" name="user_id" value="1">
-
             <!-- Calendar Grid -->
             <div class="border-2 border-gray-500 rounded-md p-6">
                 <!-- Header with Month Display -->
