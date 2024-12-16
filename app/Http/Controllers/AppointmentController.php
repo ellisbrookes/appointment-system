@@ -76,6 +76,8 @@ class AppointmentController extends Controller
             '5:00'
         ];
 
+        $firstTimeslot = Carbon::parse($timeslots[0]);
+
         // Selected date
         $selectedDay = $request->query('date', $currentDate->day);
 
@@ -87,7 +89,7 @@ class AppointmentController extends Controller
         $daysInMonth = $lastDay->day;
         $startDayOfWeek = $firstDay->dayOfWeek;
 
-        return view('dashboard.appointments.create-step-two', compact('appointment', 'currentDate', 'daysInMonth', 'startDayOfWeek', 'selectedDay', 'timeslots'));
+        return view('dashboard.appointments.create-step-two', compact('appointment', 'currentDate', 'daysInMonth', 'startDayOfWeek', 'selectedDay', 'timeslots', 'firstTimeslot'));
     }
 
     /**
@@ -100,6 +102,7 @@ class AppointmentController extends Controller
         $validatedData = $request->validate([
             'date' => 'required',
             'timeslot' => 'required',
+            'user_id' => 'required'
         ]);
 
         $appointment = $request->session()->get('appointment');

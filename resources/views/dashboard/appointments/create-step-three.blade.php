@@ -25,6 +25,10 @@
                                     <td class="border px-6 py-4">Time</td>
                                     <td class="border px-6 py-4">{{ $appointment->timeslot }}</td>
                                 </tr>
+                                <tr class="hover:bg-gray-100 transition duration-200">
+                                    <td class="border px-6 py-4">User</td>
+                                    <td class="border px-6 py-4">{{ $appointment->user_id }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

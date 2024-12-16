@@ -19,6 +19,8 @@
                 </div>
             @endif
 
+            <input type="hidden" id="user_id" name="user_id" value="1">
+
             <!-- Calendar Grid -->
             <div class="border-2 border-gray-500 rounded-md p-6">
                 <!-- Header with Month Display -->
@@ -65,7 +67,7 @@
                         Timeslots for <span id="timeslot-date">{{ $currentDate->format('jS F Y') }}</span>
                     </h2>
 
-                    <input type="hidden" id="timeslot" name="timeslot" value="{{ Carbon::now($timeslot)->format('h:i:s') }}">
+                    <input type="hidden" id="timeslot" name="timeslot" value="{{ \Carbon\Carbon::parse($firstTimeslot)->format('h:i') }}">
 
                     <div class="grid grid-cols-4 gap-4 mt-6">
                         @foreach($timeslots as $timeslot)
