@@ -60,20 +60,20 @@ class AppointmentController extends Controller
         $appointment = $request->session()->get('appointment');
 
         // Calendar Data
-        $date = $request->get('date', now()->format('d-m-Y'));
+        $date = $request->get('date', now()->format('Y-m-d'));
         $currentDate = Carbon::parse($date);
 
         // Timeslots
         $timeslots = [
-            '9:00 AM',
-            '10:00 AM',
-            '11:00 AM',
-            '12:00 PM',
-            '1:00 PM',
-            '2:00 PM',
-            '3:00 PM',
-            '4:00 PM',
-            '5:00 PM'
+            '9:00',
+            '10:00',
+            '11:00',
+            '12:00',
+            '1:00',
+            '2:00',
+            '3:00',
+            '4:00',
+            '5:00'
         ];
 
         // Selected date
@@ -106,7 +106,7 @@ class AppointmentController extends Controller
         $appointment->fill($validatedData);
         $request->session()->put('appointment', $appointment);
 
-        return redirect()->route('/dashboard/appointments/create-step-three');
+        return redirect()->route('dashboard.appointments.create.step.three');
     }
 
     /**
@@ -116,7 +116,7 @@ class AppointmentController extends Controller
     public function createStepThree(Request $request)
     {
         $appointment = $request->session()->get('appointment');
-        return view('appointments.create-step-three',compact('appointment'));
+        return view('dashboard.appointments.create-step-three', compact('appointment'));
     }
 
     /**
@@ -131,7 +131,7 @@ class AppointmentController extends Controller
 
         $request->session()->forget('appointment');
 
-        return redirect()->route('/dashboard/appointments');
+        return redirect()->route('dashboard');
     }
 }
 ?>
