@@ -98,9 +98,11 @@
             @endisset
 
             <!-- Step Navigation Buttons -->
-            <div class="text-center">
+            <div class="text-center flex justify-center space-x-2">
                 <a href="{{ route('dashboard.appointments.create.step.one') }}" class="px-6 py-2 text-white bg-gray-600 rounded-md">Previous Step</a>
-                <a href="#" class="px-6 py-2 text-white bg-blue-600 rounded-md">Next Step</a>
+                <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Next Step
+                </button>
             </div>
         </form>
     </div>
