@@ -17,6 +17,19 @@ Route::get('/dashboard', function() {
     return view('dashboard.index');
 });
 
-Route::get('/appointments', [
-    AppointmentController::class, 'index'
-])->name('appointments.view');
+Route::controller(AppointmentController::class)->group(function() {
+    // Appointments index route
+    Route::get('/dashboard/appointments', 'index')->name('dashboard.appointments.index');
+
+    // Step one
+    Route::get('/dashboard/appointments/create-step-one', 'createStepOne')->name('dashboard.appointments.create.step.one');
+    Route::post('/dashboard/appointments/create-step-one', 'createPostStepOne')->name('dashboard.appointments.create.step.one.post');
+
+    // Step two
+    Route::get('/dashboard/appointments/create-step-two', 'createStepTwo')->name('dashboard.appointments.create.step.two');
+    Route::post('/dashboard/appointments/create-step-two', 'createPostStepTwo')->name('dashboard.appointments.create.step.two.post');
+
+    // Step three
+    Route::get('/dashboard/appointments/create-step-three', 'createStepThree')->name('dashboard.appointments.create.step.three');
+    Route::post('/dashboard/appointments/create-step-three', 'createPostStepThree')->name('dashboard.appointments.create.step.three.post');
+});
