@@ -8,7 +8,13 @@
         :class="open ? 'justify-between' : 'justify-center'"
         class="flex items-center p-4 text-lg font-bold w-full hover:bg-blue-700"
     >
-        <span :class="open ? '' : 'hidden'" class="text-lg font-bold">Appointment System</span>
+        <span
+            :class="open ? '' : 'hidden'"
+            class="text-lg font-bold"
+        >
+            Appointment System
+        </span>
+
         <i :class="open ? 'fas fa-arrow-left' : 'fas fa-bars'"></i>
     </button>
 
@@ -27,15 +33,24 @@
         </li>
 
         <!-- Appointments Link -->
-        <li :class="open ? 'justify-between' : 'justify-center'" x-data="{ dropdownOpen: false }">
+        <li
+            :class="open ? 'justify-between' : 'justify-center'"
+            x-data="{ dropdownOpen: false }"
+        >
             <a
                 href="#"
                 @click.prevent="dropdownOpen = !dropdownOpen"
-                :class="open ? 'rounded-md px-4 py-2' : 'justify-center rounded-none p-4'"
+                :class="open ? 'rounded-md px-4 py-2 justify-between' : 'justify-center rounded-none p-4'"
                 class="flex items-center w-full space-x-4 hover:bg-blue-700"
             >
-                <i class="fas fa-calendar-check text-lg"></i>
-                <span :class="open ? '' : 'hidden'">Appointments</span>
+                <div>
+                    <i
+                        :class="open ? 'mr-4' : ''"
+                        class="fas fa-calendar-check text-lg"
+                    ></i>
+                    <span :class="open ? '' : 'hidden'">Appointments</span>
+                </div>
+
                 <i
                     class="fas fa-chevron-down text-sm ml-auto transition-transform duration-300"
                     :class="dropdownOpen ? 'rotate-180' : ''"
@@ -44,26 +59,28 @@
 
             <!-- Dropdown menu -->
             <ul
-                x-show="dropdownOpen"
                 x-transition
-                class="mt-2 rounded-md shadow-lg w-full"
+                x-show="dropdownOpen"
+                class="mt-2 w-full"
             >
                 <li>
                     <a
                         href="/dashboard/appointments"
-                        class="px-4 py-2 text-white flex items-center space-x-2 hover:bg-blue-700"
+                        :class="open ? 'rounded-md px-4 py-2' : 'justify-center rounded-none p-4'"
+                        class="flex items-center w-full space-x-4 hover:bg-blue-700"
                     >
                         <i class="fas fa-eye"></i>
-                        <span>View Appointments</span>
+                        <span :class="open ? '' : 'hidden'">View Appointments</span>
                     </a>
                 </li>
                 <li>
                     <a
                         href="/dashboard/appointments/create-step-one"
-                        class="px-4 py-2 text-white flex items-center space-x-2 hover:bg-blue-700"
+                        :class="open ? 'rounded-md px-4 py-2' : 'justify-center rounded-none p-4'"
+                        class="flex items-center w-full space-x-4 hover:bg-blue-700"
                     >
                         <i class="fas fa-plus-circle"></i>
-                        <span>Create Appointment</span>
+                        <span :class="open ? '' : 'hidden'">Create Appointment</span>
                     </a>
                 </li>
             </ul>
@@ -89,25 +106,44 @@
                 :class="open ? 'justify-between' : 'justify-center'"
                 class="flex items-center p-4 w-full hover:bg-blue-700"
             >
-                <div :class="open ? '' : 'justify-center'" class="flex items-center space-x-2">
+                <div
+                    :class="open ? '' : 'justify-center'"
+                    class="flex items-center space-x-2"
+                >
                     <i class="fas fa-user-circle text-lg"></i>
                     <span :class="open ? '' : 'hidden'">User Name</span>
                 </div>
+
                 <!-- Dropdown arrow -->
-                <i :class="open ? '' : 'hidden'" class="fas fa-chevron-up ml-2 transition-transform transform group-hover:rotate-180"></i>
+                <i
+                    :class="open ? '' : 'hidden'"
+                    class="fas fa-chevron-up ml-2 transition-transform transform group-hover:rotate-180"
+                ></i>
             </button>
 
             <!-- Dropdown Menu that goes up -->
-            <div class="absolute left-0 bottom-full mb-2 w-full bg-gray-700 rounded-md shadow-lg hidden group-focus-within:block z-10">
+            <div
+                class="absolute left-0 bottom-full mb-2 w-full bg-gray-700 rounded-md shadow-lg hidden group-focus-within:block z-10"
+                :class="open ? '' : 'text-center'"
+                @click.prevent="open = !open"
+            >
                 <ul>
                     <li>
-                        <a href="/profile" class="px-4 py-2 block hover:bg-blue-700 items-center">
-                            <i class="fas fa-user mr-2"></i> Profile
+                        <a
+                            href="/profile"
+                            class="px-4 py-2 block hover:bg-blue-700 items-center"
+                        >
+                            <i class="fas fa-user" :class="open ? 'mr-2' : ''"></i>
+                            <span :class="open ? '' : 'hidden'">Profile</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/account-settings" class="px-4 py-2 block hover:bg-blue-700 items-center">
-                            <i class="fas fa-cogs mr-2"></i> Account Settings
+                        <a
+                            href="/account-settings"
+                            class="px-4 py-2 block hover:bg-blue-700 items-center"
+                        >
+                            <i class="fas fa-cogs" :class="open ? 'mr-2' : ''"></i>
+                            <span :class="open ? '' : 'hidden'">Account Settings</span>
                         </a>
                     </li>
                 </ul>
