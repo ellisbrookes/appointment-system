@@ -1,10 +1,9 @@
 @extends('partials.dashboard.layout')
 
 @section('content')
-<div class="container min-h-screen">
-    <div class="w-full p-6 flex flex-col">
-        <!-- Header with Month Display -->
-        <h1 class="text-4xl font-bold text-gray-800">Select an appointment date and time</h1>
+<div class="min-h-screen flex items-center justify-center">
+    <div class="w-full p-6">
+        <h2 class="text-3xl font-semibold mb-4">Select an appointment date and time</h2>
 
         <form action="{{ route('dashboard.appointments.create.step.two.post') }}" method="POST" class="flex flex-col space-y-4 w-full">
             @csrf
@@ -13,7 +12,7 @@
                 <div>
                     <ul>
                         @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
+                            <li class="text-red-500">{{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -27,9 +26,9 @@
 
                     <!-- Navigation -->
                     <div>
-                        <a href="{{ route('dashboard.appointments.create.step.two', ['date' => $currentDate->copy()->subMonth()->format('Y-m-d')]) }}" class="px-6 py-2 text-white bg-gray-600 rounded-md">Previous</a>
+                        <a href="{{ route('dashboard.appointments.create.step.two', ['date' => $currentDate->copy()->subMonth()->format('Y-m-d')]) }}" class="py-3 px-4 text-white bg-gray-600 rounded-md">Previous</a>
 
-                        <a href="{{ route('dashboard.appointments.create.step.two', ['date' => $currentDate->copy()->addMonth()->format('Y-m-d')]) }}" class="px-6 py-2 text-white bg-blue-600 rounded-md">Next</a>
+                        <a href="{{ route('dashboard.appointments.create.step.two', ['date' => $currentDate->copy()->addMonth()->format('Y-m-d')]) }}" class="py-3 px-4 text-white bg-blue-600 rounded-md">Next</a>
                     </div>
                 </div>
 
@@ -47,7 +46,7 @@
                     @for($day = 1; $day <= $daysInMonth; $day++)
                         <button
                             type="button"
-                            class="p-4 rounded-md text-md text-white transition-all duration-250 ease-in-out cursor-pointer hover:bg-blue-700 focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105
+                            class="py-3 rounded-md text-md text-white transition-all duration-250 ease-in-out cursor-pointer hover:bg-blue-700 focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105
                                 {{ $day == $currentDate->day ? 'cursor-pointer font-bold' : '' }}
                                 {{ isset($selectedDay) && $selectedDay == $day ? 'bg-blue-700 shadow-lg transform scale-105 font-bold' : 'bg-gray-800 hover:bg-blue-700' }}"
                             onclick="updateDateField('{{ $currentDate->copy()->day($day)->format('Y-m-d') }}')"
@@ -72,7 +71,7 @@
                             <button
                                 type="button"
                                 name="timeslot"
-                                class="bg-gray-800 p-4 rounded-md text-md text-white transition-all duration-250 ease-in-out cursor-pointer hover:bg-blue-700 focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105"
+                                class="bg-gray-800 py-3 rounded-md text-md text-white transition-all duration-250 ease-in-out cursor-pointer hover:bg-blue-700 focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105"
                                 onclick="updateTimeslotField('{{ $timeslot }}')"
                             >
                                 {{ $timeslot }}
@@ -99,8 +98,8 @@
 
             <!-- Step Navigation Buttons -->
             <div class="text-center flex justify-center space-x-2">
-                <a href="{{ route('dashboard.appointments.create.step.one') }}" class="px-6 py-2 text-white bg-gray-600 rounded-md">Previous Step</a>
-                <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                <a href="{{ route('dashboard.appointments.create.step.one') }}" class="bg-gray-600 text-white py-3 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-200">Previous Step</a>
+                <button type="submit" class="bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
                     Next Step
                 </button>
             </div>
