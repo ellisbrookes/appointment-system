@@ -9,6 +9,6 @@ class Appointment extends Model
     protected $fillable = [
         'service',
         'date',
-        'timeslot'
+        'timeslot',
     ];
 }
