@@ -11,11 +11,11 @@
         @endif
     </head>
     <body>
-        <div x-data="{ open: true }" class="flex">
+        <div x-data="{ isSidebarOpen: true, isDropdownOpen: true }" class="flex">
             <!-- Sidebar -->
             @include('partials.dashboard.navigation')
 
-            <main :class="open ? 'ml-64' : 'ml-16'" class="flex-1 p-6">
+            <main :class="isSidebarOpen ? 'ml-64' : 'ml-16'" class="flex-1 p-6">
                 @yield('content')
             </main>
         </div>
