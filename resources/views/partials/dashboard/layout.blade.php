@@ -15,8 +15,8 @@
             <!-- Sidebar -->
             @include('partials.dashboard.navigation')
 
-            <main :class="open ? 'ml-64' : 'ml-16'" class="flex-1 p-6 transition-all duration-250 ease-in-out">
-                @yield('content') <!-- Only the main content should be rendered here -->
+            <main :class="open ? 'ml-64' : 'ml-16'" class="flex-1 p-6">
+                @yield('content')
             </main>
         </div>
     </body>
