@@ -11,7 +11,7 @@
         @endif
     </head>
     <body>
-        <div x-data="{ isSidebarOpen: true, isDropdownOpen: true }" class="flex">
+        <div x-data="{ isSidebarOpen: true, isDropdownOpen: false, isUserSidebarOpen: false }" class="flex">
             <!-- Sidebar -->
             @include('partials.dashboard.navigation')
 

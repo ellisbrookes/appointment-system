@@ -100,57 +100,59 @@
     </div>
 
     <!-- User Profile Section at the bottom -->
-    <div
-        class="relative group"
-        x-transition
-        x-show="isDropdownOpen"
-        class="mt-2"
-    >
-        <button
+    <div class="relative group">
+        <a
+            href="#"
+            @click.prevent="isUserSidebarOpen = !isUserSidebarOpen"
             :class="isSidebarOpen ? 'justify-between' : 'justify-center'"
             class="flex items-center p-4 w-full hover:bg-blue-700"
         >
-            <div
-                :class="isSidebarOpen ? '' : 'justify-center'"
-                class="flex items-center space-x-2"
-            >
-                <i class="fas fa-user-circle text-lg"></i>
+            <div>
+                <i
+                    :class="isSidebarOpen ? 'mr-4' : ''"
+                    class="fas fa-user-circle text-lg"
+                ></i>
                 <span :class="isSidebarOpen ? '' : 'hidden'">User Name</span>
             </div>
 
-            <!-- Dropdown arrow -->
             <i
-                :class="isSidebarOpen ? '' : 'hidden'"
-                class="fas fa-chevron-up ml-2 transition-transform transform group-hover:rotate-180"
+                :class="isUserSidebarOpen ? 'rotate-180' : ''"
+                class="fas fa-chevron-down text-sm transition-transform duration-300"
             ></i>
-        </button>
+        </a>
 
-        <!-- Dropdown Menu that goes up -->
-        <div
-            class="absolute left-0 bottom-full mb-2 w-full bg-gray-700 rounded-md shadow-lg hidden group-focus-within:block z-10"
-            :class="isSidebarOpen ? '' : 'text-center'"
-            @click.prevent="isSidebarOpen = !isSidebarOpen"
+        <!-- Reverse dropdown menu -->
+        <ul
+            x-transition
+            x-show="isUserSidebarOpen"
+            class="absolute left-0 bottom-full w-full bg-gray-700 hidden group-focus-within:block"
         >
-            <ul>
-                <li>
-                    <a
-                        href="/profile"
-                        class="px-4 py-2 block hover:bg-blue-700 items-center"
-                    >
-                        <i class="fas fa-user" :class="isSidebarOpen ? 'mr-2' : ''"></i>
-                        <span :class="isSidebarOpen ? '' : 'hidden'">Profile</span>
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="/account-settings"
-                        class="px-4 py-2 block hover:bg-blue-700 items-center"
-                    >
-                        <i class="fas fa-cogs" :class="isSidebarOpen ? 'mr-2' : ''"></i>
-                        <span :class="isSidebarOpen ? '' : 'hidden'">Account Settings</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+            <li>
+                <a
+                    href="/profile"
+                    :class="isSidebarOpen ? '' : 'text-center'"
+                    class="px-4 py-2 block hover:bg-blue-700 items-center"
+                >
+                    <i
+                        class="fas fa-user"
+                        :class="isSidebarOpen ? 'mr-2' : ''"
+                    ></i>
+                    <span :class="isSidebarOpen ? '' : 'hidden'">Profile</span>
+                </a>
+            </li>
+            <li>
+                <a
+                    href="/account-settings"
+                    :class="isSidebarOpen ? '' : 'text-center'"
+                    class="px-4 py-2 block hover:bg-blue-700 items-center"
+                >
+                    <i
+                        class="fas fa-cogs"
+                        :class="isSidebarOpen ? 'mr-2' : ''"
+                    ></i>
+                    <span :class="isSidebarOpen ? '' : 'hidden'">Account Settings</span>
+                </a>
+            </li>
+        </ul>
     </div>
 </aside>
