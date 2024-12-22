@@ -112,7 +112,9 @@
                     :class="isSidebarOpen ? 'mr-4' : ''"
                     class="fas fa-user-circle text-lg"
                 ></i>
-                <span :class="isSidebarOpen ? '' : 'hidden'">User Name</span>
+                <span :class="isSidebarOpen ? '' : 'hidden'">
+                    {{Auth::user()->name ?? 'Guest'}}
+                </span>
             </div>
 
             <i
