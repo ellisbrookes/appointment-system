@@ -16,7 +16,6 @@ return new class extends Migration
             $table->timestamps();
             $table->string('service');
             $table->date('date');
-            $table->string('tel_number');
             $table->time('timeslot');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
