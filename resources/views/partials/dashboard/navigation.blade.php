@@ -129,7 +129,7 @@
                 <a
                     href="/profile"
                     :class="isSidebarOpen ? '' : 'text-center'"
-                    class="px-4 py-2 block hover:bg-blue-700 items-center"
+                    class="flex items-center px-4 py-2 hover:bg-blue-700"
                 >
                     <i
                         class="fas fa-user"
@@ -142,7 +142,7 @@
                 <a
                     href="/account-settings"
                     :class="isSidebarOpen ? '' : 'text-center'"
-                    class="px-4 py-2 block hover:bg-blue-700 items-center"
+                    class="flex items-center px-4 py-2 hover:bg-blue-700"
                 >
                     <i
                         class="fas fa-cogs"
@@ -152,12 +152,16 @@
                 </a>
             </li>
             <li>
-                <form method="POST" action="{{ route('logout') }}" class="flex items-center">
+                <form
+                    method="POST"
+                    action="{{ route('logout') }}"
+                    class="flex items-center px-4 py-2 w-full hover:bg-blue-700"
+                >
                     @csrf
                     <button
                         type="submit"
                         :class="isSidebarOpen ? '' : 'text-center'"
-                        class="px-4 py-2 block w-full hover:bg-blue-700 items-center"
+                        class="flex items-center w-full"
                     >
                         <i
                             class="fas fa-sign-out-alt"
