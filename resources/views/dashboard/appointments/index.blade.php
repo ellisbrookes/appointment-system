@@ -33,14 +33,14 @@
                                         {{ \Carbon\Carbon::parse($appointment->date)->format('d/m/Y') }}
                                     </td>
                                     <td class="px-6 py-4 border-b border-gray-200">
-                                        {{Auth::user()->name ?? 'Guest'}}
+                                        {{ $appointment->user->name ?? 'Guest' }}
                                     </td>
                                     <td class="px-6 py-4 border-b border-gray-200">{{ $appointment->timeslot }}</td>
                                     <td class="px-6 py-4 border-b border-gray-200 space-x-2 flex justify-center">
                                         <a href="#" class="bg-blue-600 text-white py-2 px-4 flex align-center rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
                                             Edit
                                         </a>
-                                        
+
                                         <a href="#" class="bg-red-600 text-white py-2 px-4 flex align-center rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-200">
                                             Cancel
                                         </a>
