@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Appointment;
+use App\Models\User;
+
 
 class AppointmentController extends Controller
 {
@@ -14,7 +16,7 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
-        $appointments = Appointment::all();
+        $appointments = Appointment::with('user')->get();
         return view('dashboard.appointments.index', compact('appointments'));
     }
 
@@ -118,12 +120,14 @@ class AppointmentController extends Controller
 
     /**
      * Show step three of creating an appointment, reviewing details.
+     * This step now includes a dropdown for selecting a user.
      * @return \Illuminate\Http\Response
      */
     public function createStepThree(Request $request)
     {
         $appointment = $request->session()->get('appointment', []);
-        return view('dashboard.appointments.create-step-three', compact('appointment'));
+        $users = User::all(); // Fetch all users to display in the dropdown
+        return view('dashboard.appointments.create-step-three', compact('appointment', 'users'));
     }
 
     /**
@@ -133,11 +137,16 @@ class AppointmentController extends Controller
      */
     public function createPostStepThree(Request $request)
     {
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id', // Ensure a valid user is selected
+        ]);
+
         $appointmentData = $request->session()->get('appointment');
 
         if ($appointmentData) {
-            // Save the appointment to the database
-            $appointment = Appointment::create($appointmentData);
+            // Merge user ID with appointment data and save it to the database
+            $appointmentData = array_merge($appointmentData, $validatedData);
+            Appointment::create($appointmentData);
             $request->session()->forget('appointment');
         }
 
