@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\TestEmail;
 use Carbon\Carbon;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\EmailController;
+
 
 // Existing routes
 Route::get('/', function () {
@@ -19,11 +21,10 @@ Route::get('/dashboard', function() {
     return view('dashboard.index');
 });
 
-Route::get('/send-email', function () {
-    $data = ['message' => 'This is a test!'];
+Route::get('/send-test', [EmailController::class, 'sendTestEmail']);
+$data = ['message' => 'This is a test!'];
 
-    Mail::to('hello@ebrookes.dev')->send(new TestEmail($data));
-});
+Mail::to('hello@ebrookes.dev')->send(new TestEmail($data));
 
 Route::controller(AppointmentController::class)->group(function() {
     // Appointments index route
