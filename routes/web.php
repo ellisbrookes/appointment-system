@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestEmail;
 use Carbon\Carbon;
 use App\Http\Controllers\AppointmentController;
 
@@ -15,6 +17,14 @@ Route::get('/test', function () {
 
 Route::get('/dashboard', function() {
     return view('dashboard.index');
+});
+
+Route::get('/send-email', function () {
+    $data = [
+        'name' => 'John Doe', // Example data
+    ];
+
+    Mail::to('hello@ebrookes.dev')->send(new TestEmail($data));
 });
 
 Route::controller(AppointmentController::class)->group(function() {
