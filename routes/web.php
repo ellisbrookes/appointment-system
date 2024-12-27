@@ -20,9 +20,7 @@ Route::get('/dashboard', function() {
 });
 
 Route::get('/send-email', function () {
-    $data = [
-        'name' => 'John Doe', // Example data
-    ];
+    $data = ['message' => 'This is a test!'];
 
     Mail::to('hello@ebrookes.dev')->send(new TestEmail($data));
 });
