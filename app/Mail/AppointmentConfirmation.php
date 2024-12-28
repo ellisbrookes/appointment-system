@@ -15,11 +15,11 @@ class AppointmentConfirmation extends Mailable
     public function build()
     {
         return $this->subject('Appointment Confirmation')
-                    ->view('emails.appointment_confirmation')
-                    ->with([
-                        'service' => $this->appointment['service'],
-                        'date' => $this->appointment['date'],
-                        'timeslot' => $this->appointment['timeslot'],
-                    ]);
+            ->view('emails.appointment_confirmation')
+            ->with([
+                'service' => $this->appointment['service'],
+                'date' => $this->appointment['date'],
+                'timeslot' => $this->appointment['timeslot'],
+            ]);
     }
 }

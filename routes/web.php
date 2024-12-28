@@ -58,9 +58,6 @@ Route::controller(AppointmentController::class)->group(function () {
     // Step three
     Route::get('/dashboard/appointments/create-step-three', 'createStepThree')->name('dashboard.appointments.create.step.three');
     Route::post('/dashboard/appointments/create-step-three', 'createPostStepThree')->name('dashboard.appointments.create.step.three.post');
-
-    // Submit route
-    Route::post('/dashboard/appointments/submit', 'submit')->name('dashboard.appointments.submit');
 });
 
 require __DIR__.'/auth.php';
