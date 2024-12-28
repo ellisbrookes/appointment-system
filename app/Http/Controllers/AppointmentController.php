@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Appointment;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 
 class AppointmentController extends Controller
@@ -142,15 +143,15 @@ class AppointmentController extends Controller
             'user_id' => 'required|exists:users,id', // Ensure a valid user is selected
         ]);
 
-        $appointmentData = $request->session()->get('appointment');
+        $appointment = $request->session()->get('appointment');
 
-        if ($appointmentData) {
+        if ($appointment) {
             // Merge user ID with appointment data and save it to the database
-            $appointmentData = array_merge($appointmentData, $validatedData);
-            Appointment::create($appointmentData);
+            $appointment = array_merge($appointment, $validatedData);
+            Appointment::create($appointment);
 
             // Send an email confirmation
-            Mail::to($appointment->email)->send(new AppointmentConfirmation($appointmentData));
+            Mail::to($request->user())->send(new AppointmentConfirmation($appointment));
 
             $request->session()->forget('appointment');
 
