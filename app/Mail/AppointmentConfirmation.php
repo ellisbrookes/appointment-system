@@ -1,25 +1,58 @@
 <?php
+
 namespace App\Mail;
 
+use App\Models\Appointment;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\SerializesModels;
 
 class AppointmentConfirmation extends Mailable
 {
-    public $appointment;
+    use Queueable, SerializesModels;
 
-    public function __construct($appointment)
+    /**
+     * Create a new message instance.
+     */
+    public function __construct(
+        protected Appointment $appointment,
+    ) {}
+
+    /**
+     * Get the message envelope.
+     */
+    public function envelope(): Envelope
     {
-        $this->appointment = $appointment;
+        return new Envelope(
+            subject: 'Appointment Confirmation',
+        );
     }
 
-    public function build()
+    /**
+     * Get the message content definition.
+     */
+    public function content(): Content
     {
-        return $this->subject('Appointment Confirmation')
-            ->view('emails.appointment_confirmation')
-            ->with([
-                'service' => $this->appointment['service'],
-                'date' => $this->appointment['date'],
-                'timeslot' => $this->appointment['timeslot'],
-            ]);
+        return new Content(
+            view: 'emails.appointment_confirmation',
+            with: [
+                'service' => $this->appointment->service,
+                'date' => $this->appointment->date,
+                'timeslot' => $this->appointment->timeslot,
+            ],
+        );
+    }
+
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     */
+    public function attachments(): array
+    {
+        return [];
     }
 }

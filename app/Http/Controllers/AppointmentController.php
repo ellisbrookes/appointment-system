@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AppointmentConfirmation;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Appointment;

@@ -1,9 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\TestEmail;
-use Carbon\Carbon;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ProfileController;
@@ -39,9 +36,6 @@ Route::middleware('auth')->group(function () {
         });
     });
 });
-
-Route::get('/send-test', [EmailController::class, 'sendTestEmail']);
-$data = ['message' => 'This is a test!'];
 
 Route::controller(AppointmentController::class)->group(function () {
     // Appointments index route
