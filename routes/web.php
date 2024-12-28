@@ -44,5 +44,5 @@ Route::controller(AppointmentController::class)->group(function () {
     Route::post('/dashboard/appointments/create-step-three', 'createPostStepThree')->name('dashboard.appointments.create.step.three.post');
 
     // Submit route
-    Route::post('/dashboard/appointments/submit', 'submit')->name('appointments.submit');
+    Route::post('/dashboard/appointments/submit', 'submit')->name('dashboard.appointments.submit');
 });
