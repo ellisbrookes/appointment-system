@@ -6,9 +6,8 @@ use App\Mail\TestEmail;
 use Carbon\Carbon;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ProfileController;
 
-
-// Existing routes
 Route::get('/', function () {
     return view('welcome');
 });
@@ -17,15 +16,32 @@ Route::get('/test', function () {
     return view('test-page');
 });
 
-Route::get('/dashboard', function() {
-    return view('dashboard.index');
+Route::middleware('auth')->group(function () {
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/profile', 'edit')->name('profile.edit');
+        Route::patch('/profile', 'update')->name('profile.update');
+        Route::delete('/profile', 'destroy')->name('profile.destroy');
+    });
+
+    Route::get('/dashboard', function () {
+        return view('dashboard.index');
+    })->middleware('verified')->name('dashboard');
+
+    Route::prefix('dashboard/appointments')->name('dashboard.appointments.')->group(function () {
+        Route::controller(AppointmentController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create-step-one', 'createStepOne')->name('create.step.one');
+            Route::post('/create-step-one', 'createPostStepOne')->name('create.step.one.post');
+            Route::get('/create-step-two', 'createStepTwo')->name('create.step.two');
+            Route::post('/create-step-two', 'createPostStepTwo')->name('create.step.two.post');
+            Route::get('/create-step-three', 'createStepThree')->name('create.step.three');
+            Route::post('/create-step-three', 'createPostStepThree')->name('create.step.three.post');
+        });
+    });
 });
 
 Route::get('/send-test', [EmailController::class, 'sendTestEmail']);
 $data = ['message' => 'This is a test!'];
-
-Mail::to('hello@ebrookes.dev')->send(new TestEmail($data));
-
 
 Route::controller(AppointmentController::class)->group(function () {
     // Appointments index route
@@ -46,3 +62,5 @@ Route::controller(AppointmentController::class)->group(function () {
     // Submit route
     Route::post('/dashboard/appointments/submit', 'submit')->name('dashboard.appointments.submit');
 });
+
+require __DIR__.'/auth.php';

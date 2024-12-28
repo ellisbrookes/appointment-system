@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('appointments', function (Blueprint $table) {
-            $table->time('timeslot');
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('admin')->default(false);
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('appointments', function (Blueprint $table) {
-            $table->dropColumn('timeslot');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('admin');
         });
     }
 };

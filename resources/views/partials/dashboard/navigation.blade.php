@@ -3,8 +3,7 @@
     class="bg-gray-800 flex flex-col text-white h-screen fixed transition-all duration-250 ease-in-out"
 >
     <!-- Sidebar Title and Toggle Button inside Sidebar -->
-    <div
-        class="flex flex-col flex-1 space-y-4">
+    <div class="flex flex-col flex-1 space-y-4">
         <button
             @click="isSidebarOpen = !isSidebarOpen"
             :class="isSidebarOpen ? 'justify-between' : 'justify-center'"
@@ -16,7 +15,6 @@
             >
                 Appointment System
             </span>
-
             <i :class="isSidebarOpen ? 'fas fa-arrow-left' : 'fas fa-bars'"></i>
         </button>
 
@@ -49,7 +47,6 @@
                         ></i>
                         <span :class="isSidebarOpen ? '' : 'hidden'">Appointments</span>
                     </div>
-
                     <i
                         :class="isDropdownOpen ? 'rotate-180' : ''"
                         class="fas fa-chevron-down text-sm transition-transform duration-300"
@@ -112,9 +109,10 @@
                     :class="isSidebarOpen ? 'mr-4' : ''"
                     class="fas fa-user-circle text-lg"
                 ></i>
-                <span :class="isSidebarOpen ? '' : 'hidden'">User Name</span>
+                <span :class="isSidebarOpen ? '' : 'hidden'">
+                    {{Auth::user()->name ?? 'Guest'}}
+                </span>
             </div>
-
             <i
                 :class="isUserSidebarOpen ? 'rotate-180' : ''"
                 class="fas fa-chevron-down text-sm transition-transform duration-300"
@@ -131,7 +129,7 @@
                 <a
                     href="/profile"
                     :class="isSidebarOpen ? '' : 'text-center'"
-                    class="px-4 py-2 block hover:bg-blue-700 items-center"
+                    class="flex items-center px-4 py-2 hover:bg-blue-700"
                 >
                     <i
                         class="fas fa-user"
@@ -144,7 +142,7 @@
                 <a
                     href="/account-settings"
                     :class="isSidebarOpen ? '' : 'text-center'"
-                    class="px-4 py-2 block hover:bg-blue-700 items-center"
+                    class="flex items-center px-4 py-2 hover:bg-blue-700"
                 >
                     <i
                         class="fas fa-cogs"
@@ -152,6 +150,26 @@
                     ></i>
                     <span :class="isSidebarOpen ? '' : 'hidden'">Account Settings</span>
                 </a>
+            </li>
+            <li>
+                <form
+                    method="POST"
+                    action="{{ route('logout') }}"
+                    class="flex items-center px-4 py-2 w-full hover:bg-blue-700"
+                >
+                    @csrf
+                    <button
+                        type="submit"
+                        :class="isSidebarOpen ? '' : 'text-center'"
+                        class="flex items-center w-full"
+                    >
+                        <i
+                            class="fas fa-sign-out-alt"
+                            :class="isSidebarOpen ? 'mr-2' : ''"
+                        ></i>
+                        <span :class="isSidebarOpen ? '' : 'hidden'">Logout</span>
+                    </button>
+                </form>
             </li>
         </ul>
     </div>
