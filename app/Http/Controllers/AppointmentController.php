@@ -138,6 +138,11 @@ class AppointmentController extends Controller
         if ($appointmentData) {
             // Save the appointment to the database
             $appointment = Appointment::create($appointmentData);
+
+            // Send an email confirmation
+            Mail::to($appointment->email)->send(new AppointmentConfirmation($appointmentData));
+
+            // Clear the session data
             $request->session()->forget('appointment');
         }
 

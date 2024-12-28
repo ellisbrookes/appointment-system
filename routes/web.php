@@ -26,7 +26,8 @@ $data = ['message' => 'This is a test!'];
 
 Mail::to('hello@ebrookes.dev')->send(new TestEmail($data));
 
-Route::controller(AppointmentController::class)->group(function() {
+
+Route::controller(AppointmentController::class)->group(function () {
     // Appointments index route
     Route::get('/dashboard/appointments', 'index')->name('dashboard.appointments.index');
 
@@ -41,4 +42,7 @@ Route::controller(AppointmentController::class)->group(function() {
     // Step three
     Route::get('/dashboard/appointments/create-step-three', 'createStepThree')->name('dashboard.appointments.create.step.three');
     Route::post('/dashboard/appointments/create-step-three', 'createPostStepThree')->name('dashboard.appointments.create.step.three.post');
+
+    // Submit route
+    Route::post('/dashboard/appointments/submit', 'submit')->name('appointments.submit');
 });

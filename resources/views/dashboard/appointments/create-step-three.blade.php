@@ -39,9 +39,12 @@
                 <!-- Previous and Submit Buttons -->
                 <div class="flex justify-between mt-4">
                     <a href="{{ route('dashboard.appointments.create.step.two') }}" class="bg-gray-600 text-white py-3 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-200">Previous Step</a>
-                    <button type="submit" class="bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
-                        Confirm
-                    </button>
+                    <form action="{{ route('dashboard.appointments.submit')}}" method="POST">
+                        @csrf
+                        <button type="submit" class="bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
+                            Confirm
+                        </button>
+                    </form>
                 </div>
             </form>
         </div>
