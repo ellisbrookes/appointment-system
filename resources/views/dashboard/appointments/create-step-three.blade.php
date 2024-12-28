@@ -32,6 +32,22 @@
                                 <td class="border px-6 py-4 font-medium">Time</td>
                                 <td class="border px-6 py-4">{{ $appointment['timeslot'] ?? '' }}</td>
                             </tr>
+                            <tr class="hover:bg-gray-50 transition duration-200">
+                                <td class="border px-6 py-4 font-medium">User</td>
+                                <td class="border px-6 py-4">
+                                    @if (Auth::user()->admin)
+                                        <select name="user_id" id="user_id" class="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                            <option value="" disabled selected>Select a user</option>
+                                            @foreach ($users as $user)
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        {{ Auth::user()->name }}
+                                        <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}">
+                                    @endif
+                                </td> 
+                            </tr>
                         </tbody>
                     </table>
                 </div>
