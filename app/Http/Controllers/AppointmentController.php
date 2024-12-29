@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Appointment;
+use App\Enums\AlertVariant;
 use App\Models\User;
 
 
@@ -150,6 +151,10 @@ class AppointmentController extends Controller
             $request->session()->forget('appointment');
         }
 
-        return redirect()->route('dashboard.appointments.index')->with('success', 'Appointment created successfully!');
+        return redirect()
+        ->route('dashboard.appointments.index')->with('alert', [
+            'variant' => AlertVariant::Success,
+            'message' => 'Appointment created successfully!'
+        ]);
     }
 }
