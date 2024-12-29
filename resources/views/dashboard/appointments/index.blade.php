@@ -11,6 +11,12 @@
                 </a>
             </div>
 
+            @if (session('alert'))
+                <x-alert :variant="session('alert')['variant']">
+                    {{ session('alert')['message'] }}
+                </x-alert>
+            @endif
+
             @if ($appointments->isEmpty())
                 <p class="text-center text-gray-500 py-4">No booked appointments</p>
             @else
