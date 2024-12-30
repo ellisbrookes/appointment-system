@@ -23,9 +23,11 @@
             @include('partials.dashboard.navigation')
 
             <main :class="isSidebarOpen ? 'ml-64' : 'ml-16'" class="flex-1 p-6">
-                <x-alert>
-                    Test Message
-                </x-alert>
+                @if (session('alert'))
+                    <x-alert :type="session('alert')['type']">
+                        {{ session('alert')['message'] }}
+                    </x-alert>
+                @endif
 
                 @yield('content')
             </main>

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Appointment;
-use App\Enums\AlertVariant;
 use App\Models\User;
 
 
@@ -153,7 +152,7 @@ class AppointmentController extends Controller
 
         return redirect()
         ->route('dashboard.appointments.index')->with('alert', [
-            'variant' => AlertVariant::Success,
+            'type' => 'success',
             'message' => 'Appointment created successfully!'
         ]);
     }
