@@ -23,6 +23,10 @@
             @include('partials.dashboard.navigation')
 
             <main :class="isSidebarOpen ? 'ml-64' : 'ml-16'" class="flex-1 p-6">
+                <x-alert>
+                    Test Message
+                </x-alert>
+
                 @yield('content')
             </main>
         </div>

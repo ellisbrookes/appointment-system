@@ -8,7 +8,7 @@ enum AlertVariant: string
     case Danger = 'danger';
     case Warning = 'warning';
 
-    public function tailwindClasses(): string
+    public function alertClasses(): string
     {
         return match ($this) {
             self::Success => 'bg-green-100 text-green-800 border-green-300',
