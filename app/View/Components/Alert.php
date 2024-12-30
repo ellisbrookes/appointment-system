@@ -27,7 +27,7 @@ class Alert extends Component
         return view('components.alert');
     }
 
-    public function alertVariant()
+    public function alertVariant(): string
     {
         return match ($this->type) {
             'success' => 'bg-green-100 text-green-800 border-green-300',
