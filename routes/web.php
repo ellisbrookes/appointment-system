@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\PricingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ Route::get('/', function () {
 Route::get('/test', function () {
     return view('test-page');
 })->name('test');
+
+Route::get('/pricing', [PricingController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
     Route::controller(ProfileController::class)->group(function () {
@@ -25,7 +28,7 @@ Route::middleware('auth')->group(function () {
     })->middleware('verified')->name('dashboard');
 
 
-Route::get('/subscription-checkout', function (Request $request) {
+Route::post('/subscription-checkout', function (Request $request) {
     return $request->user()
         ->newSubscription('basic', 'price_1QbtKfGVcskF822y3QlF13vZ')
         ->allowPromotionCodes()
@@ -33,7 +36,7 @@ Route::get('/subscription-checkout', function (Request $request) {
             'success_url' => route('test'),
             'cancel_url' => route('test'),
         ]);
-    });
+    })->name('subscription');
 
     Route::prefix('dashboard/appointments')->name('dashboard.appointments.')->group(function () {
         Route::controller(AppointmentController::class)->group(function () {
