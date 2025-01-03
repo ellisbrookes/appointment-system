@@ -7,7 +7,7 @@ use Stripe\StripeClient;
 
 class PricingController extends Controller
 {
-     protected $stripe;
+    protected $stripe;
 
     public function __construct()
     {
@@ -23,6 +23,14 @@ class PricingController extends Controller
             $productsWithPrices = collect($products->data)->map(function ($product) use ($prices) {
                 $productPrices = collect($prices->data)->filter(function ($price) use ($product) {
                     return $price->product === $product->id;
+                })->map(function ($price) {
+                    return [
+                        'id' => $price->id,
+                        'currency' => $price->currency,
+                        'unit_amount' => $price->unit_amount,
+                        'interval' => $price['recurring']['interval'] ?? null,
+
+                    ];
                 });
 
                 $product->prices = $productPrices;
@@ -30,7 +38,7 @@ class PricingController extends Controller
             });
 
             return view('pricing.index', compact('productsWithPrices'));
-        } catch (\Expection $e) {
+        } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
     }
