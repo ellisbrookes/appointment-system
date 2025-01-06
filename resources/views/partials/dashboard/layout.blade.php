@@ -17,7 +17,7 @@
                 isDropdownOpen: false,
                 isUserSidebarOpen: false
             }"
-            class="flex"
+            class="flex relative"
         >
             <!-- Sidebar -->
             @include('partials.dashboard.navigation')
@@ -31,6 +31,19 @@
 
                 @yield('content')
             </main>
+
+            <!-- Blur Overlay -->
+            {{-- @if(Subscription::query()->active())
+                <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                    <div class="text-center text-white">
+                        <h1 class="text-2xl font-bold">Your subscription is inactive.</h1>
+                        <p>Please renew your subscription to access the app.</p>
+                        <a href="{{ route('subscription.renew') }}" class="mt-4 bg-blue-500 px-4 py-2 rounded text-white">
+                            Renew Subscription
+                        </a>
+                    </div>
+                </div>
+            @endif --}}
         </div>
     </body>
 </html>

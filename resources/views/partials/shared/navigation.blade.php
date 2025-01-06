@@ -1,4 +1,4 @@
-<nav class="bg-gray-800 text-white py-4 fixed top-0 left-0 w-full z-50 shadow-lg rounded-b-lg">
+<nav class="bg-gray-800 text-white py-4 w-full shadow-lg rounded-b-lg">
   <div class="container mx-auto flex justify-between items-center">
     <p class="logo text-xl font-bold text-white">Appointment System</p>
 

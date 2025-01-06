@@ -17,7 +17,13 @@
     <body>
         @include('partials.shared.navigation')
 
-        <main class="bg-gray-400">
+        <main>
+            @if (session('alert'))
+                <x-alert :type="session('alert')['type']">
+                    {{ session('alert')['message'] }}
+                </x-alert>
+            @endif
+
             @yield('content')
         </main>
 
