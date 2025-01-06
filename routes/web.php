@@ -33,7 +33,6 @@ Route::middleware('auth')->group(function () {
 Route::post('/subscription-checkout', function (Request $request) {
     return $request->user()
         ->newSubscription('basic', 'price_1QbtKfGVcskF822y3QlF13vZ')
-        ->create($paymentMethod)
         ->allowPromotionCodes()
         ->checkout([
             'success_url' => route('dashboard'),

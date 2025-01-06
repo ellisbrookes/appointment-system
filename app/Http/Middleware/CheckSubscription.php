@@ -16,9 +16,10 @@ class CheckSubscription
 
         // Check subscription status
         // if ($user && ! $user->subscribed('basic')) {
-        if (!$user || !$user->subscription('basic')?->active()) {
-            die($user);
-            return redirect()->route('pricing')->with('alert', [
+        if ($user->subscribed('basic')) {
+            return redirect()->route('dashboard');
+        } else {
+             return redirect()->route('pricing')->with('alert', [
                 'type' => 'danger',
                 'message' => 'Your subscription is inactive. Please renew to continue.',
             ]);
