@@ -9,7 +9,6 @@ use App\Models\Appointment;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
-
 class AppointmentController extends Controller
 {
     /**
@@ -143,18 +142,17 @@ class AppointmentController extends Controller
             'user_id' => 'required|exists:users,id', // Ensure a valid user is selected
         ]);
 
-        $appointment = $request->session()->get('appointment');
+        $appointmentData = $request->session()->get('appointment');
 
-        if ($appointment) {
+        if ($appointmentData) {
             // Merge user ID with appointment data and save it to the database
-            $appointment = array_merge($appointment, $validatedData);
-            Appointment::create($appointment);
+            $appointmentData = array_merge($appointmentData, $validatedData);
+            $appointment = Appointment::create($appointmentData); // Create and retrieve the Appointment instance
 
             // Send an email confirmation
-            Mail::to($request->user())->send(new AppointmentConfirmation($appointment));
+            Mail::to($request->user())->send(new AppointmentConfirmation($appointment)); // Pass the Appointment instance
 
             $request->session()->forget('appointment');
-
         }
 
         return redirect()->route('dashboard.appointments.index')->with('success', 'Appointment created successfully!');
