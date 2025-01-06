@@ -155,6 +155,10 @@ class AppointmentController extends Controller
             $request->session()->forget('appointment');
         }
 
-        return redirect()->route('dashboard.appointments.index')->with('success', 'Appointment created successfully!');
+        return redirect()
+        ->route('dashboard.appointments.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Appointment created successfully!'
+        ]);
     }
 }

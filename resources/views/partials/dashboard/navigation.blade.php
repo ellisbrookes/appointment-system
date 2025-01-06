@@ -127,7 +127,7 @@
         >
             <li>
                 <a
-                    href="/profile"
+                    href="{{ route('profile.edit') }}"
                     :class="isSidebarOpen ? '' : 'text-center'"
                     class="flex items-center px-4 py-2 hover:bg-blue-700"
                 >
@@ -136,19 +136,6 @@
                         :class="isSidebarOpen ? 'mr-2' : ''"
                     ></i>
                     <span :class="isSidebarOpen ? '' : 'hidden'">Profile</span>
-                </a>
-            </li>
-            <li>
-                <a
-                    href="/account-settings"
-                    :class="isSidebarOpen ? '' : 'text-center'"
-                    class="flex items-center px-4 py-2 hover:bg-blue-700"
-                >
-                    <i
-                        class="fas fa-cogs"
-                        :class="isSidebarOpen ? 'mr-2' : ''"
-                    ></i>
-                    <span :class="isSidebarOpen ? '' : 'hidden'">Account Settings</span>
                 </a>
             </li>
             <li>
