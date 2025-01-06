@@ -15,12 +15,12 @@
 
         <!-- Body -->
         <div style="padding: 24px;">
-            <p style="margin: 0 0 16px; font-size: 16px;">Hello,</p>
-            <p style="margin: 0 0 24px; font-size: 16px;">We’re thrilled to confirm your appointment. Please find the details below:</p>
+            <p style="margin: 0 0 8px; font-size: 16px;">Hello,</p>
+            <p style="margin: 16px 0 16px; font-size: 16px;">We’re thrilled to confirm your appointment. Please find the details below:</p> <!-- Added margin-top here -->
         </div>
 
         <!-- Appointment Details -->
-        <div style="padding: 0 24px 24px;">
+        <div style="padding: 0 24px 16px; margin-top: -10px;">
             <h2 style="margin: 0 0 16px; font-size: 20px; font-weight: bold; color: #1f2937;">Appointment Details</h2>
             <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 16px; border-radius: 8px;">
                 <p style="margin: 0 0 8px; font-size: 16px;"><strong>Service:</strong> {{ $service }}</p>
@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <!-- Support  -->
+        <!-- Support -->
         <div style="padding: 0 24px 24px;">
             <p style="margin: 0 0 16px; font-size: 16px;">If you have any questions or need to make changes to your appointment, feel free to contact us.</p>
             <a href="#" style="display: inline-block; background-color: #2563eb; color: #ffffff; text-decoration: none; font-weight: bold; padding: 12px 24px; border-radius: 6px; font-size: 16px;">Contact Us</a>
