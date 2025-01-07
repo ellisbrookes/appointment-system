@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AppointmentConfirmation;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Appointment;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
 {
@@ -146,7 +147,11 @@ class AppointmentController extends Controller
         if ($appointmentData) {
             // Merge user ID with appointment data and save it to the database
             $appointmentData = array_merge($appointmentData, $validatedData);
-            Appointment::create($appointmentData);
+            $appointment = Appointment::create($appointmentData); // Create and retrieve the Appointment instance
+
+            // Send an email confirmation
+            Mail::to($request->user())->send(new AppointmentConfirmation($appointment)); // Pass the Appointment instance
+
             $request->session()->forget('appointment');
         }
 
