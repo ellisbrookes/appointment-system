@@ -9,14 +9,19 @@ RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer.json and install dependencies
-COPY composer.json composer.lock ./
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install --no-dev --optimize-autoloader
-
-# Copy the rest of the Laravel application
+# Copy the rest of the Laravel application first
 COPY . .
 
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install dependencies with Composer
+RUN composer install --no-dev --optimize-autoloader
+
 # Set the right permissions for Laravel
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html && \
+    chmod -R 755 /var/www/html/*
+
+# Expose port 80 for Apache
+EXPOSE 80
