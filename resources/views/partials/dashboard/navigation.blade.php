@@ -83,27 +83,18 @@
             </li>
 
             <!-- Admin Link -->
-            <li>
-                <a
-                    href="/dashboard/admin"
-                    :class="isSidebarOpen ? 'rounded-md px-4 py-2' : 'justify-center rounded-none p-4'"
-                    class="flex items-center w-full space-x-4 hover:bg-blue-700"
-                >
-                    <i class="fas fa-cogs text-lg"></i>
-                    <span :class="isSidebarOpen ? '' : 'hidden'">Admin</span>
-                </a>
-            </li>
-
-            <li>
-                <a
-                    href="/billing"
-                    :class="isSidebarOpen ? 'rounded-md px-4 py-2' : 'justify-center rounded-none p-4'"
-                    class="flex items-center w-full space-x-4 hover:bg-blue-700"
-                >
-                    <i class="fas fa-cogs text-lg"></i>
-                    <span :class="isSidebarOpen ? '' : 'hidden'">Billing</span>
-                </a>
-            </li>
+            @if (Auth::user()->admin)
+                <li>
+                    <a
+                        href="/dashboard/admin"
+                        :class="isSidebarOpen ? 'rounded-md px-4 py-2' : 'justify-center rounded-none p-4'"
+                        class="flex items-center w-full space-x-4 hover:bg-blue-700"
+                    >
+                        <i class="fas fa-cogs text-lg"></i>
+                        <span :class="isSidebarOpen ? '' : 'hidden'">Admin</span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </div>
 
@@ -147,6 +138,19 @@
                         :class="isSidebarOpen ? 'mr-2' : ''"
                     ></i>
                     <span :class="isSidebarOpen ? '' : 'hidden'">Profile</span>
+                </a>
+            </li>
+            <li>
+                <a
+                    href="{{ route('billing') }}"
+                    :class="isSidebarOpen ? '' : 'text-center'"
+                    class="flex items-center px-4 py-2 hover:bg-blue-700"
+                >
+                    <i
+                        class="fas fa-shopping-cart"
+                        :class="isSidebarOpen ? 'mr-2' : ''"
+                    ></i>
+                    <span :class="isSidebarOpen ? '' : 'hidden'">Billing</span>
                 </a>
             </li>
             <li>

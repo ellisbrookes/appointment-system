@@ -11,21 +11,23 @@ class CheckSubscription
     {
         $user = $request->user();
 
-        // Sync subscription with Stripe
-        // $user->subscription('basic')->sync();
+        // Define excluded routes
+        $excludedRoutes = ['pricing', 'dashboard'];
 
-        // Check subscription status
-        // if ($user && ! $user->subscribed('basic')) {
-        if ($user->subscribed('basic')) {
-            return redirect()->route('dashboard');
-        } else {
-             return redirect()->route('pricing')->with('alert', [
-                'type' => 'danger',
-                'message' => 'Your subscription is inactive. Please renew to continue.',
-            ]);
+        // Skip the middleware check for excluded routes
+        if (in_array($request->route()->getName(), $excludedRoutes)) {
+            return $next($request);
         }
 
-        return $next($request);
+        // Check subscription status
+        if ($user && $user->subscribed('basic')) {
+            return $next($request);
+        }
+
+        // Redirect to pricing page if the subscription is inactive
+        return redirect()->route('pricing')->with('alert', [
+            'type' => 'danger',
+            'message' => 'Your subscription is inactive. Please renew to continue.',
+        ]);
     }
 }
-?>
