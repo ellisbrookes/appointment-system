@@ -27,7 +27,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', function () {
         return view('dashboard.index');
-    })->middleware(['verified', CheckSubscription::class])->name('dashboard');
+    })->middleware(['verified'])->name('dashboard');
+
+    Route::get('/billing', function (Request $request) {
+        return $request->user()->redirectToBillingPortal(route('dashboard'));;
+    })->name('billing');
 
 
 Route::post('/subscription-checkout', function (Request $request) {

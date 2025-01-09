@@ -93,6 +93,17 @@
                     <span :class="isSidebarOpen ? '' : 'hidden'">Admin</span>
                 </a>
             </li>
+
+            <li>
+                <a
+                    href="/billing"
+                    :class="isSidebarOpen ? 'rounded-md px-4 py-2' : 'justify-center rounded-none p-4'"
+                    class="flex items-center w-full space-x-4 hover:bg-blue-700"
+                >
+                    <i class="fas fa-cogs text-lg"></i>
+                    <span :class="isSidebarOpen ? '' : 'hidden'">Billing</span>
+                </a>
+            </li>
         </ul>
     </div>
 
