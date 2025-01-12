@@ -1,27 +1,19 @@
-# Use PHP 8.2 with Apache
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev git unzip libgmp-dev && \
-    docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install gd pdo pdo_mysql gmp
-
-# Set working directory
-WORKDIR /var/www/html
-
-# Copy the rest of the Laravel application first
-COPY . .
-
-# Install Composer
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    zip \
+    libgmp-dev \
+    libmariadb-dev && \
+    docker-php-ext-install gmp pdo_mysql
+    
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install dependencies with Composer
-RUN composer install --no-dev --optimize-autoloader
+WORKDIR /app
+COPY . /app
 
-# Set the right permissions for Laravel
-RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html && \
-    chmod -R 755 /var/www/html/*
+RUN composer install
 
-# Expose port 80 for Apache
-EXPOSE 80
+EXPOSE 8000
+CMD php artisan serve --host=0.0.0.0 --port=8000
