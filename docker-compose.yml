@@ -1,36 +1,44 @@
 services:
+  db:
+    image: mysql:8.0
+    container_name: appointment-db
+    environment:
+      MYSQL_ROOT_PASSWORD: password123
+      MYSQL_DATABASE: appointment
+      MYSQL_USER: appointment_user
+      MYSQL_PASSWORD: password123
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - appointment-network
+    ports:
+      - "3306:3306"
+    mem_limit: 2g
+    mem_reservation: 1g
+    cpus: 1
+
   app:
     build:
       context: .
-    container_name: laravel-app
+    container_name: appointment-app
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: appointment-db
+      DB_PORT: 3306
+      DB_DATABASE: appointment
+      DB_USERNAME: appointment_user
+      DB_PASSWORD: password123
+    depends_on:
+      - db
+    networks:
+      - appointment-network
     ports:
-      - "80:80"
-    volumes:
-      - .:/var/www/html
-    networks:
-      - app-network
-    environment:
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_DATABASE=laravel
-      - DB_USERNAME=root
-      - DB_PASSWORD=root
-
-  db:
-    image: mysql:8
-    container_name: laravel-db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: laravel
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - app-network
-
-volumes:
-  db_data:
+      - "8000:8000"
 
 networks:
-  app-network:
+  appointment-network:
     driver: bridge
+
+volumes:
+  db-data:
+    driver: local
