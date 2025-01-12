@@ -1,12 +1,15 @@
+version: '3'
 services:
   db:
     image: mysql:8.0
     container_name: appointment-db
     environment:
-      MYSQL_ROOT_PASSWORD: password123
-      MYSQL_DATABASE: appointment
-      MYSQL_USER: appointment_user
-      MYSQL_PASSWORD: password123
+      DB_CONNECTION: mysql
+      DB_HOST: ${DB_HOST}
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
     networks:
@@ -23,11 +26,12 @@ services:
     container_name: appointment-app
     environment:
       DB_CONNECTION: mysql
-      DB_HOST: appointment-db
+      DB_HOST: ${DB_HOST}
       DB_PORT: 3306
-      DB_DATABASE: appointment
-      DB_USERNAME: appointment_user
-      DB_PASSWORD: password123
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      APP_KEY: ${APP_KEY}
     depends_on:
       - db
     networks:
