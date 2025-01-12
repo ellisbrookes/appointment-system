@@ -26,8 +26,11 @@ COPY . /app
 # Install PHP dependencies
 RUN composer install
 
-# Install Node.js dependencies (npm install)
+# Install Node.js dependencies
 RUN npm install
+
+# Run the Vite build process to generate the manifest
+RUN npm run build
 
 EXPOSE 8000
 CMD php artisan serve --host=0.0.0.0 --port=8000
