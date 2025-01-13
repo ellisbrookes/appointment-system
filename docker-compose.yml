@@ -2,6 +2,7 @@ services:
     app:
         build:
             context: .
+            dockerfile: Dockerfile
         container_name: appointment-app
         environment:
             DB_CONNECTION: mysql
