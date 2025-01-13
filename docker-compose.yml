@@ -1,48 +1,59 @@
-version: '3'
 services:
-  db:
-    image: mysql:8.0
-    container_name: appointment-db
-    environment:
-      DB_CONNECTION: mysql
-      DB_HOST: ${DB_HOST}
-      DB_PORT: 3306
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - db-data:/var/lib/mysql
-    networks:
-      - appointment-network
-    ports:
-      - "3306:3306"
-    mem_limit: 2g
-    mem_reservation: 1g
-    cpus: 1
-
-  app:
-    build:
-      context: .
-    container_name: appointment-app
-    environment:
-      DB_CONNECTION: mysql
-      DB_HOST: ${DB_HOST}
-      DB_PORT: 3306
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      APP_KEY: ${APP_KEY}
-    depends_on:
-      - db
-    networks:
-      - appointment-network
-    ports:
-      - "8000:8000"
-
+    app:
+        build:
+            context: .
+        container_name: appointment-app
+        environment:
+            DB_CONNECTION: mysql
+            DB_HOST: '${DB_HOST}'
+            DB_PORT: 3306
+            DB_DATABASE: '${DB_DATABASE}'
+            DB_USERNAME: '${DB_USERNAME}'
+            DB_PASSWORD: '${DB_PASSWORD}'
+            APP_KEY: '${APP_KEY}'
+        depends_on:
+            - mysql
+        networks:
+            - appointment-network
+        ports:
+            - '8000:8000'
+    mysql:
+        image: 'mysql/mysql-server:8.0'
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - 'sail-mysql:/var/lib/mysql'
+            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+        networks:
+            - appointment-network
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p${DB_PASSWORD}'
+            retries: 3
+            timeout: 5s
+    selenium:
+        image: selenium/standalone-chromium
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        volumes:
+            - '/dev/shm:/dev/shm'
+        networks:
+            - appointment-network
 networks:
-  appointment-network:
-    driver: bridge
-
+    appointment-network:
+        driver: bridge
 volumes:
-  db-data:
-    driver: local
+    db-data:
+        driver: local
+    sail-mysql:
+        driver: local
