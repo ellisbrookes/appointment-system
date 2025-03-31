@@ -8,12 +8,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
-
-Route::get('/test', function () {
-    return view('test-page');
-})->name('test');
+    return view('index');
+})->name('index');
 
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 
