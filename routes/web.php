@@ -36,7 +36,7 @@ Route::post('/subscription-checkout', function (Request $request) {
         ->allowPromotionCodes()
         ->checkout([
             'success_url' => route('dashboard'),
-            'cancel_url' => route('welcome'),
+            'cancel_url' => route('dashboard'),
         ]);
     })->name('subscription');
 
