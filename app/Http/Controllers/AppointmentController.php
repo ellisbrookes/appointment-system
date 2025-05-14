@@ -196,4 +196,16 @@ class AppointmentController extends Controller
             'message' => 'Appointment created successfully!'
         ]);
     }
+
+    public function destroy($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->delete();
+
+        return redirect()
+        ->route('dashboard.appointments.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Appointment successfully cancelled!'
+        ]);
+    }
 }
