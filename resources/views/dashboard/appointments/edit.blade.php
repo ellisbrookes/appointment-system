@@ -25,7 +25,7 @@
             <!-- Timeslot Field -->
             <div class="mb-4">
                 <label class="block text-gray-700 font-semibold mb-2">Timeslot</label>
-                <input type="text" name="timeslot" value="{{ old('timeslot', $appointment->timeslot) }}" class="w-full border rounded-lg px-4 py-2">
+                <input type="time" name="timeslot" value="{{ old('timeslot', $appointment->timeslot) }}" class="w-full border rounded-lg px-4 py-2">
             </div>
 
             <!-- User Dropdown -->
