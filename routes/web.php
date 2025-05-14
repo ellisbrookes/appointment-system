@@ -8,18 +8,13 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
-
-Route::get('/test', function () {
-    return view('test-page');
-})->name('test');
+    return view('index');
+})->name('index');
 
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 
 Route::middleware('auth')->group(function () {
     Route::controller(ProfileController::class)->group(function () {
-
         Route::get('/profile', 'edit')->name('profile.edit');
         Route::patch('/profile', 'update')->name('profile.update');
         Route::delete('/profile', 'destroy')->name('profile.destroy');
@@ -33,15 +28,14 @@ Route::middleware('auth')->group(function () {
         return $request->user()->redirectToBillingPortal(route('dashboard'));;
     })->name('billing');
 
-
-Route::post('/subscription-checkout', function (Request $request) {
-    return $request->user()
-        ->newSubscription('basic', 'price_1QbtKfGVcskF822y3QlF13vZ')
-        ->allowPromotionCodes()
-        ->checkout([
-            'success_url' => route('dashboard'),
-            'cancel_url' => route('welcome'),
-        ]);
+    Route::post('/subscription-checkout', function (Request $request) {
+        return $request->user()
+            ->newSubscription('basic', 'price_1QbtKfGVcskF822y3QlF13vZ')
+            ->allowPromotionCodes()
+            ->checkout([
+                'success_url' => route('dashboard'),
+                'cancel_url' => route('dashboard'),
+            ]);
     })->name('subscription');
 
     Route::prefix('dashboard/appointments')->name('dashboard.appointments.')->group(function () {
@@ -53,6 +47,13 @@ Route::post('/subscription-checkout', function (Request $request) {
             Route::post('/create-step-two', 'createPostStepTwo')->name('create.step.two.post');
             Route::get('/create-step-three', 'createStepThree')->name('create.step.three');
             Route::post('/create-step-three', 'createPostStepThree')->name('create.step.three.post');
+
+            // **Edit and Update Routes**
+            Route::get('/{appointment}/edit', 'edit')->name('edit');
+            Route::put('/{appointment}', 'update')->name('update');
+
+            // **Destroy Route**
+            Route::delete('/{appointment}/destroy', [AppointmentController::class, 'destroy'])->name('destroy');
         });
     });
 });

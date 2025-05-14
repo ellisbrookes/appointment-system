@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AppointmentConfirmation;
+use App\Mail\AppointmentCancelled;
+use App\Mail\AppointmentUpdated;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Appointment;
@@ -19,6 +21,41 @@ class AppointmentController extends Controller
     {
         $appointments = Appointment::with('user')->get();
         return view('dashboard.appointments.index', compact('appointments'));
+    }
+
+    /**
+      * Show the edit form for an existing appointment
+      * @param \App\Models\Appointment $appointment
+      * @return \Illuminate\Http\Response
+    */
+    public function edit(Appointment $appointment)
+    {
+        $users = User::all();
+        return view('dashboard.appointments.edit', compact('appointment', 'users'));
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Appointment $appointment
+     * @return \Illuminate\Http\RedirectResponse
+    */
+    public function update(Request $request, Appointment $appointment)
+    {
+        $validatedData = $request->validate([
+            'service' => 'required|string|max:255',
+            'date' => 'required|string',
+            'timeslot' => 'required|string',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        $appointment->update($validatedData);
+
+        Mail::to($request->user())->send(new AppointmentUpdated($appointment));
+
+        return redirect()->route('dashboard.appointments.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Appointment updated successfully'
+        ]);
     }
 
     /**
@@ -159,6 +196,22 @@ class AppointmentController extends Controller
         ->route('dashboard.appointments.index')->with('alert', [
             'type' => 'success',
             'message' => 'Appointment created successfully!'
+        ]);
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        Mail::to($request->user())->send(new AppointmentCancelled($appointment));
+        $appointment->delete();
+
+
+        $request->session()->forget('appointment');
+
+        return redirect()
+        ->route('dashboard.appointments.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Appointment successfully cancelled!'
         ]);
     }
 }
