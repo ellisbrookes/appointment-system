@@ -22,6 +22,41 @@ class AppointmentController extends Controller
     }
 
     /**
+      * Show the edit form for an existing appointment
+      * @param \App\Models\Appointment $appointment
+      * @return \Illuminate\Http\Response
+    */
+    public function edit(Appointment $appointment)
+    {
+        $users = User::all();
+        return view('dashboard.appointments.edit', compact('appointment', 'users'));
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Appointment $appointment
+     * @return \Illuminate\Http\RedirectResponse
+    */
+    public function update(Request $request, Appointment $appointment)
+    {
+        $validatedData = $request->validate([
+            'service' => 'required|string|max:255',
+            'date' => 'required|string',
+            'timeslot' => 'required|string',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        $appointment->update($validatedData);
+
+        // Mail to send an appointment confirmation - TO DO
+
+        return redirect()->route('dashboard.appointments.index')->with('alert', [
+            'type' => 'success',
+            'message' => 'Appointment updated successfully'
+        ]);
+    }
+
+    /**
      * Show step one of creating an appointment, selecting the service.
      * @return \Illuminate\Http\Response
      */
