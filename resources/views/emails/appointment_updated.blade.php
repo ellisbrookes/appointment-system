@@ -24,8 +24,8 @@
             <h2 style="margin: 0 0 16px; font-size: 20px; font-weight: bold; color: #1f2937;">Appointment Details</h2>
             <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 16px; border-radius: 8px;">
                 <p style="margin: 0 0 8px; font-size: 16px;"><strong>Service:</strong> {{ $service }}</p>
-                <p style="margin: 0 0 8px; font-size: 16px;"><strong>Date:</strong> {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</p>
-                <p style="margin: 0; font-size: 16px;"><strong>Time:</strong> {{ $timeslot }}</p>
+                <p style="margin: 0 0 8px; font-size: 16px;"><strong>Date:</strong> {{ \Carbon\Carbon::parse($date)->format('jS F Y') }}</p>
+                <p style="margin: 0; font-size: 16px;"><strong>Time:</strong> {{ \Carbon\Carbon::parse($timeslot)->format('g:i A') }}</p>
             </div>
         </div>
 
