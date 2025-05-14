@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AppointmentConfirmation;
+use App\Mail\AppointmentCancelled;
+use App\Mail\AppointmentUpdated;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Appointment;
@@ -48,7 +50,7 @@ class AppointmentController extends Controller
 
         $appointment->update($validatedData);
 
-        // Mail to send an appointment confirmation - TO DO
+        Mail::to($request->user())->send(new AppointmentUpdated($appointment));
 
         return redirect()->route('dashboard.appointments.index')->with('alert', [
             'type' => 'success',
@@ -197,10 +199,14 @@ class AppointmentController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $appointment = Appointment::findOrFail($id);
+        Mail::to($request->user())->send(new AppointmentCancelled($appointment));
         $appointment->delete();
+
+
+        $request->session()->forget('appointment');
 
         return redirect()
         ->route('dashboard.appointments.index')->with('alert', [

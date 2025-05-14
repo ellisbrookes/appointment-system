@@ -52,8 +52,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/{appointment}/edit', 'edit')->name('edit');
             Route::put('/{appointment}', 'update')->name('update');
 
-            // **Cancel Route**
-            Route::delete('/dashboard/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('dashboard.appointments.cancel');
+            // **Destroy Route**
+            Route::delete('/{appointment}/destroy', [AppointmentController::class, 'destroy'])->name('destroy');
         });
     });
 });
