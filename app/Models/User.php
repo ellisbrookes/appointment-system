@@ -28,7 +28,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'tel_number'
+        'telephone_number',
+        'company_name'
     ];
 
     /**
@@ -52,5 +53,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function companies()
+    {
+    return $this->hasMany(Company::class);
     }
 }

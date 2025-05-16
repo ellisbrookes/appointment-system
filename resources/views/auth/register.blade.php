@@ -17,10 +17,18 @@
         </div>
 
         <div class="mt-4">
-            <x-input-label for="tel_number" :value="__('tel_number')" />
-            <x-text-input id="tel_number" class="block mt-1 w-full" type="tel" name="tel_number" :value="old('tel_number')" required autocomplete="tel_number" />
-            <x-input-error :messages="$errors->get('tel_number')" class="mt-2" />
+            <x-input-label for="telephone_number" :value="__('Telephone Number')" />
+            <x-text-input id="telephone_number" type="tel-number" class="block mt-1 w-full" type="tel" name="telephone_number" :value="old('telephone_number')" required autocomplete="telephone_number" />
+            <x-input-error :messages="$errors->get('Telephone_number')" class="mt-2" />
         </div>
+
+         <div class="mt-4">
+            <x-input-label for="company_name" :value="__('Company Name (Optional)')" />
+            <x-text-input type="text" name="company_name" id="company_name" class="block mt-1 w-full"
+                :value="old('company_name')" />
+            <x-input-error :messages="$errors->get('company_name')" class="mt-2" />
+        </div>
+
 
         <!-- Password -->
         <div class="mt-4">
