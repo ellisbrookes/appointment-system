@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
         return view('dashboard.index');
     })->middleware(['verified', CheckSubscription::class])->name('dashboard');
 
+    Route::get('/dashboard/company', [CompanyController::class, 'index'])->name('dashboard.company.index');
     Route::get('/dashboard/company/create', [CompanyController::class, 'create'])->name('dashboard.company.create');
     Route::post('/dashboard/company', [CompanyController::class, 'store'])->name('dashboard.company.store');
     Route::get('/dashboard/company/{company}/edit', [CompanyController::class, 'edit'])->name('dashboard.company.edit');

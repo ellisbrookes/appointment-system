@@ -7,11 +7,17 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
+    // ✅ Show all companies (view page)
+    public function index()
+    {
+        $companies = Company::where('user_id', auth()->id())->get(); // Optional: filter by logged-in user
+        return view('dashboard.company.index', compact('companies'));
+    }
+
     // Show the form to create a new company
     public function create(Request $request)
     {
         $companyName = auth()->user()->company_name ?? null;
-
         return view('dashboard.company.create', compact('companyName'));
     }
 
