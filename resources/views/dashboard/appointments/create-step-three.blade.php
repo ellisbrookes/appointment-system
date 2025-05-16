@@ -3,7 +3,7 @@
 @section('content')
     <div class="min-h-screen flex items-center justify-center">
         <div class="w-full max-w-2xl p-6">
-            <h2 class="text-3xl font-semibold mb-4">Review Your Appointment</h2>
+            <h2 class="text-3xl font-semibold mb-4 dark:text-gray-300">Review Your Appointment</h2>
 
             <form action="{{ route('dashboard.appointments.create.step.three.post') }}" method="POST">
                 @csrf
@@ -17,7 +17,7 @@
                                 <th class="px-6 py-3">Details</th>
                             </tr>
                         </thead>
-                        <tbody class="text-gray-700">
+                        <tbody class="text-gray-700 dark:text-gray-300">
                             <tr class="hover:bg-gray-50 transition duration-200">
                                 <td class="border px-6 py-4 font-medium">Service</td>
                                 <td class="border px-6 py-4">{{ $appointment['service'] ?? '' }}</td>
