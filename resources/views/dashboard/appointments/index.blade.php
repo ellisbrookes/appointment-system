@@ -2,22 +2,22 @@
 
 @section('content')
     <div class="container mx-auto p-8">
-        <div class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="w-full bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-4xl font-bold text-center text-gray-700">Appointments List</h2>
+                <h2 class="text-4xl font-bold text-center text-gray-700 dark:text-white">Appointments List</h2>
                 <a href="{{ route('dashboard.appointments.create.step.one') }}"
-                   class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-200">
+                   class="bg-green-600 text-white dark:text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-200">
                    Book Appointment
                 </a>
             </div>
 
             @if ($appointments->isEmpty())
-                <p class="text-center text-gray-500 py-4">No booked appointments</p>
+                <p class="text-center text-gray-500 dark:text-white py-4">No booked appointments</p>
             @else
                 <div class="overflow-x-auto">
                     <table class="w-full border border-gray-200 rounded-lg text-sm">
                         <thead>
-                            <tr class="bg-gray-800 text-white uppercase text-left">
+                            <tr class="bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-white uppercase text-left">
                                 <th class="px-6 py-3">Service</th>
                                 <th class="px-6 py-3">Date</th>
                                 <th class="px-6 py-3">User</th>
@@ -27,7 +27,7 @@
                         </thead>
                         <tbody>
                             @foreach ($appointments as $appointment)
-                                <tr class="even:bg-gray-50 hover:bg-gray-100">
+                                <tr class="even:bg-gray-50 dark:even:bg-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
                                     <td class="px-6 py-4 border-b border-gray-200">{{ $appointment->service }}</td>
                                     <td class="px-6 py-4 border-b border-gray-200">
                                         {{ \Carbon\Carbon::parse($appointment->date)->format('jS F Y') }}

@@ -3,7 +3,7 @@
 @section('content')
     <div class="min-h-screen flex items-center justify-center">
         <div class="w-full max-w-2xl p-6">
-            <h2 class="text-3xl font-semibold mb-4">Choose a Service</h2>
+            <h2 class="text-3xl font-semibold mb-4 dark:text-gray-200">Choose a Service</h2>
 
             <form action="{{ route('dashboard.appointments.create.step.one.post') }}" method="POST">
                 @csrf
@@ -20,7 +20,7 @@
 
                 <!-- Service Selection -->
                 <div class="mt-4">
-                    <label for="service" class="block text-gray-700 text-lg">Choose a Service:</label>
+                    <label for="service" class="block text-gray-800 dark:text-gray-300 text-lg">Choose a Service:</label>
                     <select name="service" id="service" class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ $appointment->service ?? '' }}">
                         <option value="" disabled selected>Select a service</option>
                         <option value="hair">Hair</option>
