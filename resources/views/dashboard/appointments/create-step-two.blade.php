@@ -3,7 +3,7 @@
 @section('content')
 <div class="min-h-screen flex items-center justify-center">
     <div class="w-full p-6">
-        <h2 class="text-3xl font-semibold mb-4">Select an appointment date and time</h2>
+        <h2 class="text-3xl font-semibold mb-4 dark:text-gray-300">Select an appointment date and time</h2>
 
         <form action="{{ route('dashboard.appointments.create.step.two.post') }}" method="POST" class="flex flex-col space-y-4 w-full">
             @csrf
@@ -22,7 +22,7 @@
             <div class="border-2 border-gray-500 rounded-md p-6">
                 <!-- Header with Month Display -->
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-4xl font-bold">{{ $currentDate->format('F Y') }}</h2>
+                    <h2 class="text-4xl font-bold dark:text-gray-300">{{ $currentDate->format('F Y') }}</h2>
 
                     <!-- Navigation -->
                     <div>
@@ -32,7 +32,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-7 gap-4 text-center">
+                <div class="grid grid-cols-7 gap-4 text-center dark:text-gray-300">
                     @foreach(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as $day)
                         <div class="font-bold tracking-wider">{{ $day }}</div>
                     @endforeach
