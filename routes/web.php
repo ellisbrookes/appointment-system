@@ -3,6 +3,7 @@
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Middleware\CheckSubscription;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -23,6 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard.index');
     })->middleware(['verified', CheckSubscription::class])->name('dashboard');
+
+    Route::get('/dashboard/company/create', [CompanyController::class, 'create'])->name('dashboard.company.create');
+    Route::post('/dashboard/company', [CompanyController::class, 'store'])->name('dashboard.company.store');
+    Route::get('/dashboard/company/{company}/edit', [CompanyController::class, 'edit'])->name('dashboard.company.edit');
+    Route::put('/dashboard/company/{company}', [CompanyController::class, 'update'])->name('dashboard.company.update');
 
     Route::get('/billing', function (Request $request) {
         return $request->user()->redirectToBillingPortal(route('dashboard'));;
