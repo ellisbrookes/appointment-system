@@ -15,9 +15,9 @@ Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 
 Route::middleware('auth')->group(function () {
     Route::controller(ProfileController::class)->group(function () {
-        Route::get('/profile', 'edit')->name('profile.edit');
-        Route::patch('/profile', 'update')->name('profile.update');
-        Route::delete('/profile', 'destroy')->name('profile.destroy');
+        Route::get('/dashboard/profile', 'edit')->name('dashboard.profile.edit');
+        Route::patch('dashboard/profile', 'update')->name('dashboard.profile.update');
+        Route::delete('dashboard/profile', 'destroy')->name('dashboard.profile.destroy');
     });
 
     Route::get('/dashboard', function () {
