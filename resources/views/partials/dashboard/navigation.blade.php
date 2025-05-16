@@ -134,7 +134,7 @@
             <i :class="isUserSidebarOpen ? 'rotate-180' : ''" class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
         </a>
 
-        <ul x-show="isUserSidebarOpen" x-transition class="absolute left-0 bottom-full w-full bg-gray-700 z-10">
+        <ul x-show="isUserSidebarOpen" x-transition class="absolute left-0 bottom-full w-full dark:border dark:border-gray-300 z-10">
             <li>
                 <a href="{{ route('dashboard.profile.edit') }}"
                    class="flex items-center px-4 py-2 hover:bg-blue-500 dark:hover:bg-blue-700"
