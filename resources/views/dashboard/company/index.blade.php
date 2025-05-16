@@ -3,7 +3,7 @@
 @section('content')
     <div class="max-w-7xl mx-auto px-6 py-10">
         {{-- Page Header --}}
-        <div class="flex items-center justify-between mb-12"> {{-- increased bottom margin --}}
+        <div class="flex items-center justify-between mb-12">
             <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
                 Your Companies
             </h1>
@@ -16,19 +16,24 @@
 
         {{-- Success Message --}}
         @if(session('success'))
-            <div class="bg-green-100 dark:bg-green-800 border border-green-300 dark:border-green-700 text-green-700 dark:text-green-100 px-6 py-4 rounded-lg mb-10"> {{-- increased bottom margin --}}
+            <div class="bg-green-100 dark:bg-green-800 border border-green-300 dark:border-green-700 text-green-700 dark:text-green-100 px-6 py-4 rounded-lg mb-10">
                 {{ session('success') }}
             </div>
         @endif
 
         {{-- Companies Grid --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-8 pt-4"> {{-- added padding top for spacing --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-8 pt-4">
             @forelse($companies as $company)
                 <a href="{{ route('dashboard.company.edit', $company) }}"
                    class="group block bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:ring-2 hover:ring-blue-500 transition-all duration-300">
                     <div class="flex items-center space-x-4">
-                        {{-- Company Avatar --}}
-                        <div class="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center text-xl font-bold shadow-inner">
+                        <div
+                          class="flex-shrink-0 w-16 h-16 rounded-full 
+                                 bg-gradient-to-br from-blue-700 to-blue-900 
+                                 flex items-center justify-center text-xl font-bold
+                                 text-white drop-shadow-md
+                                 border-2 border-blue-700 dark:border-transparent"
+                        >
                             {{ strtoupper(substr($company->company_name, 0, 2)) }}
                         </div>
 
