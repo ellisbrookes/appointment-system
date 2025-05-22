@@ -20,10 +20,10 @@
 
                 <!-- Service Selection -->
                 <div class="mt-4">
-                    <label for="service" class="block text-gray-800 dark:text-gray-300 text-lg">Choose a Service:</label>
-                    <select name="service" id="service" class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ $appointment->service ?? '' }}">
+                    <label for="service" class="block text-gray-800 dark:text-white text-lg">Choose a Service:</label>
+                    <select name="service" id="service" class="w-full p-3 mt-2 border border-gray-300 dark:border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-800" value="{{ $appointment->service ?? '' }}">
                         <option value="" disabled selected>Select a service</option>
-                        <option value="hair">Hair</option>
+                        <option value="hair" class=>Hair</option>
                         <option value="nails">Nails</option>
                         <option value="wax">Wax</option>
                     </select>
