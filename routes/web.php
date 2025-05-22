@@ -29,18 +29,6 @@ Route::middleware('auth')->group(function () {
             Route::delete('/profile', 'destroy')->name('dashboard.profile.destroy');
         });
 
-        // Company
-        Route::prefix('company')->name('dashboard.company.')->group(function () {
-            Route::get('/', [CompanyController::class, 'index'])->name('index');
-            Route::get('/create', [CompanyController::class, 'create'])->name('create');
-            Route::post('/', [CompanyController::class, 'store'])->name('store');
-            Route::get('/{company}/edit', [CompanyController::class, 'edit'])->name('edit');
-            Route::put('/{company}', [CompanyController::class, 'update'])->name('update');
-
-            Route::get('/{company}/users/create', [UserController::class, 'create'])->name('users.create');
-            Route::post('/{company}/users', [UserController::class, 'store'])->name('users.store');
-        });
-
         // Appointments
         Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {
             Route::get('/', 'index')->name('index');
