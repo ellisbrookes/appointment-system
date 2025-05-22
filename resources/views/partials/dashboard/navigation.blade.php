@@ -37,8 +37,12 @@
                     <div class="flex items-center">
                         <i class="fas fa-calendar-check text-lg mr-4"></i>
                         <span :class="isSidebarOpen ? '' : 'hidden'">Appointments</span>
+                        <i
+                            :class="[isDropdownOpen ? 'rotate-180' : '', isSidebarOpen ? 'ml-4' : '']"
+                            class="fas fa-chevron-down text-sm transition-transform duration-300"
+                        >
+                        </i>
                     </div>
-                    <i :class="isDropdownOpen ? 'rotate-180' : ''" class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
                 </a>
 
                 <ul x-show="isDropdownOpen" x-transition class="mt-2 space-y-1">
