@@ -14,19 +14,19 @@
             <p class="text-center text-gray-500 dark:text-white py-4">No booked appointments</p>
         @else
             <div class="overflow-x-auto">
-                <table class="w-full border border-gray-400 border-collapse text-sm table-auto md:table-fixed">
+                <table class="w-full border border-gray-400 border-collapse text-md table-auto md:table-fixed text-center">
                     <thead>
-                        <tr class="bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-white uppercase text-left">
-                            <th class="px-6 py-3 border border-gray-300">Service</th>
-                            <th class="px-6 py-3 border border-gray-300">Date</th>
-                            <th class="px-6 py-3 border border-gray-300">User</th>
-                            <th class="px-6 py-3 border border-gray-300">Timeslot</th>
+                        <tr class="bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-white">
+                            <th class="px-6 py-3 border border-gray-300 text-center">Service</th>
+                            <th class="px-6 py-3 border border-gray-300 text-center">Date</th>
+                            <th class="px-6 py-3 border border-gray-300 text-center">User</th>
+                            <th class="px-6 py-3 border border-gray-300 text-center">Timeslot</th>
                             <th class="px-6 py-3 border border-gray-300 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($appointments as $appointment)
-                            <tr class="even:bg-gray-50 dark:even:bg-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
+                            <tr class="even:bg-gray-50 dark:even:bg-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
                                 <td class="px-6 py-4 border border-gray-300">{{ $appointment->service }}</td>
                                 <td class="px-6 py-4 border border-gray-300">
                                     {{ \Carbon\Carbon::parse($appointment->date)->format('jS F Y') }}

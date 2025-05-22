@@ -1,10 +1,4 @@
-<aside 
-    x-data="{
-        isSidebarOpen: true,
-        isDropdownOpen: false,
-        isCompanyDropdownOpen: false,
-        isUserSidebarOpen: false
-    }"
+<aside
     :class="isSidebarOpen ? 'w-64' : 'w-16'"
     class="dark:bg-gray-900 flex flex-col dark:text-white border-r border-gray-400 h-screen fixed transition-all duration-250 ease-in-out"
 >
@@ -101,28 +95,31 @@
         <ul x-show="isUserSidebarOpen" x-transition class="absolute left-0 bottom-full w-full dark:border dark:border-gray-300 z-10">
             <li>
                 <a href="{{ route('dashboard.profile.edit') }}"
-                   class="flex items-center px-4 py-2 hover:bg-blue-500 dark:hover:bg-blue-700"
+                    :class="isSidebarOpen ? 'rounded-md px-4 py-2' : 'rounded-none p-4'"
+                    class="flex items-center space-x-2 hover:bg-blue-500 dark:hover:bg-blue-700 justify-center"
                 >
                     <i class="fas fa-user mr-2"></i>
-                    <span>Profile</span>
+                    <span :class="isSidebarOpen ? '' : 'hidden'">Profile</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('billing') }}"
-                   class="flex items-center px-4 py-2 hover:bg-blue-500 dark:hover:bg-blue-700"
+                   :class="isSidebarOpen ? 'rounded-md px-4 py-2' : 'rounded-none p-4'"
+                    class="flex items-center space-x-2 hover:bg-blue-500 dark:hover:bg-blue-700 justify-center"
                 >
                     <i class="fas fa-shopping-cart mr-2"></i>
-                    <span>Billing</span>
+                    <span :class="isSidebarOpen ? '' : 'hidden'">Billing</span>
                 </a>
             </li>
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
-                            class="flex items-center w-full px-4 py-2 hover:bg-blue-500 dark:hover:bg-blue-700"
+                            :class="isSidebarOpen ? 'rounded-md px-4 py-2' : 'rounded-none p-4'"
+                            class="flex items-center space-x-2 hover:bg-blue-500 dark:hover:bg-blue-700 justify-center w-full"
                     >
                         <i class="fas fa-sign-out-alt mr-2"></i>
-                        <span>Logout</span>
+                        <span :class="isSidebarOpen ? '' : 'hidden'">Logout</span>
                     </button>
                 </form>
             </li>

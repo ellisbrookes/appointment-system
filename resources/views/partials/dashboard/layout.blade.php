@@ -12,11 +12,11 @@
     @endif
 </head>
 <body>
-    <div x-data="{ isSidebarOpen: true, isDropdownOpen: false, isUserSidebarOpen: false }" class="flex relative dark:bg-gray-800">
+    <div x-data="{ isSidebarOpen: true, isDropdownOpen: false, isUserSidebarOpen: false }" class="flex relative dark:bg-gray-800 dark:text-white">
         <!-- Sidebar -->
         @include('partials.dashboard.navigation')
 
-        <main :class="isSidebarOpen ? 'ml-64' : 'ml-16'" class="flex-1 p-6 h-screen">
+        <main :class="isSidebarOpen ? 'ml-64' : 'ml-16'" class="flex-1 p-6">
             @if (session('alert'))
                 <x-alert :type="session('alert')['type']">
                     {{ session('alert')['message'] }}
