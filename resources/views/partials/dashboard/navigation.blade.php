@@ -69,42 +69,6 @@
                 </ul>
             </li>
 
-            <!-- Company Dropdown -->
-            <li>
-                <a href="#"
-                   @click.prevent="isCompanyDropdownOpen = !isCompanyDropdownOpen"
-                   :class="isSidebarOpen ? 'rounded-md px-4 py-2 justify-between' : 'justify-center rounded-none p-4'"
-                   class="flex items-center space-x-2 hover:bg-blue-500 dark:hover:bg-blue-700"
-                >
-                    <div class="flex items-center">
-                        <i class="fas fa-building text-lg mr-4"></i>
-                        <span :class="isSidebarOpen ? '' : 'hidden'">Company</span>
-                    </div>
-                    <i :class="isCompanyDropdownOpen ? 'rotate-180' : ''" class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
-                </a>
-
-                <ul x-show="isCompanyDropdownOpen" x-transition class="mt-2 space-y-1">
-                    <li>
-                        <a href="/dashboard/company"
-                           :class="isSidebarOpen ? 'rounded-md px-4 py-2' : 'justify-center rounded-none p-4'"
-                           class="flex items-center space-x-4 hover:bg-blue-500 dark:hover:bg-blue-700"
-                        >
-                            <i class="fas fa-eye"></i>
-                            <span :class="isSidebarOpen ? '' : 'hidden'">View Company</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/dashboard/company/create"
-                           :class="isSidebarOpen ? 'rounded-md px-4 py-2' : 'justify-center rounded-none p-4'"
-                           class="flex items-center space-x-4 hover:bg-blue-500 dark:hover:bg-blue-700"
-                        >
-                            <i class="fas fa-plus-circle"></i>
-                            <span :class="isSidebarOpen ? '' : 'hidden'">Create Company</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
             <!-- Admin -->
             @if (Auth::user()->admin)
                 <li>
