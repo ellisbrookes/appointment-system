@@ -103,7 +103,7 @@
             class="absolute left-0 bottom-full w-full z-10">
             <li>
                 <a href="{{ route('dashboard.profile.edit') }}"
-                   :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'p-4'"
+                   :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
                    class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t border-gray-400 block px-4 w-full"
 
                 >
@@ -113,7 +113,7 @@
             </li>
             <li>
                 <a href="{{ route('billing') }}"
-                   :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'p-4'"
+                   :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
                    class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t border-gray-400 block px-4 w-full"
                 >
                     <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-shopping-cart"></i>
@@ -124,7 +124,7 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
-                            :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'p-4'"
+                            :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
                             class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t border-gray-400 block px-4 w-full"
                     >
                         <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-sign-out-alt"></i>
