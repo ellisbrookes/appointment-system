@@ -1,7 +1,5 @@
-<aside
-    :class="isSidebarOpen ? 'w-64' : 'w-16'"
-    class="dark:bg-gray-900 flex flex-col dark:text-white border-r border-gray-400 h-screen fixed transition-all duration-250 ease-in-out"
->
+<aside :class="isSidebarOpen ? 'w-64' : 'w-16'"
+       class="dark:bg-gray-900 flex flex-col dark:text-white border-r border-gray-400 h-screen fixed transition-all duration-250 ease-in-out">
     <!-- Sidebar Title & Toggle -->
     <div class="flex flex-col flex-1 space-y-4">
         <button
@@ -15,12 +13,12 @@
 
         <!-- Navigation Links -->
         <ul :class="isSidebarOpen ? 'px-4' : ''" class="space-y-2">
-
             <!-- Home -->
             <li>
-                <a href="/dashboard"
-                   :class="isSidebarOpen ? 'rounded-md px-4 p-2' : 'justify-center rounded-none p-4'"
-                   class="flex items-center w-full space-x-4 hover:bg-blue-500 dark:hover:bg-blue-700"
+                <a
+                    href="/dashboard"
+                    :class="isSidebarOpen ? 'rounded-md px-4 p-2' : 'justify-center rounded-none p-4'"
+                    class="flex items-center w-full space-x-4 hover:bg-blue-500 dark:hover:bg-blue-700"
                 >
                     <i class="fas fa-house text-lg"></i>
                     <span :class="isSidebarOpen ? '' : 'hidden'">Home</span>
@@ -29,7 +27,7 @@
 
             <!-- Appointments -->
             <li>
-                <a href="#" 
+                <a href="#"
                    @click.prevent="isDropdownOpen = !isDropdownOpen"
                    :class="isSidebarOpen ? 'rounded-md px-4 py-2 justify-between' : 'justify-center rounded-none p-4'"
                    class="flex items-center space-x-2 hover:bg-blue-500 dark:hover:bg-blue-700"
@@ -84,7 +82,7 @@
 
     <!-- User Profile -->
     <div class="relative group">
-        <a href="#" 
+        <a href="#"
            @click.prevent="isUserSidebarOpen = !isUserSidebarOpen"
            :class="isSidebarOpen ? 'justify-between' : 'justify-center'"
            class="flex items-center p-4 w-full hover:bg-blue-500 dark:hover:bg-blue-700 border-t border-gray-400"
@@ -93,14 +91,16 @@
                 <i class="fas fa-user-circle text-lg mr-4"></i>
                 <span :class="isSidebarOpen ? '' : 'hidden'">{{ Auth::user()->name ?? 'Guest' }}</span>
             </div>
-            <i :class="isUserSidebarOpen ? 'rotate-180' : ''" class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+            <i :class="isUserSidebarOpen ? 'rotate-180' : ''"
+               class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
         </a>
 
-        <ul x-show="isUserSidebarOpen" x-transition class="absolute left-0 bottom-full w-full dark:border dark:border-gray-300 z-10">
+        <ul x-show="isUserSidebarOpen" x-transition
+            class="absolute left-0 bottom-full w-full dark:border dark:border-gray-300 z-10">
             <li>
                 <a href="{{ route('dashboard.profile.edit') }}"
-                    :class="isSidebarOpen ? 'rounded-md px-4 py-2' : 'rounded-none p-4'"
-                    class="flex items-center space-x-2 hover:bg-blue-500 dark:hover:bg-blue-700 justify-center"
+                   :class="isSidebarOpen ? 'rounded-md px-4 py-2' : 'rounded-none p-4'"
+                   class="flex items-center space-x-2 hover:bg-blue-500 dark:hover:bg-blue-700 justify-center"
                 >
                     <i class="fas fa-user mr-2"></i>
                     <span :class="isSidebarOpen ? '' : 'hidden'">Profile</span>
@@ -109,7 +109,7 @@
             <li>
                 <a href="{{ route('billing') }}"
                    :class="isSidebarOpen ? 'rounded-md px-4 py-2' : 'rounded-none p-4'"
-                    class="flex items-center space-x-2 hover:bg-blue-500 dark:hover:bg-blue-700 justify-center"
+                   class="flex items-center space-x-2 hover:bg-blue-500 dark:hover:bg-blue-700 justify-center"
                 >
                     <i class="fas fa-shopping-cart mr-2"></i>
                     <span :class="isSidebarOpen ? '' : 'hidden'">Billing</span>

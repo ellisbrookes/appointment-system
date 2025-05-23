@@ -5,17 +5,20 @@ namespace App\Http\Controllers;
 use App\Mail\AppointmentConfirmation;
 use App\Mail\AppointmentCancelled;
 use App\Mail\AppointmentUpdated;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Appointment;
 use App\Models\User;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
 {
     /**
      * Render the index page with a list of appointments.
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function index(Request $request)
     {
@@ -25,8 +28,8 @@ class AppointmentController extends Controller
 
     /**
       * Show the edit form for an existing appointment
-      * @param \App\Models\Appointment $appointment
-      * @return \Illuminate\Http\Response
+      * @param Appointment $appointment
+      * @return Response
     */
     public function edit(Appointment $appointment)
     {
@@ -35,9 +38,9 @@ class AppointmentController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Appointment $appointment
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param Appointment $appointment
+     * @return RedirectResponse
     */
     public function update(Request $request, Appointment $appointment)
     {
@@ -60,7 +63,7 @@ class AppointmentController extends Controller
 
     /**
      * Show step one of creating an appointment, selecting the service.
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function createStepOne(Request $request)
     {
@@ -70,8 +73,8 @@ class AppointmentController extends Controller
 
     /**
      * Post request to store the service in the session.
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function createPostStepOne(Request $request)
     {
@@ -89,7 +92,7 @@ class AppointmentController extends Controller
 
     /**
      * Show step two of creating an appointment, selecting date and time.
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function createStepTwo(Request $request)
     {
@@ -138,8 +141,8 @@ class AppointmentController extends Controller
 
     /**
      * Post request to store the date and timeslot in the session.
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function createPostStepTwo(Request $request)
     {
@@ -159,7 +162,7 @@ class AppointmentController extends Controller
     /**
      * Show step three of creating an appointment, reviewing details.
      * This step now includes a dropdown for selecting a user.
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function createStepThree(Request $request)
     {
@@ -170,8 +173,8 @@ class AppointmentController extends Controller
 
     /**
      * Post request to create the appointment using session data.
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function createPostStepThree(Request $request)
     {
