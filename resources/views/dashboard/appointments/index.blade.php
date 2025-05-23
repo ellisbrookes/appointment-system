@@ -1,8 +1,9 @@
 @php use Carbon\Carbon; @endphp
+
 @extends('partials.dashboard.layout')
 
 @section('content')
-    <div class="container mx-auto p-8">
+    <div class="container mx-auto">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-4xl font-bold text-center text-gray-700 dark:text-white">Appointments List</h2>
             <a href="{{ route('dashboard.appointments.create.step.one') }}"
@@ -15,7 +16,8 @@
             <p class="text-center text-gray-500 dark:text-white py-4">No booked appointments</p>
         @else
             <div class="overflow-x-auto">
-                <table class="w-full border border-gray-400 border-collapse text-md table-auto md:table-fixed text-center">
+                <table
+                    class="w-full border border-gray-400 border-collapse text-md table-auto md:table-fixed text-center">
                     <thead>
                     <tr class="bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-white">
                         <th class="px-6 py-3 border border-gray-300 text-center">Service</th>
