@@ -1,4 +1,4 @@
-@extends('dashboard.partials.layout')
+@extends('layouts.dashboard')
 
 @section('content')
 
