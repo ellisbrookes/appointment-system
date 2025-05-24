@@ -1,9 +1,9 @@
-@extends('partials.dashboard.layout')
+@extends('dashboard.partials.layout')
 
 @section('content')
 
-<div class="py-12">
-    <div class="max-w-7xl mx-auto space-y-6">
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto space-y-6">
             <h2 class="font-semibold text-2xl text-black dark:text-white leading-tight">
                 {{ __('Edit profile') }}
             </h2>
@@ -27,6 +27,6 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 
 @endsection
