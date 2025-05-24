@@ -1,5 +1,5 @@
 @php use Carbon\Carbon; @endphp
-@extends('dashboard.partials.layout')
+@extends('layouts.dashboard')
 
 @section('content')
     <!-- Hero Section -->
