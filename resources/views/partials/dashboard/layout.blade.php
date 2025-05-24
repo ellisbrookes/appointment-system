@@ -16,7 +16,8 @@
 <!-- Sidebar -->
 @include('partials.dashboard.navigation')
 
-<main :class="isSidebarOpen ? 'ml-64' : 'ml-16'" class="flex flex-1 py-8 px-6 bg-white dark:bg-gray-900 h-screen">
+<main :class="isSidebarOpen ? 'ml-64' : 'ml-16'"
+      class="flex flex-col flex-1 py-8 px-6 bg-white dark:bg-gray-900 h-screen">
     @if (session('alert'))
         <x-alert :type="session('alert')['type']">
             {{ session('alert')['message'] }}
