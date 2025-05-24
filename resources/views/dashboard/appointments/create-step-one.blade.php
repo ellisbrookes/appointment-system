@@ -1,4 +1,4 @@
-@extends('partials.dashboard.layout')
+@extends('dashboard.partials.layout')
 
 @section('content')
     <div class="flex flex-col justify-center mx-auto w-full max-w-2xl p-6">
