@@ -1,6 +1,6 @@
 @php use Carbon\Carbon; @endphp
 
-@extends('partials.dashboard.layout')
+@extends('dashboard.partials.layout')
 
 @section('content')
     <div class="container mx-auto">
