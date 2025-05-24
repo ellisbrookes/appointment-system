@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Stripe\StripeClient;
 
@@ -38,7 +39,7 @@ class PricingController extends Controller
             });
 
             return view('pricing.index', compact('productsWithPrices'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
     }

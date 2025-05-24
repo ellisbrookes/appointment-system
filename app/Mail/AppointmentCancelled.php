@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AppointmentConfirmation extends Mailable
+class AppointmentCancelled extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -28,7 +28,7 @@ class AppointmentConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Appointment Confirmation',
+            subject: 'Appointment Cancelled',
         );
     }
 
@@ -38,7 +38,7 @@ class AppointmentConfirmation extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.appointment_confirmation',
+            view: 'emails.appointment_cancelled',
             with: [
                 'service' => $this->appointment->service,
                 'date' => $this->appointment->date,

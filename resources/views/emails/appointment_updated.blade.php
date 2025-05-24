@@ -4,21 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointment Confirmation</title>
+    <title>Appointment Updated</title>
 </head>
 <body style="background-color: #f3f4f6; color: #111827; font-family: Arial, sans-serif; padding: 20px; margin: 0;">
 <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden; border: 1px solid #e5e7eb;">
     <!-- Header -->
     <div style="background-color: #1f2937; color: #ffffff; padding: 20px; text-align: center;">
         <h1 style="margin: 0; font-size: 28px; font-weight: bold;">Appointment System</h1>
-        <p style="margin: 8px 0 0; font-size: 16px;">Thank you for booking with us!</p>
+        <p style="margin: 8px 0 0; font-size: 16px;">Apppointment Updated</p>
     </div>
 
     <!-- Body -->
     <div style="padding: 24px;">
         <p style="margin: 0 0 8px; font-size: 16px;">Hello,</p>
-        <p style="margin: 16px 0 16px; font-size: 16px;">We’re thrilled to confirm your appointment. Please find the
-            details below:</p>
+        <p style="margin: 16px 0 16px; font-size: 16px;">We have updated your appointment. Please find the details
+            below:</p>
     </div>
 
     <!-- Appointment Details -->
