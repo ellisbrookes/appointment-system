@@ -69,7 +69,7 @@
             </li>
 
             <!-- Admin -->
-            @if (Auth::user()->admin)
+            {{-- @if (Auth::user()->admin)
                 <li>
                     <a href="/dashboard/admin"
                        :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
@@ -79,7 +79,7 @@
                         <span :class="isSidebarOpen ? '' : 'hidden'">Admin</span>
                     </a>
                 </li>
-            @endif
+            @endif --}}
         </ul>
     </div>
 
@@ -102,7 +102,7 @@
         <ul x-show="isUserSidebarOpen" x-transition
             class="absolute left-0 bottom-full w-full z-10">
             <li>
-                <a href="{{ route('dashboard.profile.edit') }}"
+                <a href="{{ route('dashboard') }}"
                    :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
                    class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t border-gray-400 block px-4 w-full"
 
@@ -119,18 +119,6 @@
                     <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-shopping-cart"></i>
                     <span :class="isSidebarOpen ? '' : 'hidden'">Billing</span>
                 </a>
-            </li>
-            <li>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit"
-                            :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
-                            class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t border-gray-400 block px-4 w-full"
-                    >
-                        <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-sign-out-alt"></i>
-                        <span :class="isSidebarOpen ? '' : 'hidden'">Logout</span>
-                    </button>
-                </form>
             </li>
         </ul>
     </div>
