@@ -1,4 +1,4 @@
-@extends('layouts.dashboard.layout')
+@extends('dashboard.layout')
 
 @section('content')
     <div class="py-12">
