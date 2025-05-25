@@ -4,7 +4,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto space-y-6">
             <div>
-                <h2 class="font-semibold text-2xl text-black dark:text-white leading-tight">
+                <h2 class="font-semibold text-2xl leading-tight">
                     Edit Appointment
                 </h2>
             </div>
