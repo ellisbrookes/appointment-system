@@ -1,8 +1,8 @@
-@extends('layout')
+@extends('layouts.layout')
 
 @section('content')
 
-  <section id="pricing" class="bg-white border-b-2 border-gray-200 py-12 px-4 pt-20">
+  <section id="pricing" class="bg-white py-12 px-4 pt-20">
     <div class="container mx-auto text-center">
       <h2 class="text-4xl font-bold mb-8">Pricing</h2>
 
