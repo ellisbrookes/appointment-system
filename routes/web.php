@@ -65,5 +65,3 @@ Route::middleware('auth')->group(function () {
       })->name('subscription');
     });
   });
-
-require __DIR__ . '/auth.php';
