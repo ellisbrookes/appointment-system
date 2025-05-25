@@ -9,19 +9,19 @@
 
       <div class="p-4 sm:p-8 bg-white border dark:bg-gray-900 sm:rounded-lg">
         <div class="max-w-xl">
-          @include('dashboard.profile.partials.update-profile-information-form')
+          @include('components.dashboard.profile.update-profile-information-form')
         </div>
       </div>
 
       <div class="p-4 sm:p-8 bg-white border dark:bg-gray-900 sm:rounded-lg">
         <div class="max-w-xl">
-          @include('dashboard.profile.partials.update-password-form')
+          <!-- @include('components.dashboard.profile.update-password-form') -->
         </div>
       </div>
 
       <div class="p-4 sm:p-8 bg-white border dark:bg-gray-900 sm:rounded-lg">
         <div class="max-w-xl">
-          @include('dashboard.profile.partials.delete-user-form')
+          <!-- @include('components.dashboard.profile.delete-user-form') -->
         </div>
       </div>
     </div>

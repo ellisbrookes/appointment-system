@@ -15,7 +15,7 @@
     @endif
   </head>
   <body class="min-h-screen flex flex-col"> 
-    @include('layouts.components.navigation')
+    @include('components.website.navigation')
 
     <main class="flex-1">
       @if (session('alert'))
@@ -27,6 +27,6 @@
       @yield('content')
     </main>
 
-    @include('layouts.components.footer')
+    @include('components.website.footer')
   </body>
 </html>
