@@ -18,7 +18,6 @@ class Header extends Component
    * @param $heading
    * @param $subheading
    */
-
   public function __construct($type, $heading, $subheading)
   {
     $this->type = $type;
@@ -37,9 +36,9 @@ class Header extends Component
   public function headerVariant(): string
   {
     return match ($this->type) {
-      'sidebar' => 'text-white h-screen my-4 px-20',
+      'sidebar' => 'text-white h-full w-lg md:w-64 py-24 md:py-0',
       'top' => 'text-white py-24',
-      'cosy' => 'bg-red-100 text-red-800 border-red-300'
+      'cosy' => 'text-white py-12',
     };
   }
 }

@@ -1,26 +1,25 @@
 @extends('layouts.layout')
 
 @section('content')
+  <div class="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4 h-full">
+    <x-shared.header type="sidebar" heading="Login" subheading="Use this page to login" />
 
-<div class="container mx-auto flex">
-  <x-shared.header type="sidebar" heading="Login" subheading="Use this page to login" />
-
-    <div>
-      <form method="POST" action="{{ route('register') }}">
+    <div class="md:flex md:justify-center md:items-center md:w-1/2">
+      <form method="POST" action="{{ route('register') }}" class="p-16 rounded-md border">
         @csrf
 
         <!-- Name -->
-         <div>
+        <div>
           <x-shared.input-label for="name" :value="__('Name')" />
-          <x-shared.text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+          <x-shared.text-input id="name" type="text" name="name" :value="old('name')" required autofocus />
 
-          <x-shared.input-error :messages="$errors->get('name')" class="mt-2" />
+          <x-shared.input-error :messages="$errors->get('name')"  bclass="mt-2" />
         </div>
 
-        <!-- Email Address -->
+        <!-- Email address -->
         <div class="mt-4">
           <x-shared.input-label for="email" :value="__('Email')" />
-          <x-shared.text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+          <x-shared.text-input id="email" type="email" name="email" :value="old('email')" required />
           
           <x-shared.input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
@@ -28,7 +27,7 @@
         <!-- Telephone number -->
         <div class="mt-4">
           <x-shared.input-label for="telephone_number" :value="__('Telephone number')" />
-          <x-shared.text-input id="telephone_number" class="block mt-1 w-full" type="tel" name="telephone_number" :value="old('telephone_number')" required autocomplete="telephone_number" />
+          <x-shared.text-input id="telephone_number" type="tel" name="telephone_number" :value="old('telephone_number')" required />
           
           <x-shared.input-error :messages="$errors->get('telephone_number')" class="mt-2" />
         </div>
@@ -36,15 +35,15 @@
         <!-- Password -->
         <div class="mt-4">
           <x-shared.input-label for="password" :value="__('Password')" />
-          <x-shared.text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+          <x-shared.text-input id="password" type="password" name="password" required />
 
           <x-shared.input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- Confirm Password -->
+        <!-- Confirm password -->
         <div class="mt-4">
           <x-shared.input-label for="password_confirmation" :value="__('Confirm Password')" />
-          <x-shared.text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+          <x-shared.text-input id="password_confirmation" type="password" name="password_confirmation" required />
 
           <x-shared.input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>

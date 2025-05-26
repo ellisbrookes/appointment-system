@@ -20,7 +20,7 @@ class TextInput extends Component
      * @param $name
      * @param $value
      */
-    public function __construct($id, $type, $name, $value)
+    public function __construct($id, $type, $name, $value = false)
     {
         $this->id = $id;
         $this->type = $type;
