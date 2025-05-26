@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PricingController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Middleware\CheckSubscription;
 use Illuminate\Support\Facades\Route;
@@ -54,3 +53,5 @@ Route::prefix('dashboard')->group(function () {
       ]);
     })->name('subscription');
   });
+
+require __DIR__.'/auth.php';
