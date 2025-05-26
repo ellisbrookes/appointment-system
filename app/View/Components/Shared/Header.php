@@ -36,9 +36,9 @@ class Header extends Component
   public function headerVariant(): string
   {
     return match ($this->type) {
-      'sidebar' => 'text-white h-full w-lg md:w-64 py-24 md:py-0',
-      'top' => 'text-white py-24',
-      'cosy' => 'text-white py-12',
+      'sidebar' => 'text-white h-full md:w-7xl py-24 md:py-0',
+      'top' => 'text-white py-24 w-full',
+      'cosy' => 'text-white py-12 w-full',
     };
   }
 }

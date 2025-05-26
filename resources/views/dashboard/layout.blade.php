@@ -16,10 +16,12 @@
   @include('components.dashboard.sidebar')
 
   <main :class="isSidebarOpen ? 'ml-64' : 'ml-16'" class="flex flex-col flex-1 py-8 px-6 bg-white dark:bg-gray-900 h-screen">
-      <x-shared.alert type="default">
-        Test
+    @if (session('alert'))
+      <x-shared.alert :type="session('alert')['type']">
+        {{ session('alert')['message'] }}
       </x-shared.alert>
-      
+    @endif
+
     @yield('content')
   </main>
 </body>
