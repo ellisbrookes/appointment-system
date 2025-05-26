@@ -6,14 +6,20 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class primary-button extends Component
+class InputLabel extends Component
 {
+    public $for;
+    public $value;
+
     /**
      * Create a new component instance.
+     * @param $for
+     * @param $value
      */
-    public function __construct()
+    public function __construct($for, $value)
     {
-        //
+        $this->for = $for;
+        $this->value = $value;
     }
 
     /**
@@ -21,6 +27,6 @@ class primary-button extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.shared.primary-button');
+        return view('components.shared.input-label');
     }
 }

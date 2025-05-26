@@ -6,14 +6,26 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class text-input extends Component
+class TextInput extends Component
 {
+    public $id;
+    public $type;
+    public $name;
+    public $value;
+    
     /**
      * Create a new component instance.
+     * @param $id
+     * @param $type
+     * @param $name
+     * @param $value
      */
-    public function __construct()
+    public function __construct($id, $type, $name, $value)
     {
-        //
+        $this->id = $id;
+        $this->type = $type;
+        $this->name = $name;
+        $this->value = $value;
     }
 
     /**

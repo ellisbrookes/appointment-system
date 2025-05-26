@@ -18,12 +18,6 @@
     @include('components.website.navigation')
 
     <main class="flex-1">
-      @if (session('alert'))
-        <x-alert :type="session('alert')['type']">
-          {{ session('alert')['message'] }}
-        </x-alert>
-      @endif
-
       @yield('content')
     </main>
 
