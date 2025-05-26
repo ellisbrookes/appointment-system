@@ -5,7 +5,7 @@
     <x-shared.header type="sidebar" heading="Register" subheading="Use this page to register your account" />
 
     <div class="md:flex md:justify-center md:items-center h-full md:w-full">
-      <form method="POST" action="{{ route('auth.register') }}" class="flex flex-col space-y-4 p-16 rounded-md border">
+      <form method="POST" action="{{ route('register') }}" class="flex flex-col space-y-4 p-16 rounded-md border">
         @csrf
 
         <!-- Name -->

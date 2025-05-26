@@ -19,7 +19,7 @@ Route::prefix('dashboard')->group(function () {
   // Dashboard Home
   Route::get('/', function () {
     return view('dashboard.index');
-  })->name('dashboard');
+  })->name('dashboard')->middleware('auth');
 
   // Appointments
   Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {
