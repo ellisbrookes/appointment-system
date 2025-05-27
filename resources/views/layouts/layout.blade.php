@@ -17,9 +17,9 @@
   <body class="flex flex-col h-screen"> 
     @include('components.website.navigation')
 
-    <main class="flex-1">
+    <main class="flex-1 relative">
       @if (session('alert'))
-        <x-shared.alert :type="session('alert')['type']">
+        <x-shared.alert class="w-full absolute" :type="session('alert')['type']">
           {{ session('alert')['message'] }}
         </x-shared.alert>
       @endif
