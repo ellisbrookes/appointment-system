@@ -1,5 +1,5 @@
 @php use Carbon\Carbon; @endphp
-@extends('layouts.dashboard')
+@extends('dashboard.layout')
 
 @section('content')
     <div class="flex flex-col justify-center mx-auto w-full max-w-2xl p-6">
@@ -37,7 +37,7 @@
                         <td class="border px-6 py-4">
                             @if (Auth::user()->admin)
                                 <select name="user_id" id="user_id"
-                                        class="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                        class="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-xs focus:outline-hidden focus:ring-blue-500 focus:border-blue-500 text-sm">
                                     <option value="" disabled selected>Select a user</option>
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -56,11 +56,11 @@
             <!-- Previous and Submit Buttons -->
             <div class="flex justify-between mt-4">
                 <a href="{{ route('dashboard.appointments.create.step.two') }}"
-                   class="bg-gray-600 text-white py-3 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-200">Previous
+                   class="bg-gray-600 text-white py-3 px-4 rounded-md hover:bg-gray-700 focus:outline-hidden focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-200">Previous
                     Step</a>
 
                 <button type="submit"
-                        class="bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
+                        class="bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
                     Confirm
                 </button>
             </div>

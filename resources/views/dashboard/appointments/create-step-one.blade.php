@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('dashboard.layout')
 
 @section('content')
     <div class="flex flex-col justify-center mx-auto w-full max-w-2xl p-6">
@@ -21,7 +21,7 @@
             <div class="mt-4">
                 <label for="service" class="block text-gray-800 dark:text-white text-lg">Choose a Service:</label>
                 <select name="service" id="service"
-                        class="w-full p-3 mt-2 border border-gray-300 dark:border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-800"
+                        class="w-full p-3 mt-2 border border-gray-300 dark:border-gray-200 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-800"
                         value="{{ $appointment->service ?? '' }}">
                     <option value="" disabled selected>Select a service</option>
                     <option value="hair" class=>Hair</option>
@@ -33,7 +33,7 @@
             <!-- Submit Button -->
             <div class="mt-4 text-center">
                 <button type="submit"
-                        class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
+                        class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
                     Next Step
                 </button>
             </div>

@@ -1,25 +1,35 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+@extends('layouts.layout')
+
+@section('content')
+  <div class="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 h-full p-4">
+    <x-shared.header type="sidebar" heading="Register" subheading="Use this page to register your account" />
+
+    <div class="md:flex md:justify-center md:items-center h-full md:w-full">
+      <form method="POST" action="{{ route('register') }}" class="flex flex-col space-y-4 p-16 rounded-md border">
         @csrf
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+          <x-shared.input-label for="name" :value="__('Name')" />
+          <x-shared.text-input id="name" type="text" name="name" :value="old('name')" required autofocus />
+
+          <x-shared.input-error :messages="$errors->get('name')"  bclass="mt-2" />
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <!-- Email address -->
+        <div>
+          <x-shared.input-label for="email" :value="__('Email')" />
+          <x-shared.text-input id="email" type="email" name="email" :value="old('email')" required />
+          
+          <x-shared.input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <div class="mt-4">
-            <x-input-label for="telephone_number" :value="__('Telephone Number')" />
-            <x-text-input id="telephone_number" type="tel-number" class="block mt-1 w-full" type="tel" name="telephone_number" :value="old('telephone_number')" required autocomplete="telephone_number" />
-            <x-input-error :messages="$errors->get('Telephone_number')" class="mt-2" />
+        <!-- Telephone number -->
+        <div>
+          <x-shared.input-label for="telephone_number" :value="__('Telephone number')" />
+          <x-shared.text-input id="telephone_number" type="tel" name="telephone_number" :value="old('telephone_number')" />
+          
+          <x-shared.input-error :messages="$errors->get('telephone_number')" class="mt-2" />
         </div>
 
          <div class="mt-4">
@@ -31,36 +41,31 @@
 
 
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <div>
+          <x-shared.input-label for="password" :value="__('Password')" />
+          <x-shared.text-input id="password" type="password" name="password" required />
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+          <x-shared.input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+        <!-- Confirm password -->
+        <div>
+          <x-shared.input-label for="password_confirmation" :value="__('Confirm Password')" />
+          <x-shared.text-input id="password_confirmation" type="password" name="password_confirmation" required />
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+          <x-shared.input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
+        <div class="flex items-center justify-end">
+          <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('dashboard') }}">
+            {{ __('Already registered?') }}
+          </a>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
+          <x-shared.primary-button class="ms-4">
+            {{ __('Register') }}
+          </x-shared.primary-button>
         </div>
-    </form>
-</x-guest-layout>
+      </form>
+    </div>
+  </div>
+@endsection

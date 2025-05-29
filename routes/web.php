@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PricingController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Middleware\CheckSubscription;
 use Illuminate\Support\Facades\Route;
@@ -16,54 +15,43 @@ Route::get('/', function () {
 // Pricing
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 
-Route::middleware('auth')->group(function () {
-  Route::prefix('dashboard')->group(function () {
-    // Dashboard Home
-    Route::get('/', function () {
-      return view('dashboard.index');
-    })->middleware(['verified', CheckSubscription::class])->name('dashboard');
+Route::prefix('dashboard')->group(function () {
+  // Dashboard Home
+  Route::get('/', function () {
+    return view('dashboard.index');
+  })->name('dashboard')->middleware('auth');
 
-    // Profile
-    Route::controller(ProfileController::class)->group(function () {
-      Route::get('profile', 'edit')->name('dashboard.profile.edit');
-
-      Route::patch('profile', 'update')->name('dashboard.profile.update');
-      
-      Route::delete('profile', 'destroy')->name('dashboard.profile.destroy');
-    });
-
-      // Appointments
-      Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('{appointment}/edit', 'edit')->name('edit');
-        Route::get('create-step-one', 'createStepOne')->name('create.step.one');
-        Route::get('create-step-two', 'createStepTwo')->name('create.step.two');
-        Route::get('create-step-three', 'createStepThree')->name('create.step.three');
-        
-        Route::post('create-step-one', 'createPostStepOne')->name('create.step.one.post');
-        Route::post('create-step-two', 'createPostStepTwo')->name('create.step.two.post');
-        Route::post('create-step-three', 'createPostStepThree')->name('create.step.three.post');
-        
-        Route::put('{appointment}', 'update')->name('update');
-        
-        Route::delete('{appointment}/destroy', 'destroy')->name('destroy');
-      });
-
-    // Billing
-    Route::get('/billing', function (Request $request) {
-      return $request->user()->redirectToBillingPortal(route('dashboard'));
-    })->name('billing');
-
-    Route::post('/subscription-checkout', function (Request $request) {
-      return $request->user()
-        ->newSubscription('basic', 'price_1QbtKfGVcskF822y3QlF13vZ')
-        ->allowPromotionCodes()
-        ->checkout([
-          'success_url' => route('dashboard'),
-          'cancel_url' => route('dashboard'),
-        ]);
-      })->name('subscription');
-    });
+  // Appointments
+  Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('{appointment}/edit', 'edit')->name('edit');
+    Route::get('create-step-one', 'createStepOne')->name('create.step.one');
+    Route::get('create-step-two', 'createStepTwo')->name('create.step.two');
+    Route::get('create-step-three', 'createStepThree')->name('create.step.three');
+    
+    Route::post('create-step-one', 'createPostStepOne')->name('create.step.one.post');
+    Route::post('create-step-two', 'createPostStepTwo')->name('create.step.two.post');
+    Route::post('create-step-three', 'createPostStepThree')->name('create.step.three.post');
+    
+    Route::put('{appointment}', 'update')->name('update');
+    
+    Route::delete('{appointment}/destroy', 'destroy')->name('destroy');
   });
 
-require __DIR__ . '/auth.php';
+  // Billing
+  Route::get('/billing', function (Request $request) {
+    return $request->user()->redirectToBillingPortal(route('dashboard'));
+  })->name('billing');
+
+  Route::post('/subscription-checkout', function (Request $request) {
+    return $request->user()
+      ->newSubscription('basic', 'price_1QbtKfGVcskF822y3QlF13vZ')
+      ->allowPromotionCodes()
+      ->checkout([
+        'success_url' => route('dashboard'),
+        'cancel_url' => route('dashboard'),
+      ]);
+    })->name('subscription');
+  });
+
+require __DIR__.'/auth.php';
