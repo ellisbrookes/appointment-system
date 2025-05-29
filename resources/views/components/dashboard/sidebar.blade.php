@@ -120,6 +120,26 @@
                     <span :class="isSidebarOpen ? '' : 'hidden'">Billing</span>
                 </a>
             </li>
+            <li>
+                <form
+                    method="POST"
+                    action="{{ route('logout') }}"
+                    class="flex items-center px-4 py-2 w-full hover:bg-blue-700"
+                >
+                    @csrf
+                    <button
+                        type="submit"
+                        :class="isSidebarOpen ? '' : 'text-center'"
+                        class="flex items-center w-full"
+                    >
+                        <i
+                            class="fas fa-sign-out-alt"
+                            :class="isSidebarOpen ? 'mr-2' : ''"
+                        ></i>
+                        <span :class="isSidebarOpen ? '' : 'hidden'">Logout</span>
+                    </button>
+                </form>
+            </li>
         </ul>
     </div>
 </aside>
