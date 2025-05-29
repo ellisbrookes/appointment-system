@@ -78,7 +78,7 @@
 
     <ul x-show="isUserSidebarOpen" x-transition class="absolute left-0 bottom-full w-full z-10">
       <li>
-        <a href="{{ route('dashboard.profile.edit') }}" :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4 w-full">
+        <a href="{{ route('dashboard') }}" :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4 w-full">
           <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-user"></i>
           <span :class="isSidebarOpen ? '' : 'hidden'">Profile</span>
         </a>
