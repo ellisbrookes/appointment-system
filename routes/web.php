@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PricingController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Middleware\CheckSubscription;
 use Illuminate\Support\Facades\Route;
@@ -20,7 +19,7 @@ Route::prefix('dashboard')->group(function () {
   // Dashboard Home
   Route::get('/', function () {
     return view('dashboard.index');
-  })->name('dashboard');
+  })->name('dashboard')->middleware('auth');
 
   // Appointments
   Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {
@@ -54,3 +53,5 @@ Route::prefix('dashboard')->group(function () {
       ]);
     })->name('subscription');
   });
+
+require __DIR__.'/auth.php';

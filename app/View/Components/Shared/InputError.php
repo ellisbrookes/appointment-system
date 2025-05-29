@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class auth-session-status extends Component
+class InputError extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class auth-session-status extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.shared.auth-session-status');
+        return view('components.shared.input-error');
     }
 }

@@ -14,16 +14,16 @@
       @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
   </head>
-  <body class="min-h-screen flex flex-col"> 
+  <body class="flex flex-col h-screen"> 
     @include('components.website.navigation')
 
-    <main class="flex-1">
+    <main class="flex-1 relative">
       @if (session('alert'))
-        <x-alert :type="session('alert')['type']">
+        <x-shared.alert class="w-full absolute" :type="session('alert')['type']">
           {{ session('alert')['message'] }}
-        </x-alert>
+        </x-shared.alert>
       @endif
-
+      
       @yield('content')
     </main>
 
