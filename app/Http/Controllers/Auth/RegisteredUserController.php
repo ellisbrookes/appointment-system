@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -15,43 +15,30 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
-    public function create(): View
-    {
-        return view('auth.register');
-    }
+  public function create(): View {
+    return view('auth.register');
+  }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws ValidationException
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'company_name' => ['nullable', 'string '],
-            'telephone_number' => ['required', 'string'],
-        ]);
+  public function store(Request $request): RedirectResponse {
+    $request->validate([
+      'name' => ['required', 'string', 'max:255'],
+      'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+      'password' => ['required', 'confirmed', Rules\Password::defaults()],
+      'telephone_number' => ['nullable','string']
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'company_name' => $request->company_name,
-            'telephone_number' => $request->telephone_number
-        ]);
+    $user = User::create([
+      'name' => $request->name,
+      'email' => $request->email,
+      'password' => Hash::make($request->password),
+      'telephone_number' => $request->telephone_number
+    ]);
 
-        event(new Registered($user));
+    event(new Registered($user));
 
-        $user->createAsStripeCustomer();
-
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
-    }
+    return redirect('auth.login')->with('alert', [
+      'type' => 'success',
+      'message' => 'Account successfully created, please login'
+    ]);
+  }
 }
