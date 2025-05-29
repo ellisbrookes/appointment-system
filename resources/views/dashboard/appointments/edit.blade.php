@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('dashboard.layout')
 
 @section('content')
     <div class="py-12">
@@ -9,7 +9,7 @@
                 </h2>
             </div>
 
-            <div class="p-6 sm:p-8 bg-white border border-gray-400 dark:bg-gray-900 sm:rounded-lg shadow">
+            <div class="p-6 sm:p-8 bg-white border border-gray-400 dark:bg-gray-900 sm:rounded-lg shadow-sm">
                 <form action="{{ route('dashboard.appointments.update', $appointment->id) }}" method="POST"
                       class="max-w-xl mx-auto">
                     @csrf
@@ -23,7 +23,7 @@
                             id="service"
                             name="service"
                             value="{{ old('service', $appointment->service) }}"
-                            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                         >
                         @error('service')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -38,7 +38,7 @@
                             id="date"
                             name="date"
                             value="{{ old('date', $appointment->date) }}"
-                            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                         >
                         @error('date')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -53,7 +53,7 @@
                             id="timeslot"
                             name="timeslot"
                             value="{{ old('timeslot', $appointment->timeslot) }}"
-                            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                         >
                         @error('timeslot')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -66,7 +66,7 @@
                         <select
                             id="user_id"
                             name="user_id"
-                            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                         >
                             @foreach ($users as $user)
                                 <option
@@ -83,7 +83,7 @@
                     <!-- Submit Button -->
                     <button
                         type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded shadow transition duration-150 ease-in-out"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-sm shadow-sm transition duration-150 ease-in-out"
                     >
                         Update Appointment
                     </button>
