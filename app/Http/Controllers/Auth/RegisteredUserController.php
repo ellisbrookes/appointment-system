@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
 
     return redirect()->route('login')->with('alert', [
       'type' => 'success',
-      'message' => 'Account successfully created, please login'
+      'message' => 'Account successfully created, please verify your email'
     ]);
   }
 }
