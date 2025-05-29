@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
 
     event(new Registered($user));
 
-    return redirect('auth.login')->with('alert', [
+    return redirect()->route('login')->with('alert', [
       'type' => 'success',
       'message' => 'Account successfully created, please login'
     ]);
