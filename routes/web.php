@@ -3,6 +3,7 @@
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Middleware\CheckSubscription;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -15,11 +16,11 @@ Route::get('/', function () {
 // Pricing
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 
-Route::prefix('dashboard')->group(function () {
+Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
   // Dashboard Home
   Route::get('/', function () {
     return view('dashboard.index');
-  })->name('dashboard')->middleware(['auth', 'verified']);
+  })->name('dashboard');
 
   // Appointments
   Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {
@@ -51,7 +52,10 @@ Route::prefix('dashboard')->group(function () {
         'success_url' => route('dashboard'),
         'cancel_url' => route('dashboard'),
       ]);
-    })->name('subscription');
-  });
+  })->name('subscription');
+
+  Route::get('settings', [SettingsController::class, 'index'])->name('dashboard.settings.index');
+  Route::post('settings', [SettingsController::class, 'update'])->name('dashboard.settings.update');
+});
 
 require __DIR__.'/auth.php';
