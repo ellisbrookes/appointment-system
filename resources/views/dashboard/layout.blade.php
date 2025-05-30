@@ -24,7 +24,7 @@
   
   <main 
     :class="isSidebarOpen ? 'ml-64' : 'ml-16'"
-    class="flex flex-col flex-1 py-8 px-6 bg-white dark:bg-gray-900 h-screen transition-all duration-300"
+    class="flex flex-col flex-1 py-8 px-6 bg-white dark:bg-gray-900 h-screen"
   >
     @if (session('alert'))
       <x-shared.alert :type="session('alert')['type']">
