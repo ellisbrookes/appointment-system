@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,24 +12,30 @@ use Illuminate\View\View;
 
 class SettingsController extends Controller
 {
-    public function index()
+    public function index(): View
     {
       return view('dashboard.settings.index');
     }
 
-    public function update(Request $request)
+    public function store(Request $request)
     {
-        $request->validate([
-            'navigation_type' => 'required|in:sidebar,topnav'
-        ]);
+      $user = Auth::user();
 
-        $user = $request->user();
-        $user->navigation_type = $request->navigation_type;
-        $user->save();
+      $validatedData = $request->validate([
+        'settings.navigation_style' => 'required|string|in:sidebar, top_nav'
+      ]);
+      
+      dd($request);
 
-        return redirect()->route('dashboard.settings.index')->with('alert', [
-            'type' => 'success',
-            'message' => 'Settings updated!',
-        ]);
+      $settings = $user->settings ?? [];
+
+      $user->settings = array_merge($settings, $validatedData['settings']);
+      
+      $user->save();
+
+      return redirect()->route('dashboard.settings.index')->with('alert', [
+        'type' => 'success',
+        'message' => 'Settings updated!',
+      ]);
     }
 }

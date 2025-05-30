@@ -31,6 +31,10 @@ class User extends Authenticatable implements MustVerifyEmail
     'telephone_number'
   ];
 
+  protected $casts = [
+    'settings' => 'array'
+  ];
+
   /**
    * The attributes that should be hidden for serialization.
    *

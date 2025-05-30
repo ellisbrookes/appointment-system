@@ -55,7 +55,7 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
   })->name('subscription');
 
   Route::get('settings', [SettingsController::class, 'index'])->name('dashboard.settings.index');
-  Route::post('settings', [SettingsController::class, 'update'])->name('dashboard.settings.update');
+  Route::put('settings', [SettingsController::class, 'store'])->name('dashboard.settings.store');
 });
 
 require __DIR__.'/auth.php';
