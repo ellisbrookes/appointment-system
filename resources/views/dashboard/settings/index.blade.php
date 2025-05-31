@@ -10,6 +10,7 @@
       @method('PUT')
 
       <div>
+        <h2 class="text-2xl font-bold mb-4">Appearance</h2>
         <x-shared.input-label for="navigation_style" :value="__('Navigation Style')" />
 
         <select name="settings[navigation_style]" id="navigation_style" class="block mt-1 w-full bg-transparent dark:bg-gray-800 focus:border-gray-500 dark:focus:border-gray-600 focus:ring-gray-500 dark:focus:ring-gray-600 rounded-md">
