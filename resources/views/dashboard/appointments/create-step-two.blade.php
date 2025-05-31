@@ -20,10 +20,10 @@
             @endif
 
             <!-- Calendar Grid -->
-            <div class="border-2 border-gray-500 rounded-md p-6">
+            <div class="border rounded-md p-6">
                 <!-- Header with Month Display -->
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-4xl font-bold dark:text-gray-300">{{ $currentDate->format('F Y') }}</h2>
+                    <h2 class="text-4xl font-bold text-gray-800 dark:text-white">{{ $currentDate->format('F Y') }}</h2>
 
                     <!-- Navigation -->
                     <div>
@@ -35,9 +35,9 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-7 gap-4 text-center dark:text-gray-300">
+                <div class="grid grid-cols-7 gap-4 text-center">
                     @foreach(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as $day)
-                        <div class="font-bold tracking-wider">{{ $day }}</div>
+                        <div class="font-bold tracking-wider text-gray-800 dark:text-white">{{ $day }}</div>
                     @endforeach
 
                     @for($i = 0; $i < $startDayOfWeek; $i++)
@@ -49,9 +49,9 @@
                     @for($day = 1; $day <= $daysInMonth; $day++)
                         <button
                             type="button"
-                            class="py-3 rounded-md text-md text-white transition-all duration-250 ease-in-out cursor-pointer hover:bg-blue-700 focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105
+                            class="py-3 rounded-md text-md transition-all duration-250 ease-in-out cursor-pointer hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105
                                 {{ $day == $currentDate->day ? 'cursor-pointer font-bold' : '' }}
-                                {{ isset($selectedDay) && $selectedDay == $day ? 'bg-blue-700 shadow-lg transform scale-105 font-bold' : 'bg-gray-800 hover:bg-blue-700' }}"
+                                {{ isset($selectedDay) && $selectedDay == $day ? 'bg-blue-700 shadow-lg transform scale-105 font-bold text-white' : 'bg-gray-200 dark:bg-gray-800 hover:bg-blue-700' }}"
                             onclick="updateDateField('{{ $currentDate->copy()->day($day)->format('Y-m-d') }}')"
                         >
                             <span>{{ $day }}</span>
@@ -62,8 +62,8 @@
 
             <!-- Display Time Slots if a day is selected -->
             @isset($selectedDay)
-                <div class="border-2 border-gray-500 rounded-md p-6">
-                    <h2 class="text-xl font-bold text-gray-800">
+                <div class="border rounded-md p-6">
+                    <h2 class="text-xl font-bold">
                         Timeslots for <span id="timeslot-date">{{ $currentDate->format('jS F Y') }}</span>
                     </h2>
 
@@ -75,7 +75,7 @@
                             <button
                                 type="button"
                                 name="timeslot"
-                                class="bg-gray-800 py-3 rounded-md text-md text-white transition-all duration-250 ease-in-out cursor-pointer hover:bg-blue-700 focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105"
+                                class="bg-gray-200 dark:bg-gray-800 py-3 rounded-md text-md transition-all duration-250 ease-in-out cursor-pointer hover:text-white hover:bg-blue-700 focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105"
                                 onclick="updateTimeslotField('{{ $timeslot }}')"
                             >
                                 {{ $timeslot }}
