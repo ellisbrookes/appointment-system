@@ -1,6 +1,6 @@
 <nav class="dark:bg-gray-800 text-white py-4 w-full border-b border-gray-300 dark:border-gray-700">
   <div class="container mx-auto flex justify-between items-center">
-    <p class="logo text-xl font-bold dark:text-white">Appointment System</p>
+    <p class="logo text-xl font-bold dark:text-white text-black">Appointment System</p>
 
     <ul class="flex gap-6">
       <li><a href="/" class="hover:text-blue-400 text-black dark:text-white transition-colors">Home</a></li>
