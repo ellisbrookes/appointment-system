@@ -1,8 +1,8 @@
 @extends('dashboard.layout')
 
 @section('content')
-  <section id="hero">
-    <h1 class="text-4xl font-bold mb-4">Welcome to the Dashboard</h1>
+  <div class="flex flex-col items-center w-full max-w-7xl mx-auto mb-2">
+    <h1 class="text-4xl font-bold mb-2"> Welcome, {{ auth()->user()->name }}</h1>
     <p class="text-lg">Here you will find all the information you need</p>
-  </section>
+  </div>
 @endsection
