@@ -12,30 +12,28 @@ use Illuminate\View\View;
 
 class SettingsController extends Controller
 {
-    public function index(): View
-    {
-      return view('dashboard.settings.index');
-    }
+  public function index(): View
+  {
+    $settings = Auth::user()->settings;
 
-    public function store(Request $request)
-    {
-      $user = Auth::user();
+    return view('dashboard.settings.index', compact('settings'));
+  }
 
-      $validatedData = $request->validate([
-        'settings.navigation_style' => 'required|string|in:sidebar, top_nav'
-      ]);
-      
-      dd($request);
+  public function store(Request $request): RedirectResponse
+  {
+    $user = Auth::user();
 
-      $settings = $user->settings ?? [];
+    $request->validate([
+      'settings.navigation_style' => 'required|string|in:sidebar,top_nav',
+    ]);
 
-      $user->settings = array_merge($settings, $validatedData['settings']);
-      
-      $user->save();
+    $user->settings = $request->input('settings');
+        
+    $user->save();
 
-      return redirect()->route('dashboard.settings.index')->with('alert', [
-        'type' => 'success',
-        'message' => 'Settings updated!',
-      ]);
-    }
+    return redirect()->route('dashboard.settings.index')->with('alert', [
+      'type' => 'success',
+      'message' => 'Settings updated!',
+    ]);
+  }
 }

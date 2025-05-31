@@ -22,6 +22,10 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     return view('dashboard.index');
   })->name('dashboard');
 
+  // Dashboard settings
+  Route::get('settings', [SettingsController::class, 'index'])->name('dashboard.settings.index');
+  Route::put('settings', [SettingsController::class, 'store'])->name('dashboard.settings.store');
+
   // Appointments
   Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {
     Route::get('/', 'index')->name('index');
@@ -53,9 +57,6 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
         'cancel_url' => route('dashboard'),
       ]);
   })->name('subscription');
-
-  Route::get('settings', [SettingsController::class, 'index'])->name('dashboard.settings.index');
-  Route::put('settings', [SettingsController::class, 'store'])->name('dashboard.settings.store');
 });
 
 require __DIR__.'/auth.php';
