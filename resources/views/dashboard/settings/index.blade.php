@@ -10,7 +10,7 @@
     <div>
       <label for="navigation_style" class="block font-semibold mb-2">Navigation Style</label>
   
-      <select name="settings[navigation_style]" id="navigation_style" class="w-full border rounded p-2 text-gray-300 dark:bg-gray-900">
+      <select name="settings[navigation_style]" id="navigation_style" class="block mt-1 w-full bg-transparent dark:bg-gray-800 focus:border-gray-500 dark:focus:border-gray-600 focus:ring-gray-500 dark:focus:ring-gray-600 rounded-md">
         <option value="sidebar" {{ old('settings.navigation_style', $settings['navigation_style'] ?? '') === 'sidebar' ? 'selected' : '' }}>Sidebar</option>
         <option value="top_nav" {{ old('settings.navigation_style', $settings['navigation_style'] ?? '') === 'top_nav' ? 'selected' : '' }}>Top nav</option>
       </select>
