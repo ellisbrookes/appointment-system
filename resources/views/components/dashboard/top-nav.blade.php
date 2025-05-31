@@ -62,6 +62,12 @@
         </a>
       </li>
       <li>
+        <a href="{{ route('settings') }}" class="flex items-center px-4 py-2 space-x-4 hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4">
+          <i class="fas fa-gear"></i>
+          <span>Settings</span>
+        </a>
+      </li>
+      <li>
         <a href="{{ route('billing') }}" class="flex items-center px-4 py-2 space-x-4 hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4">
           <i class="fas fa-shopping-cart"></i>
           <span>Billing</span>

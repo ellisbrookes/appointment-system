@@ -5,7 +5,7 @@
   <p class="text-lg font-semibold text-center mb-6">Here you can find all the settings</p>
 
   <div class="flex justify-center items-center">
-    <form action="{{ route('dashboard.settings.store') }}" method="POST" class="w-full max-w-7xl">
+    <form action="{{ route('store') }}" method="POST" class="w-full max-w-7xl">
       @csrf
       @method('PUT')
 

@@ -23,8 +23,8 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
   })->name('dashboard');
 
   // Dashboard settings
-  Route::get('settings', [SettingsController::class, 'index'])->name('dashboard.settings.index');
-  Route::put('settings', [SettingsController::class, 'store'])->name('dashboard.settings.store');
+  Route::get('settings', [SettingsController::class, 'index'])->name('settings');
+  Route::put('settings', [SettingsController::class, 'store'])->name('store');
 
   // Appointments
   Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {

@@ -31,7 +31,7 @@ class SettingsController extends Controller
         
     $user->save();
 
-    return redirect()->route('dashboard.settings.index')->with('alert', [
+    return redirect()->route('settings')->with('alert', [
       'type' => 'success',
       'message' => 'Settings updated!',
     ]);
