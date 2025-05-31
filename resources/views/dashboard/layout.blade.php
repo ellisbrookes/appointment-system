@@ -14,6 +14,7 @@
 <body x-data="{ isSidebarOpen: true, isDropdownOpen: false, isUserSidebarOpen: false }" class="text-gray-800 dark:text-white">
   <!-- Sidebar -->
   @include('components.dashboard.sidebar')
+  @include('components.dashboard.top-nav')
 
   <main :class="isSidebarOpen ? 'ml-64' : 'ml-16'" class="flex flex-col flex-1 py-8 px-6 bg-white dark:bg-gray-900 h-screen">
     @if (session('alert'))
