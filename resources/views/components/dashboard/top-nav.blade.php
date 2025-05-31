@@ -68,6 +68,12 @@
         </a>
       </li>
       <li>
+        <a href="{{ route('settings') }}" class="flex items-center px-4 py-2 space-x-4 hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4">
+          <i class="fas fa-gear"></i>
+          <span>Settings</span>
+        </a>
+      </li>
+      <li>
         <form method="POST" action="{{ route('logout') }}">
           @csrf
           <button type="submit" class="flex items-center w-full px-4 py-2 space-x-4 hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4">
