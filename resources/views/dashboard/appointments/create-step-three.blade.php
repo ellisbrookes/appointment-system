@@ -18,21 +18,21 @@
                     </tr>
                     </thead>
                     <tbody class="text-gray-700 dark:text-gray-300">
-                    <tr class="hover:bg-gray-50 transition duration-200">
+                    <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200">
                         <td class="border px-6 py-4 font-medium">Service</td>
                         <td class="border px-6 py-4">{{ $appointment['service'] ?? '' }}</td>
                     </tr>
-                    <tr class="hover:bg-gray-50 transition duration-200">
+                    <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200">
                         <td class="border px-6 py-4 font-medium">Date</td>
                         <td class="border px-6 py-4">
                             {{ Carbon::parse($appointment['date'])->format('d/m/Y') ?? '' }}
                         </td>
                     </tr>
-                    <tr class="hover:bg-gray-50 transition duration-200">
+                    <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200">
                         <td class="border px-6 py-4 font-medium">Time</td>
                         <td class="border px-6 py-4">{{ $appointment['timeslot'] ?? '' }}</td>
                     </tr>
-                    <tr class="hover:bg-gray-50 transition duration-200">
+                    <tr class="hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200">
                         <td class="border px-6 py-4 font-medium">User</td>
                         <td class="border px-6 py-4">
                             @if (Auth::user()->admin)
