@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
         'password' => Hash::make('admin123'),
         'is_admin' => true,
         'telephone_number' => $faker->phoneNumber(),
+        'email_verified_at' => now(),
     ]);
 
     // Regular user
@@ -29,6 +30,7 @@ class UserSeeder extends Seeder
         'password' => Hash::make('password123'),
         'is_admin' => false,
         'telephone_number' => $faker->phoneNumber(),
+        'email_verified_at' => now(),
     ]);
   }
 }
