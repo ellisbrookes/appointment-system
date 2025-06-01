@@ -99,44 +99,40 @@ class AppointmentController extends Controller
     $appointment = $request->session()->get('appointment', []);
 
     // Calendar Data
-    $date = $request->get('date', now()->format('Y-m-d'));
-    $currentDate = Carbon::parse($date);
+    $today = Carbon::today();
+    
+    $year = $request->input('year', $today->year);
+    $month = $request->input('month', $today->month);
+
+    $startOfMonth = Carbon::create($year, $month, 1);
+    $endOfMonth = $startOfMonth->copy()->endOfMonth();
+    
+    $startDayOfWeek = $startOfMonth->dayOfWeek;
+    $daysInMonth = $endOfMonth->day;
 
     // Timeslots
-    $timeslots = [
-      '9:00',
-      '10:00',
-      '11:00',
-      '12:00',
-      '1:00',
-      '2:00',
-      '3:00',
-      '4:00',
-      '5:00'
-    ];
+    // $timeslots = [
+    //   '9:00',
+    //   '10:00',
+    //   '11:00',
+    //   '12:00',
+    //   '1:00',
+    //   '2:00',
+    //   '3:00',
+    //   '4:00',
+    //   '5:00'
+    // ];
 
-    $firstTimeslot = Carbon::parse($timeslots[0]);
+    // $firstTimeslot = Carbon::parse($timeslots[0]);
 
-    // Selected date
-    $selectedDay = $request->query('date', $currentDate->day);
-
-    // First and last day of the month
-    $firstDay = $currentDate->copy()->startOfMonth();
-    $lastDay = $currentDate->copy()->endOfMonth();
-
-    // Days for the calendar
-    $daysInMonth = $lastDay->day;
-    $startDayOfWeek = $firstDay->dayOfWeek;
-
-    return view('dashboard.appointments.create-step-two', compact(
+    return view('dashboard.appointments.create-step-two', [
       'appointment',
-      'currentDate',
-      'daysInMonth',
-      'startDayOfWeek',
-      'selectedDay',
-      'timeslots',
-      'firstTimeslot'
-    ));
+      'currentDate' => $today->toDateString(),
+      'daysInMonth' => $daysInMonth,
+      'startDayOfWeek' => $startDayOfWeek,
+      'month' => $month,
+      'year' => $year
+    ]);
   }
 
   /**
