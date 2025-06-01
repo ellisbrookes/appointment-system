@@ -1,6 +1,16 @@
 @php use Carbon\Carbon; @endphp
 @extends('dashboard.layout')
 
+@php
+  $prev = \Carbon\Carbon::create($year, $month)->subMonth();
+  $next = \Carbon\Carbon::create($year, $month)->addMonth();
+
+  $currentMonthTitle = \Carbon\Carbon::create($year, $month)->format('F Y');
+
+  $dayCounter = 1;
+  $totalCells = ceil(($startDayOfWeek + $daysInMonth) / 7) * 7;
+@endphp
+
 @section('content')
   <div class="flex flex-col justify-center mx-auto w-full max-w-5xl p-6">
     <h2 class="text-3xl font-semibold mb-4 dark:text-gray-300">Select an appointment date and time</h2>
@@ -22,13 +32,14 @@
       <div class="border rounded-md p-6">
         <!-- Header with Month Display -->
         <div class="flex justify-between items-center mb-6">
-          <h2 class="text-4xl font-bold text-gray-800 dark:text-white">{{ $currentDate->format('F Y') }}</h2>
+          <h2 class="text-4xl font-bold text-gray-800 dark:text-white">
+            {{ $currentMonthTitle }}
+          </h2>
 
           <!-- Navigation -->
           <div>
-            <a href="{{ route('dashboard.appointments.create.step.two', ['date' => $currentDate->copy()->subMonth()->format('Y-m-d')]) }}" class="py-3 px-4 text-white bg-gray-600 rounded-md">Previous</a>
-
-            <a href="{{ route('dashboard.appointments.create.step.two', ['date' => $currentDate->copy()->addMonth()->format('Y-m-d')]) }}" class="py-3 px-4 text-white bg-blue-600 rounded-md">Next</a>
+            <a href="{{ route('dashboard.appointments.create.step.two', ['month' => $prev->month, 'year' => $prev->year]) }}" class="py-3 px-4 text-white bg-gray-600 rounded-md">Prev</a>
+            <a href="{{ route('dashboard.appointments.create.step.two', ['month' => $next->month, 'year' => $next->year]) }}" class="py-3 px-4 text-white bg-blue-600 rounded-md">Next</a>
           </div>
         </div>
 
@@ -37,22 +48,25 @@
             <div class="font-bold tracking-wider text-gray-800 dark:text-white">{{ $day }}</div>
           @endforeach
 
-          @for($i = 0; $i < $startDayOfWeek; $i++)
-            <div></div>
-          @endfor
+          <input type="hidden" id="date" name="date" value="{{ $currentDate }}">
 
-          <input type="hidden" id="date" name="date" value="{{ $selectedDay }}">
-
-          @for($day = 1; $day <= $daysInMonth; $day++)
-            <button
-              type="button"
-              class="py-3 rounded-md text-md transition-all duration-250 ease-in-out cursor-pointer hover:bg-blue-700 hover:text-white focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105
-                {{ $day == $currentDate->day ? 'cursor-pointer font-bold' : '' }}
-                {{ isset($selectedDay) && $selectedDay == $day ? 'bg-blue-700 shadow-lg transform scale-105 font-bold text-white' : 'bg-gray-200 dark:bg-gray-800 hover:bg-blue-700' }}"
-              onclick="updateDateField('{{ $currentDate->copy()->day($day)->format('Y-m-d') }}')"
-            >
-              <span>{{ $day }}</span>
-            </button>
+          @for ($i = 0; $i < $totalCells; $i++)
+            @if ($i < $startDayOfWeek || $dayCounter > $daysInMonth)
+              <div></div>
+            @else
+              @php
+                $currentLoopDate = \Carbon\Carbon::create($year, $month, $dayCounter)->toDateString();
+                $isToday = $currentLoopDate === $currentDate;
+              @endphp
+              
+              <div
+                class="h-10 flex items-center justify-center rounded cursor-pointer 
+                    {{ $isToday ? 'bg-blue-300 font-bold' : 'hover:bg-gray-200' }}" 
+                onclick="selectDate('{{ $currentLoopDate }}', this)"
+              >
+                {{ $dayCounter++ }}
+              </div>
+            @endif
           @endfor
         </div>
       </div>
@@ -106,8 +120,21 @@
   </div>
 
   <script>
-    function updateDateField(value) {
-      document.getElementById('date').value = value;
+    let selectedCell = document.querySelector('.bg-blue-300');
+
+    function selectDate(date, cell) {
+      if (selectedCell && !selectedCell.classList.contains('bg-blue-300')) {
+        selectedCell.classList.remove('bg-blue-500', 'text-white', 'font-bold');
+        selectedCell.classList.add('hover:bg-gray-200');
+      }
+
+      if (!cell.classList.contains('bg-blue-300')) {
+          selectedCell = cell;
+          cell.classList.remove('hover:bg-gray-200');
+          cell.classList.add('bg-blue-500', 'text-white', 'font-bold');
+      }
+
+      document.getElementById('date').value = date;
     }
 
     function updateTimeslotField(value) {
