@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
         'is_admin' => true,
         'telephone_number' => $faker->phoneNumber(),
         'email_verified_at' => now(),
+        'settings' => json_encode(['navigation_style' => 'sidebar'])
     ]);
 
     // Regular user
@@ -31,6 +32,7 @@ class UserSeeder extends Seeder
         'is_admin' => false,
         'telephone_number' => $faker->phoneNumber(),
         'email_verified_at' => now(),
+        'settings' => json_encode(['navigation_style' => 'sidebar'])
     ]);
   }
 }
