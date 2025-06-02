@@ -61,7 +61,7 @@
               
               <div
                 class="h-10 flex items-center justify-center rounded cursor-pointer 
-                    {{ $isToday ? 'bg-blue-300 font-bold' : 'hover:bg-gray-200' }}" 
+                    {{ $isToday ? 'bg-blue-300 font-bold' : 'hover:bg-gray-200 dark:hover:bg-gray-800' }}" 
                 onclick="selectDate('{{ $currentLoopDate }}', this)"
               >
                 {{ $dayCounter++ }}
@@ -125,12 +125,12 @@
     function selectDate(date, cell) {
       if (selectedCell && !selectedCell.classList.contains('bg-blue-300')) {
         selectedCell.classList.remove('bg-blue-500', 'text-white', 'font-bold');
-        selectedCell.classList.add('hover:bg-gray-200');
+        selectedCell.classList.add('hover:bg-gray-200', 'dark:hover:bg-gray-800');
       }
 
       if (!cell.classList.contains('bg-blue-300')) {
           selectedCell = cell;
-          cell.classList.remove('hover:bg-gray-200');
+          cell.classList.remove('hover:bg-gray-200', 'dark:hover:bg-gray-800');
           cell.classList.add('bg-blue-500', 'text-white', 'font-bold');
       }
 
