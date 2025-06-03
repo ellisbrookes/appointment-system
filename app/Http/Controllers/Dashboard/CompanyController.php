@@ -91,12 +91,14 @@ class CompanyController extends Controller
     return redirect()->route('dashboard.companies.index')->with('success', 'Company updated successfully.');
   }
 
-// Delete a company
+  // Delete a company
   public function destroy(Company $company)
   {
-    $this->authorizeCompany($company);
     $company->delete();
 
-    return redirect()->route('dashboard.companies.index')->with('success', 'Company deleted successfully.');
+    return redirect()->route('dashboard.companies.index')->with('alert', [
+      'type' => 'success',
+      'message' => 'Company deleted successfully.',
+    ]);
   }
 };
