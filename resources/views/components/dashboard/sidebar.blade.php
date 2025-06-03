@@ -99,7 +99,7 @@
                     href="#"
                     @click.prevent="isCompanyDropdownOpen = !isCompanyDropdownOpen"
                     :class="isSidebarOpen ? 'px-4 py-2 justify-between space-x-4' : 'justify-center p-4'"
-                    class="flex w-full items-center border-b px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-600"
+                    class="flex w-full items-center border-b px-4 hover:bg-gray-200 dark:hover:bg-gray-600"
                 >
                     <div class="flex w-full items-center justify-between">
                         <div>

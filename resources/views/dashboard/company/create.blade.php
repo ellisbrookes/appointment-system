@@ -56,7 +56,7 @@
                     type="tel"
                     name="phone_number"
                     :value="old('phone_number')"
-                    pattern="^(\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3}$"
+                    pattern="^(?:0|\+?44)(?:\d\s?){9,10}$"
                     required
                 />
                 <x-shared.input-error
