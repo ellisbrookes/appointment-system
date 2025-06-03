@@ -31,7 +31,7 @@ class CompanyController extends Controller
       'email' => 'nullable|email|max:255',
       'phone_number' => [
           'nullable',
-          'regex:/^(\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3}$/'
+          'regex:/^(?:0|\+?44)(?:\d\s?){9,10}$/i'
       ],
       'address' => 'nullable|max:255',
       'postcode' => [
