@@ -1,4 +1,7 @@
-<aside :class="isSidebarOpen ? 'w-64' : 'w-16'" class="flex flex-col bg-white dark:bg-gray-900 border-r h-screen fixed transition-all duration-250 ease-in-out">
+<aside x-data="{ isSidebarOpen: true, isAppointmentsDropdownOpen: false, isCompanyDropdownOpen: false, isUserSidebarOpen: false }"
+  :class="isSidebarOpen ? 'w-64' : 'w-16'"
+  class="flex flex-col bg-white dark:bg-gray-900 border-r h-screen fixed transition-all duration-250 ease-in-out"
+>
   <!-- Sidebar Title & Toggle -->
   <div class="flex flex-col flex-1 space-y-4">
     <button
@@ -26,28 +29,75 @@
 
       <!-- Appointments -->
       <li>
-        <a href="#" @click.prevent="isDropdownOpen = !isDropdownOpen" :class="isSidebarOpen ? 'px-4 py-2 justify-between space-x-4' : 'justify-center p-4'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-b block px-4 w-full">
+        <a href="#" @click.prevent="isAppointmentsDropdownOpen = !isAppointmentsDropdownOpen"
+          :class="isSidebarOpen ? 'px-4 py-2 justify-between space-x-4' : 'justify-center p-4'"
+          class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-b block px-4 w-full"
+        >
           <div class="flex items-center justify-between w-full">
             <div>
               <i :class="isSidebarOpen ? 'mr-4' : 'mr-2'" class="fas fa-calendar-check text-lg"></i>
               <span :class="isSidebarOpen ? '' : 'hidden'">Appointments</span>
             </div>
 
-            <i :class="[isDropdownOpen ? 'rotate-180' : '', isSidebarOpen ? 'ml-4' : '']" class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+            <i :class="[isAppointmentsDropdownOpen ? 'rotate-180' : '', isSidebarOpen ? 'ml-4' : '']" class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
           </div>
         </a>
 
-        <ul x-show="isDropdownOpen" x-transition class="mt-2 space-y-1">
+        <ul x-show="isAppointmentsDropdownOpen" x-transition class="mt-2 space-y-1">
           <li>
-            <a href="/dashboard/appointments" :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-b block px-4 w-full">
+            <a href="/dashboard/appointments"
+              :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+              class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-b block px-4 w-full"
+            >
               <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-eye"></i>
               <span :class="isSidebarOpen ? '' : 'hidden'">View Appointments</span>
             </a>
           </li>
           <li>
-            <a href="/dashboard/appointments/create-step-one" :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-b block px-4 w-full">
+            <a href="/dashboard/appointments/create-step-one"
+              :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+              class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-b block px-4 w-full"
+            >
               <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-plus-circle"></i>
               <span :class="isSidebarOpen ? '' : 'hidden'">Create Appointment</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Company -->
+      <li>
+        <a href="#" @click.prevent="isCompanyDropdownOpen = !isCompanyDropdownOpen"
+          :class="isSidebarOpen ? 'px-4 py-2 justify-between space-x-4' : 'justify-center p-4'"
+          class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-b block px-4 w-full"
+        >
+          <div class="flex items-center justify-between w-full">
+            <div>
+              <i :class="isSidebarOpen ? 'mr-4' : 'mr-2'" class="fas fa-building text-lg"></i>
+              <span :class="isSidebarOpen ? '' : 'hidden'">Company</span>
+            </div>
+
+            <i :class="[isCompanyDropdownOpen ? 'rotate-180' : '', isSidebarOpen ? 'ml-4' : '']" class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+          </div>
+        </a>
+
+        <ul x-show="isCompanyDropdownOpen" x-transition class="mt-2 space-y-1">
+          <li>
+            <a href="/dashboard/companies"
+              :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+              class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-b block px-4 w-full"
+            >
+              <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-eye"></i>
+              <span :class="isSidebarOpen ? '' : 'hidden'">View Company</span>
+            </a>
+          </li>
+          <li>
+            <a href="/dashboard/companies/create"
+              :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+              class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-b block px-4 w-full"
+            >
+              <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-plus-circle"></i>
+              <span :class="isSidebarOpen ? '' : 'hidden'">Create Company</span>
             </a>
           </li>
         </ul>
@@ -56,7 +106,10 @@
       <!-- Admin -->
       @if (Auth::user()->admin)
       <li>
-        <a href="/dashboard/admin" :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-b block px-4 w-full">
+        <a href="/dashboard/admin"
+          :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+          class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-b block px-4 w-full"
+        >
           <i class="fas fa-cogs text-lg"></i>
           <span :class="isSidebarOpen ? '' : 'hidden'">Admin</span>
         </a>
@@ -67,7 +120,10 @@
 
   <!-- User Profile -->
   <div class="relative">
-    <a href="#" @click.prevent="isUserSidebarOpen = !isUserSidebarOpen" :class="isSidebarOpen ? 'justify-between' : 'justify-center'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block p-4 w-full">
+    <a href="#" @click.prevent="isUserSidebarOpen = !isUserSidebarOpen"
+      :class="isSidebarOpen ? 'justify-between' : 'justify-center'"
+      class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block p-4 w-full"
+    >
       <div class="flex items-center w-full">
         <i class="fas fa-user-circle text-lg mr-4"></i>
         <span :class="isSidebarOpen ? '' : 'hidden'">{{ Auth::user()->name ?? 'Guest' }}</span>
@@ -78,19 +134,28 @@
 
     <ul x-show="isUserSidebarOpen" x-transition class="absolute left-0 bottom-full w-full z-10">
       <li>
-        <a href="{{ route('dashboard') }}" :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4 w-full">
+        <a href="{{ route('dashboard') }}"
+          :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+          class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4 w-full"
+        >
           <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-user"></i>
           <span :class="isSidebarOpen ? '' : 'hidden'">Profile</span>
         </a>
       </li>
       <li>
-        <a href="{{ route('billing') }}" :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4 w-full">
+        <a href="{{ route('billing') }}"
+          :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+          class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4 w-full"
+        >
           <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-shopping-cart"></i>
           <span :class="isSidebarOpen ? '' : 'hidden'">Billing</span>
         </a>
       </li>
       <li>
-        <a href="{{ route('settings') }}" :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4 w-full">
+        <a href="{{ route('settings') }}"
+          :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+          class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4 w-full"
+        >
           <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-gear"></i>
           <span :class="isSidebarOpen ? '' : 'hidden'">Settings</span>
         </a>
@@ -98,7 +163,10 @@
       <li>
         <form method="POST" action="{{ route('logout') }}">
           @csrf
-          <button type="submit" :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4 w-full">
+          <button type="submit"
+            :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+            class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4 w-full"
+          >
             <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-sign-out-alt"></i>
             <span :class="isSidebarOpen ? '' : 'hidden'">Logout</span>
           </button>
