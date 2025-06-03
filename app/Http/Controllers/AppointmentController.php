@@ -111,19 +111,19 @@ class AppointmentController extends Controller
     $daysInMonth = $endOfMonth->day;
 
     // Timeslots
-    // $timeslots = [
-    //   '9:00',
-    //   '10:00',
-    //   '11:00',
-    //   '12:00',
-    //   '1:00',
-    //   '2:00',
-    //   '3:00',
-    //   '4:00',
-    //   '5:00'
-    // ];
+    $timeslots = [
+      '9:00',
+      '10:00',
+      '11:00',
+      '12:00',
+      '1:00',
+      '2:00',
+      '3:00',
+      '4:00',
+      '5:00'
+    ];
 
-    // $firstTimeslot = Carbon::parse($timeslots[0]);
+    $firstTimeslot = Carbon::parse($timeslots[0]);
 
     return view('dashboard.appointments.create-step-two', [
       'appointment',
@@ -131,7 +131,9 @@ class AppointmentController extends Controller
       'daysInMonth' => $daysInMonth,
       'startDayOfWeek' => $startDayOfWeek,
       'month' => $month,
-      'year' => $year
+      'year' => $year,
+      'timeslots' => $timeslots,
+      'firstTimeslot' => $firstTimeslot
     ]);
   }
 

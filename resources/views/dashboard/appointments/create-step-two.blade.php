@@ -6,9 +6,12 @@
   $next = \Carbon\Carbon::create($year, $month)->addMonth();
 
   $currentMonthTitle = \Carbon\Carbon::create($year, $month)->format('F Y');
+  $timeslotDateTitle = \Carbon\Carbon::parse($currentDate)->format('jS F Y');
 
   $dayCounter = 1;
-  $totalCells = ceil(($startDayOfWeek + $daysInMonth) / 7) * 7;
+
+  $calendarCells = ceil(($startDayOfWeek + $daysInMonth) / 7) * 7;
+  $timeslotCells = ceil(count($timeslots) / 4);
 @endphp
 
 @section('content')
@@ -50,7 +53,7 @@
 
           <input type="hidden" id="date" name="date" value="{{ $currentDate }}">
 
-          @for ($i = 0; $i < $totalCells; $i++)
+          @for ($i = 0; $i < $calendarCells; $i++)
             @if ($i < $startDayOfWeek || $dayCounter > $daysInMonth)
               <div></div>
             @else
@@ -72,25 +75,28 @@
       </div>
 
       <!-- Display Time Slots if a day is selected -->
-      @isset($selectedDay)
+      @isset($currentDate)
         <div class="border rounded-md p-6">
           <h2 class="text-xl font-bold">
-            Timeslots for <span id="timeslot-date">{{ $currentDate->format('jS F Y') }}</span>
+            Timeslots for <span id="timeslot-date">{{ $timeslotDateTitle }}</span>
           </h2>
 
           <input type="hidden" id="timeslot" name="timeslot" value="{{ Carbon::parse($firstTimeslot)->format('h:i') }}">
 
           <div class="grid grid-cols-4 gap-4 mt-6">
-            @foreach($timeslots as $timeslot)
-              <button
-                type="button"
-                name="timeslot"
-                class="bg-gray-200 dark:bg-gray-800 py-3 rounded-md text-md transition-all duration-250 ease-in-out cursor-pointer hover:text-white hover:bg-blue-700 focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105"
-                onclick="updateTimeslotField('{{ $timeslot }}')"
-              >
-                {{ $timeslot }}
-              </button>
-            @endforeach
+            @for ($i = 0; $i < $timeslotCells; $i++)
+              @if ($i < $firstTimeslot)
+                <div></div>
+              @else
+                <div
+                  class="flex justify-center py-3 rounded-md text-md cursor-pointer
+                    {{ $timeslot ? 'bg-blue-300 font-bold' : 'hover:bg-gray-200 dark:hover:bg-gray-800' }}"
+                  onclick="selectTimeslot({{ $timeslot }}', this)"
+                >
+                  {{ $timeslot }}
+                </div>
+              @endif
+            @endfor
           </div>
 
           <!-- Labels (Booked, Blocked, Unavailable) -->
@@ -137,8 +143,21 @@
       document.getElementById('date').value = date;
     }
 
-    function updateTimeslotField(value) {
-      document.getElementById('timeslot').value = value;
+    let selectedTimeslot = document.querySelector('.bg-blue-300');
+
+    function selectTimeslot(timeslot, cell) {
+      if (selectedTimeslot && !selectedTimeslot.classList.contains('bg-blue-300')) {
+        selectedTimeslot.classList.remove('bg-blue-500', 'text-white', 'font-bold');
+        selectedTimeslot.classList.add('hover:bg-gray-200', 'dark:hover:bg-gray-800');
+      }
+
+      if (!cell.classList.contains('bg-blue-300')) {
+          selectedTimeslot = cell;
+          cell.classList.remove('hover:bg-gray-200', 'dark:hover:bg-gray-800');
+          cell.classList.add('bg-blue-500', 'text-white', 'font-bold');
+      }
+
+      document.getElementById('timeslot').value = timeslot;
     }
   </script>
 @endsection
