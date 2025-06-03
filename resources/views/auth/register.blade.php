@@ -13,7 +13,8 @@
           <x-shared.input-label for="name" :value="__('Name')" />
           <x-shared.text-input id="name" type="text" name="name" :value="old('name')" required autofocus />
 
-          <x-shared.input-error :messages="$errors->get('name')"  bclass="mt-2" />
+          <x-shared.input-error :messages="$errors->get('name')" class="mt-2" />
+            
         </div>
 
         <!-- Email address -->
