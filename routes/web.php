@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PricingController;
-use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\Dashboard\CompanyController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Middleware\CheckSubscription;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +25,14 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
   // Dashboard settings
   Route::get('settings', [SettingsController::class, 'index'])->name('settings');
   Route::put('settings', [SettingsController::class, 'store'])->name('store');
+
+  // Companies
+  Route::prefix('companies')->name('dashboard.companies.')->controller(CompanyController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('create', 'create')->name('create');
+    Route::post('/', 'store')->name('store');
+    Route::put('{company}', 'update')->name('update');
+  });
 
   // Appointments
   Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {
