@@ -48,18 +48,17 @@
 
                     <!-- Navigation -->
                     <div>
-                        <a
-                            href="{{ route("dashboard.appointments.create.step.two", ["month" => $prev->month, "year" => $prev->year]) }}"
-                            class="rounded-md bg-gray-600 px-4 py-3 text-white"
+                        <x-shared.primary-button
+                            :href="route('dashboard.appointments.create.step.two', ['month' => $prev->month, 'year' => $prev->year])"
                         >
-                            Prev
-                        </a>
-                        <a
-                            href="{{ route("dashboard.appointments.create.step.two", ["month" => $next->month, "year" => $next->year]) }}"
-                            class="rounded-md bg-blue-600 px-4 py-3 text-white"
+                            {{ __("Prev") }}
+                        </x-shared.primary-button>
+
+                        <x-shared.primary-button
+                            :href="route('dashboard.appointments.create.step.two', ['month' => $next->month, 'year' => $next->year])"
                         >
-                            Next
-                        </a>
+                            {{ __("Next") }}
+                        </x-shared.primary-button>
                     </div>
                 </div>
 
@@ -158,19 +157,19 @@
 
             <!-- Step Navigation Buttons -->
             <div class="flex justify-center space-x-2 text-center">
-                <a
-                    href="{{ route("dashboard.appointments.create.step.one") }}"
-                    class="focus:ring-opacity-50 rounded-md bg-gray-600 px-4 py-3 text-white transition duration-200 hover:bg-gray-700 focus:ring-2 focus:ring-gray-500 focus:outline-none"
+                <x-shared.primary-button
+                    :href="route('dashboard.appointments.create.step.one')"
+                    class="bg-gray-600 hover:bg-gray-700 focus:ring-gray-500"
                 >
-                    Previous Step
-                </a>
+                    {{ __("Previous Step") }}
+                </x-shared.primary-button>
 
-                <button
+                <x-shared.primary-button
                     type="submit"
-                    class="focus:ring-opacity-50 rounded-md bg-blue-600 px-4 py-3 text-white transition duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    class="bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
                 >
-                    Next Step
-                </button>
+                    {{ __("Next Step") }}
+                </x-shared.primary-button>
             </div>
         </form>
     </div>

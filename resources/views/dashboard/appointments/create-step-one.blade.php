@@ -45,13 +45,10 @@
             </div>
 
             <!-- Submit Button -->
-            <div class="mt-4 text-center">
-                <button
-                    type="submit"
-                    class="focus:ring-opacity-50 w-full rounded-md bg-blue-600 px-4 py-3 text-white transition duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
-                >
-                    Next Step
-                </button>
+            <div class="mt-4">
+                <x-shared.primary-button type="submit">
+                    {{ __("Next Step") }}
+                </x-shared.primary-button>
             </div>
         </form>
     </div>
