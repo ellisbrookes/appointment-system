@@ -94,19 +94,19 @@
 
             <!-- Previous and Submit Buttons -->
             <div class="mt-4 flex justify-between">
-                <a
-                    href="{{ route("dashboard.appointments.create.step.two") }}"
-                    class="focus:ring-opacity-50 rounded-md bg-gray-600 px-4 py-3 text-white transition duration-200 hover:bg-gray-700 focus:ring-2 focus:ring-gray-500 focus:outline-hidden"
+                <x-shared.primary-button
+                    :href="route('dashboard.appointments.create.step.two')"
+                    class="bg-gray-600 hover:bg-gray-700 focus:ring-gray-500"
                 >
-                    Previous Step
-                </a>
+                    {{ __("Previous Step") }}
+                </x-shared.primary-button>
 
-                <button
+                <x-shared.primary-button
                     type="submit"
-                    class="focus:ring-opacity-50 rounded-md bg-blue-600 px-4 py-3 text-white transition duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                    class="bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
                 >
-                    Confirm
-                </button>
+                    {{ __("Confirm") }}
+                </x-shared.primary-button>
             </div>
         </form>
     </div>
