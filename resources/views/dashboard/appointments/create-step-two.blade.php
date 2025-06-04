@@ -48,17 +48,17 @@
 
                     <!-- Navigation -->
                     <div>
-                        <x-shared.primary-button
+                        <x-shared.link
                             :href="route('dashboard.appointments.create.step.two', ['month' => $prev->month, 'year' => $prev->year])"
                         >
                             {{ __("Prev") }}
-                        </x-shared.primary-button>
+                        </x-shared.link>
 
-                        <x-shared.primary-button
+                        <x-shared.link
                             :href="route('dashboard.appointments.create.step.two', ['month' => $next->month, 'year' => $next->year])"
                         >
                             {{ __("Next") }}
-                        </x-shared.primary-button>
+                        </x-shared.link>
                     </div>
                 </div>
 
