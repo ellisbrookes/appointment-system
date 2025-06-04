@@ -175,35 +175,50 @@
     </div>
 
     <script>
-        let selectedCell = document.querySelector('.bg-blue-300');
+            let selectedCell = document.querySelector('.bg-blue-300');
 
-        function selectDate(date, cell) {
-            if (
-                selectedCell &&
-                !selectedCell.classList.contains('bg-blue-300')
-            ) {
-                selectedCell.classList.remove(
-                    'bg-blue-500',
-                    'text-white',
-                    'font-bold',
-                );
-                selectedCell.classList.add(
-                    'hover:bg-gray-200',
-                    'dark:hover:bg-gray-800',
-                );
-            }
-
-            if (!cell.classList.contains('bg-blue-300')) {
-                selectedCell = cell;
-                cell.classList.remove(
-                    'hover:bg-gray-200',
-                    'dark:hover:bg-gray-800',
-                );
-                cell.classList.add('bg-blue-500', 'text-white', 'font-bold');
-            }
-
-            document.getElementById('date').value = date;
+            function selectDate(date, cell) {
+        if (
+            selectedCell &&
+            !selectedCell.classList.contains('bg-blue-300')
+        ) {
+            selectedCell.classList.remove(
+                'bg-blue-500',
+                'text-white',
+                'font-bold',
+            );
+            selectedCell.classList.add(
+                'hover:bg-gray-200',
+                'dark:hover:bg-gray-800',
+            );
         }
+
+        if (!cell.classList.contains('bg-blue-300')) {
+            selectedCell = cell;
+            cell.classList.remove(
+                'hover:bg-gray-200',
+                'dark:hover:bg-gray-800',
+            );
+            cell.classList.add('bg-blue-500', 'text-white', 'font-bold');
+        }
+
+        document.getElementById('date').value = date;
+
+        const dateObj = new Date(date);
+        const day = dateObj.getDate();
+        const month = dateObj.toLocaleString("en-GB", { month: "long" });
+        const year = dateObj.getFullYear();
+        const ordinal = (n) => {
+            if (n > 3 && n < 21) return n + "th";
+            switch (n % 10) {
+                case 1: return n + "st";
+                case 2: return n + "nd";
+                case 3: return n + "rd";
+                default: return n + "th";
+            }
+        };
+            document.getElementById("timeslot-date").textContent = `${ordinal(day)} ${month} ${year}`;
+        }   
 
         let selectedTimeslot = document.querySelector('.bg-blue-300');
 
