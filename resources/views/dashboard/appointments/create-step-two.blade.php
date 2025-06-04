@@ -15,7 +15,7 @@
 
 @section("content")
     <div class="mx-auto flex w-full max-w-5xl flex-col justify-center p-6">
-        <h2 class="mb-4 text-3xl font-semibold dark:text-gray-300">
+        <h2 class="mb-4 text-2xl font-semibold dark:text-gray-300">
             Select an appointment date and time
         </h2>
 
@@ -41,7 +41,7 @@
                 <!-- Header with Month Display -->
                 <div class="mb-6 flex items-center justify-between">
                     <h2
-                        class="text-4xl font-bold text-gray-800 dark:text-white"
+                        class="text-xl font-bold text-gray-800 dark:text-white"
                     >
                         {{ $currentMonthTitle }}
                     </h2>
