@@ -202,18 +202,21 @@ class AppointmentController extends Controller
     ]);
   }
 
-  public function destroy(Request $request, $id)
+ public function destroy(Request $request, $id)
   {
     $appointment = Appointment::findOrFail($id);
+
+    $appointment->status = 'cancelled';
+    $appointment->save();
+
     Mail::to($request->user())->send(new AppointmentCancelled($appointment));
-    $appointment->delete();
 
     $request->session()->forget('appointment');
 
     return redirect()
       ->route('dashboard.appointments.index')->with('alert', [
-        'type' => 'success',
-        'message' => 'Appointment successfully cancelled!'
-    ]);
+          'type' => 'success',
+          'message' => 'Appointment successfully cancelled!'
+      ]);
   }
 }
