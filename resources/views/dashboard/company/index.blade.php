@@ -10,19 +10,19 @@
             <h2
                 class="text-center text-4xl font-bold text-gray-700 dark:text-white"
             >
-                Appointments List
+                Company List
             </h2>
             <a
-                href="{{ route("dashboard.appointments.create.step.one") }}"
+                href="{{ route("dashboard.companies.create") }}"
                 class="rounded-lg bg-green-600 px-6 py-3 text-white transition duration-200 hover:bg-green-700 dark:text-white"
             >
-                Book Appointment
+                Create Company
             </a>
         </div>
 
-        @if ($appointments->isEmpty())
+        @if ($companies->isEmpty())
             <p class="py-4 text-center text-gray-500 dark:text-white">
-                No booked appointments
+                No Companies found
             </p>
         @else
             <div class="overflow-x-auto">
@@ -36,22 +36,27 @@
                             <th
                                 class="border border-gray-300 px-6 py-3 text-center"
                             >
-                                Service
+                                Name
                             </th>
                             <th
                                 class="border border-gray-300 px-6 py-3 text-center"
                             >
-                                Date
+                                Email
                             </th>
                             <th
                                 class="border border-gray-300 px-6 py-3 text-center"
                             >
-                                User
+                                Phone Number
                             </th>
                             <th
                                 class="border border-gray-300 px-6 py-3 text-center"
                             >
-                                Timeslot
+                                Address
+                            </th>
+                            <th
+                                class="border border-gray-300 px-6 py-3 text-center"
+                            >
+                                Description
                             </th>
                             <th
                                 class="border border-gray-300 px-6 py-3 text-center"
@@ -61,26 +66,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($appointments as $appointment)
+                        @foreach ($companies as $company)
                             <tr
                                 class="even:bg-gray-50 hover:bg-gray-100 dark:text-white dark:even:bg-gray-900 dark:hover:bg-gray-900"
                             >
                                 <td class="border border-gray-300 px-6 py-4">
-                                    {{ $appointment->service }}
+                                    {{ $company->name }}
                                 </td>
                                 <td class="border border-gray-300 px-6 py-4">
-                                    {{ Carbon::parse($appointment->date)->format("jS F Y") }}
+                                    {{ $company->email }}
                                 </td>
                                 <td class="border border-gray-300 px-6 py-4">
-                                    {{ $appointment->user->name ?? "Guest" }}
+                                    {{ $company->phone_number }}
                                 </td>
                                 <td class="border border-gray-300 px-6 py-4">
-                                    {{ Carbon::parse($appointment->timeslot)->format("g:i A") }}
+                                    {{ $company->address }}
+                                </td>
+                                <td class="border border-gray-300 px-6 py-4">
+                                    {{ $company->description }}
                                 </td>
                                 <td class="border-b border-gray-300 px-6 py-4">
                                     <div class="flex justify-center space-x-2">
                                         <a
-                                            href="{{ route("dashboard.appointments.edit", $appointment->id) }}"
+                                            href="{{ route("dashboard.companies.index") }}"
                                             class="align-center focus:ring-opacity-50 flex rounded-md bg-blue-600 px-4 py-2 text-white transition duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
                                         >
                                             Edit
@@ -88,8 +96,8 @@
 
                                         <form
                                             method="POST"
-                                            action="{{ route("dashboard.appointments.destroy", $appointment->id) }}"
-                                            onsubmit="return confirm('Are you sure you want to cancel this appointment?');"
+                                            action="{{ route("dashboard.companies.destroy", $company->id) }}"
+                                            onsubmit="return confirm('Are you sure you want to delete this company');"
                                             style="display: inline"
                                         >
                                             @csrf
@@ -98,7 +106,7 @@
                                                 type="submit"
                                                 class="focus:ring-opacity-50 flex items-center rounded-md bg-red-600 px-4 py-2 text-white transition duration-200 hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:outline-hidden"
                                             >
-                                                Cancel
+                                                Delete
                                             </button>
                                         </form>
                                     </div>
