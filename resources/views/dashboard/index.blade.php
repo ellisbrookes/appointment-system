@@ -16,7 +16,7 @@
             <p class="mt-2 text-3xl font-bold text-green-600">
                 {{ $appointmentsCount ?? 0 }}
             </p>
-            <p>currently open appointments</p>
+            <p>open appointments</p>
         </a>
 
         <a href="{{ route('dashboard.appointments.index', ['status' => 'closed']) }}" class="rounded-lg border p-6 shadow transition hover:bg-gray-200 dark:hover:bg-gray-600">
