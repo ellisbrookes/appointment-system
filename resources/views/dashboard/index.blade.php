@@ -11,27 +11,29 @@
 
     <!-- Appointment Tiles -->
     <div class="mb-8 grid w-full max-w-4xl grid-cols-1 gap-6 md:grid-cols-3">
-        <div class="rounded-lg border p-6 shadow">
+        <a href="{{ route('dashboard.appointments.index', ['status' => 'open']) }}" class="rounded-lg border p-6 shadow transition hover:bg-gray-200 dark:hover:bg-gray-600">
             <h2 class="text-xl font-semibold">Open</h2>
             <p class="mt-2 text-3xl font-bold text-green-600">
                 {{ $appointmentsCount ?? 0 }}
             </p>
-            <p class="text-gray-600">currently open appointments</p>
-        </div>
-        <div class="rounded-lg border p-6 shadow">
-            <h2 class="text-xl font-semibold">Cancelled</h2>
-            <p class="mt-2 text-3xl font-bold text-yellow-600">
-                {{ $cancelledCount ?? 0 }}
-            </p>
-            <p class="text-gray-600">cancelled appointments</p>
-        </div>
-        <div class="rounded-lg border p-6 shadow">
+            <p>currently open appointments</p>
+        </a>
+
+        <a href="{{ route('dashboard.appointments.index', ['status' => 'closed']) }}" class="rounded-lg border p-6 shadow transition hover:bg-gray-200 dark:hover:bg-gray-600">
             <h2 class="text-xl font-semibold">Closed</h2>
             <p class="mt-2 text-3xl font-bold text-red-600">
                 {{ $closedCount ?? 0 }}
             </p>
-            <p class="text-gray-600">closed appointments</p>
-        </div>
+            <p>closed appointments</p>
+        </a>
+
+        <a href="{{ route('dashboard.appointments.index', ['status' => 'cancelled']) }}" class="rounded-lg border p-6 shadow transition hover:bg-gray-200 dark:hover:bg-gray-600">
+            <h2 class="text-xl font-semibold">Cancelled</h2>
+            <p class="mt-2 text-3xl font-bold text-yellow-600">
+                {{ $cancelledCount ?? 0 }}
+            </p>
+            <p>cancelled appointments</p>
+        </a>
     </div>
 
     <!-- Activity Log -->
@@ -44,8 +46,7 @@
                     <span 
                         class="mt-1.5 inline-block h-3 w-3 flex-shrink-0 rounded-full
                         {{ $appt->status === 'open' ? 'bg-green-500' : '' }}
-                        {{ $appt->status === 'cancelled' ? 'bg-yellow-400' : '' }}
-                        "
+                        {{ $appt->status === 'cancelled' ? 'bg-yellow-400' : '' }}"
                         aria-hidden="true"
                     ></span>
 
