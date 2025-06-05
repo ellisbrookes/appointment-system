@@ -11,18 +11,24 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Count how many 'open' appointments the user has
         $appointmentsCount = Appointment::where('user_id', $user->id)
             ->where('status', 'open')
             ->count();
 
-        // Get the 5 most recent 'open' appointments
+        $cancelledCount = Appointment::where('user_id', $user->id)
+            ->where('status', 'cancelled')
+            ->count();
+
+        $closedCount = Appointment::where('user_id', $user->id)
+            ->where('status', 'closed')
+            ->count();
+
         $recentAppointments = Appointment::where('user_id', $user->id)
-            ->where('status', 'open')
-            ->orderBy('created_at', 'desc')
+            ->whereIn('status', ['open', 'cancelled'])
+            ->latest()
             ->take(5)
             ->get();
 
-        return view('dashboard.index', compact('appointmentsCount', 'recentAppointments'));
+        return view('dashboard.index', compact('appointmentsCount', 'cancelledCount', 'closedCount', 'recentAppointments'));
     }
 }
