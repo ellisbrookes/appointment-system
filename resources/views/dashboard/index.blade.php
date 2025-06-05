@@ -37,19 +37,39 @@
     <!-- Activity Log -->
     <div class="w-full max-w-4xl rounded-lg border p-6 shadow">
         <h2 class="mb-4 text-2xl font-semibold">Activity Log</h2>
-        <ul class="space-y-3">
+        <ul class="space-y-6">
             @forelse($recentAppointments as $appt)
-                <li class="text-gray-800 dark:text-gray-200">
-                    @if($appt->status === 'open')
-                        You booked an appointment on
-                    @elseif($appt->status === 'cancelled')
-                        You cancelled an appointment on
-                    @else
-                        Appointment status: {{ ucfirst($appt->status) }} on
-                    @endif
-                    <span class="font-semibold text-blue-600">
-                        {{ \Carbon\Carbon::parse($appt->created_at)->format('jS F Y \a\t g:i A') }}
-                    </span>
+                <li class="flex items-start space-x-4 text-gray-800 dark:text-gray-200">
+                    <!-- Status Dot -->
+                    <span 
+                        class="mt-1.5 inline-block h-3 w-3 flex-shrink-0 rounded-full
+                        {{ $appt->status === 'open' ? 'bg-green-500' : '' }}
+                        {{ $appt->status === 'cancelled' ? 'bg-yellow-400' : '' }}
+                        "
+                        aria-hidden="true"
+                    ></span>
+
+                    <div>
+                        <p class="text-base font-medium">
+                            @if($appt->status === 'open')
+                                You booked an appointment on
+                            @elseif($appt->status === 'cancelled')
+                                You cancelled an appointment on
+                            @else
+                                Appointment status: {{ ucfirst($appt->status) }} on
+                            @endif
+                            <span class="font-semibold text-blue-600">
+                                {{ \Carbon\Carbon::parse($appt->appointment_date)->format('jS F Y \a\t g:i A') }}
+                            </span>
+                        </p>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                            @if($appt->status === 'cancelled' && $appt->cancelled_at)
+                                {{ \Carbon\Carbon::parse($appt->cancelled_at)->diffForHumans() }}
+                            @else
+                                {{ \Carbon\Carbon::parse($appt->created_at)->diffForHumans() }}
+                            @endif
+                        </p>
+                    </div>
                 </li>
             @empty
                 <li class="text-gray-500">No recent activity.</li>
