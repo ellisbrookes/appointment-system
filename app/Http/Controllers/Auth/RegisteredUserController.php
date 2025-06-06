@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -35,9 +36,9 @@ class RegisteredUserController extends Controller
 
     event(new Registered($user));
 
-    return redirect('auth.login')->with('alert', [
+    return redirect()->route('login')->with('alert', [
       'type' => 'success',
-      'message' => 'Account successfully created, please login'
+      'message' => 'Account successfully created, please verify your email'
     ]);
   }
 }
