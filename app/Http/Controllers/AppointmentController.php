@@ -22,7 +22,14 @@ class AppointmentController extends Controller
    */
   public function index(Request $request)
   {
-    $appointments = Appointment::with('user')->get();
+    $query = Appointment::with('user');
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    $appointments = $query->get();
+
     return view('dashboard.appointments.index', compact('appointments'));
   }
 

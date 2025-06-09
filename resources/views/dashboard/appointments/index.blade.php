@@ -7,9 +7,7 @@
 @section("content")
     <div class="container mx-auto">
         <div class="mb-6 flex items-center justify-between">
-            <h2
-                class="text-center text-4xl font-bold text-gray-700 dark:text-white"
-            >
+            <h2 class="text-center text-4xl font-bold text-gray-700 dark:text-white">
                 Appointments List
             </h2>
             <a
@@ -20,68 +18,72 @@
             </a>
         </div>
 
+        <div class="mb-6 flex justify-between items-center">
+    {{-- Filter Form --}}
+    <form method="GET" action="{{ route('dashboard.appointments.index') }}" class="flex items-center space-x-3">
+        <label for="status" class="text-lg font-medium text-gray-700 dark:text-white">
+            Filter by Status:
+        </label>
+        <select
+            name="status"
+            id="status"
+            onchange="this.form.submit()"
+            class="w-48 rounded-xl border border-gray-300 bg-white px-4 py-3 text-base text-gray-700 shadow-sm transition focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-gray-800 dark:text-white"
+        >
+            <option value="">All</option>
+            <option value="open" {{ request('status') == 'open' ? 'selected' : '' }}>Open</option>
+            <option value="closed" {{ request('status') == 'closed' ? 'selected' : '' }}>Closed</option>
+            <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+        </select>
+    </form>
+
+    {{-- Active Filter Pill with X --}}
+        @if(request('status'))
+            <div class="flex items-center space-x-2">
+                <span class="inline-flex items-center rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-white">
+                            {{ ucfirst(request('status')) }}
+                            <a
+                                href="{{ route('dashboard.appointments.index') }}"
+                                class="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-white hover:bg-blue-400 dark:bg-blue-700 dark:hover:bg-blue-600"
+                                title="Clear filter"
+                            >
+                                &times;
+                            </a>
+                        </span>
+                    </div>
+                @endif
+            </div>
+            
         @if ($appointments->isEmpty())
             <p class="py-4 text-center text-gray-500 dark:text-white">
                 No booked appointments
             </p>
         @else
             <div class="overflow-x-auto">
-                <table
-                    class="text-md w-full table-auto border-collapse border border-gray-400 text-center md:table-fixed"
-                >
+                <table class="text-md w-full table-auto border-collapse border border-gray-400 text-center md:table-fixed">
                     <thead>
-                        <tr
-                            class="bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-white"
-                        >
-                            <th
-                                class="border border-gray-300 px-6 py-3 text-center"
-                            >
-                                Service
-                            </th>
-                            <th
-                                class="border border-gray-300 px-6 py-3 text-center"
-                            >
-                                Date
-                            </th>
-                            <th
-                                class="border border-gray-300 px-6 py-3 text-center"
-                            >
-                                User
-                            </th>
-                            <th
-                                class="border border-gray-300 px-6 py-3 text-center"
-                            >
-                                Timeslot
-                            </th>
-                            <th
-                                class="border border-gray-300 px-6 py-3 text-center"
-                            >
-                                Actions
-                            </th>
+                        <tr class="bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-white">
+                            <th class="border border-gray-300 px-6 py-3">Service</th>
+                            <th class="border border-gray-300 px-6 py-3">Date</th>
+                            <th class="border border-gray-300 px-6 py-3">User</th>
+                            <th class="border border-gray-300 px-6 py-3">Timeslot</th>
+                            <th class="border border-gray-300 px-6 py-3">Status</th>
+                            <th class="border border-gray-300 px-6 py-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($appointments as $appointment)
-                            <tr
-                                class="even:bg-gray-50 hover:bg-gray-100 dark:text-white dark:even:bg-gray-900 dark:hover:bg-gray-900"
-                            >
-                                <td class="border border-gray-300 px-6 py-4">
-                                    {{ $appointment->service }}
-                                </td>
-                                <td class="border border-gray-300 px-6 py-4">
-                                    {{ Carbon::parse($appointment->date)->format("jS F Y") }}
-                                </td>
-                                <td class="border border-gray-300 px-6 py-4">
-                                    {{ $appointment->user->name ?? "Guest" }}
-                                </td>
-                                <td class="border border-gray-300 px-6 py-4">
-                                    {{ Carbon::parse($appointment->timeslot)->format("g:i A") }}
-                                </td>
+                            <tr class="even:bg-gray-50 hover:bg-gray-100 dark:text-white dark:even:bg-gray-900 dark:hover:bg-gray-900">
+                                <td class="border border-gray-300 px-6 py-4">{{ $appointment->service }}</td>
+                                <td class="border border-gray-300 px-6 py-4">{{ Carbon::parse($appointment->date)->format("jS F Y") }}</td>
+                                <td class="border border-gray-300 px-6 py-4">{{ $appointment->user->name ?? "Guest" }}</td>
+                                <td class="border border-gray-300 px-6 py-4">{{ Carbon::parse($appointment->timeslot)->format("g:i A") }}</td>
+                                <td class="border border-gray-300 px-6 py-4 capitalize">{{ $appointment->status }}</td>
                                 <td class="border-b border-gray-300 px-6 py-4">
                                     <div class="flex justify-center space-x-2">
                                         <a
                                             href="{{ route("dashboard.appointments.edit", $appointment->id) }}"
-                                            class="align-center focus:ring-opacity-50 flex rounded-md bg-blue-600 px-4 py-2 text-white transition duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                                            class="focus:ring-opacity-50 flex rounded-md bg-blue-600 px-4 py-2 text-white transition duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
                                         >
                                             Edit
                                         </a>
