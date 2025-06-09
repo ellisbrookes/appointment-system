@@ -18,42 +18,26 @@
             </a>
         </div>
 
-        <div class="mb-6 flex justify-between items-center">
-    {{-- Filter Form --}}
-    <form method="GET" action="{{ route('dashboard.appointments.index') }}" class="flex items-center space-x-3">
-        <label for="status" class="text-lg font-medium text-gray-700 dark:text-white">
-            Filter by Status:
-        </label>
-        <select
-            name="status"
-            id="status"
-            onchange="this.form.submit()"
-            class="w-48 rounded-xl border border-gray-300 bg-white px-4 py-3 text-base text-gray-700 shadow-sm transition focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-gray-800 dark:text-white"
-        >
-            <option value="">All</option>
-            <option value="open" {{ request('status') == 'open' ? 'selected' : '' }}>Open</option>
-            <option value="closed" {{ request('status') == 'closed' ? 'selected' : '' }}>Closed</option>
-            <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-        </select>
-    </form>
+        {{-- Filter Form --}}
+        <div class="mb-6 flex items-center justify-between">
+            <form method="GET" action="{{ route('dashboard.appointments.index') }}" class="flex items-center space-x-3">
+                <label for="status">
+                    Filter by Status:
+                </label>
+                <select
+                    name="status"
+                    id="status"
+                    onchange="this.form.submit()"
+                    class="w-48 rounded-xl border border-gray-300 bg-white px-4 py-3 text-base text-gray-700 shadow-sm transition focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-gray-800 dark:text-white"
+                >
+                    <option value="">All</option>
+                    <option value="open" {{ request('status') == 'open' ? 'selected' : '' }}>Open</option>
+                    <option value="closed" {{ request('status') == 'closed' ? 'selected' : '' }}>Closed</option>
+                    <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                </select>
+            </form>
+        </div>
 
-    {{-- Active Filter Pill with X --}}
-        @if(request('status'))
-            <div class="flex items-center space-x-2">
-                <span class="inline-flex items-center rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-white">
-                            {{ ucfirst(request('status')) }}
-                            <a
-                                href="{{ route('dashboard.appointments.index') }}"
-                                class="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-300 text-white hover:bg-blue-400 dark:bg-blue-700 dark:hover:bg-blue-600"
-                                title="Clear filter"
-                            >
-                                &times;
-                            </a>
-                        </span>
-                    </div>
-                @endif
-            </div>
-            
         @if ($appointments->isEmpty())
             <p class="py-4 text-center text-gray-500 dark:text-white">
                 No booked appointments
@@ -83,7 +67,7 @@
                                     <div class="flex justify-center space-x-2">
                                         <a
                                             href="{{ route("dashboard.appointments.edit", $appointment->id) }}"
-                                            class="focus:ring-opacity-50 flex rounded-md bg-blue-600 px-4 py-2 text-white transition duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                                            class="focus:ring-opacity-50 flex rounded-md bg-blue-600 px-4 py-2 text-white transition duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                         >
                                             Edit
                                         </a>
@@ -98,7 +82,7 @@
                                             @method("DELETE")
                                             <button
                                                 type="submit"
-                                                class="focus:ring-opacity-50 flex items-center rounded-md bg-red-600 px-4 py-2 text-white transition duration-200 hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:outline-hidden"
+                                                class="focus:ring-opacity-50 flex items-center rounded-md bg-red-600 px-4 py-2 text-white transition duration-200 hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:outline-none"
                                             >
                                                 Cancel
                                             </button>
