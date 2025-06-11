@@ -44,7 +44,7 @@ class SessionController extends Controller
 
         return redirect('auth/login')->with('alert', [
             'type' => 'success',
-            'message' => 'You have been logged out, please log back in'
+            'message' => 'You have been logged out'
         ]);
     }
 }
