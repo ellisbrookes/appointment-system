@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
         'is_admin' => false,
         'telephone_number' => $faker->phoneNumber(),
         'email_verified_at' => now(),
-        'settings' => json_encode(['navigation_style' => 'sidebar'])
+        'settings' => json_encode(['navigation_style' => 'top_nav'])
     ]);
   }
 }
