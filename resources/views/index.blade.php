@@ -28,6 +28,39 @@
     </div>
   </section>
 
+  {{-- Pricing Preview Section --}}
+  <section id="homepage-pricing" class="py-24 border-b border-gray-400 dark:border-white bg-gray-50 dark:bg-gray-900">
+    <div class="container mx-auto text-center px-4">
+      <h2 class="text-4xl font-bold mb-8">Plans That Suit You</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+        @foreach ($productsWithPrices as $product)
+          @php
+            // Show only one price (e.g. monthly) for preview
+            $price = collect($product->prices)->firstWhere('interval', 'month') ?? $product->prices[0];
+          @endphp
+
+          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md px-6 py-10 flex flex-col items-center text-center hover:shadow-lg transition">
+            <h3 class="text-2xl font-semibold mb-3">{{ $product->name }}</h3>
+            <p class="text-xl font-bold mb-6">
+              {{ number_format($price['unit_amount'] / 100, 2) }} {{ strtoupper($price['currency']) }}/mo
+            </p>
+
+            <ul class="space-y-2 text-gray-700 dark:text-gray-300 mb-8">
+              <li>✔ Feature 1</li>
+              <li>✔ Feature 2</li>
+              <li>✔ Feature 3</li>
+            </ul>
+          </div>
+        @endforeach
+      </div>
+
+      <div class="mt-12">
+        <a href="{{ route('pricing') }}" class="hover:underline text-lg">See full pricing & plans →</a>
+      </div>
+    </div>
+  </section>
+
   {{-- Statistics Section --}}
   <section id="statistics" class="py-24 border-b border-gray-400 dark:border-white">
     <div class="container mx-auto text-center px-4">
