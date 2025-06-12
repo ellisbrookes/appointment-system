@@ -1,14 +1,32 @@
-<nav class="dark:bg-gray-800 text-white py-4 w-full border-b border-gray-300 dark:border-gray-700">
+<nav class="dark:bg-gray-800 text-white py-4 w-full border-b border-gray-400 dark:border-white">
   <div class="container mx-auto flex justify-between items-center">
-    <p class="logo text-xl font-bold dark:text-white text-black">Appointment System</p>
+    <p class="text-xl font-bold dark:text-white text-black">Appointment System</p>
 
     <ul class="flex gap-6">
-      <li><a href="/" class="hover:text-blue-400 text-black dark:text-white transition-colors">Home</a></li>
-      <li><a href="#" class="hover:text-blue-400 text-black dark:text-white transition-colors">Features</a></li>
-      <li><a href="#" class="hover:text-blue-400 text-black dark:text-white transition-colors">Pricing</a></li>
-      <li><a href="#" class="hover:text-blue-400 text-black dark:text-white transition-colors">Contact</a></li>
+      <x-shared.nav-link>
+        <li>
+          <a href="{{ route('index') }}" class="text-black dark:text-white hover:underline">Home</a>
+        </li>
+        <li>
+          <a href="#" class="text-black dark:text-white hover:underline">Features</a>
+        </li>
+        <li>
+          <a href="{{ route('pricing') }}" class="text-black dark:text-white hover:underline">Pricing</a>
+        </li>
+        <li>
+          <a href="#" class="text-black dark:text-white hover:underline">Contact</a>
+        </li>
+      </x-shared.nav-link>
     </ul>
 
-    <a href="/dashboard" class="bg-blue-600 text-white rounded-md border px-6 py-2 hover:bg-blue-700 transition-colors">Get Started</a>
+    @auth
+      <a href="{{ route('dashboard') }}" class="rounded-md border px-6 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+        {{ Auth::user()->name }}
+      </a>
+    @else
+      <a href="{{ route('login') }}" class="rounded-md border px-6 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+        Get Started
+      </a>
+    @endauth
   </div>
 </nav>
