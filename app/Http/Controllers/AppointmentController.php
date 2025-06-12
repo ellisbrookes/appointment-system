@@ -103,17 +103,18 @@ class AppointmentController extends Controller
     $currentDate = Carbon::parse($date);
 
     // Timeslots
-    $timeslots = [
-      '9:00',
-      '10:00',
-      '11:00',
-      '12:00',
-      '1:00',
-      '2:00',
-      '3:00',
-      '4:00',
-      '5:00'
-    ];
+    $settings = auth()->user()->settings ?? [];
+
+    $startTime = isset($settings['timeslot_start']) ? Carbon::createFromTimeString($settings['timeslot_start']) : Carbon::createFromTimeString('09:00');
+    $endTime = isset($settings['timeslot_end']) ? Carbon::createFromTimeString($settings['timeslot_end']) : Carbon::createFromTimeString('17:00');
+    $interval = isset($settings['timeslot_interval']) ? (int)$settings['timeslot_interval'] : 60;
+
+    $timeslots = [];
+
+    while ($startTime < $endTime) {
+      $timeslots[] = $startTime->format('H:i');
+      $startTime->addMinutes($interval);
+    }
 
     $firstTimeslot = Carbon::parse($timeslots[0]);
 
