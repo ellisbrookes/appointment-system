@@ -36,14 +36,14 @@
       @php
         $stats = [
           ['Users', number_format($userCount), 'users'],
-          ['Appointments Scheduled', number_format($appointmentCount), 'calendar-check'],
+          ['Appointments', number_format($appointmentCount), 'calendar-check'],
         ];
       @endphp
 
       <div class="flex flex-wrap justify-center gap-12">
         @foreach ($stats as $stat)
-          <div class="rounded-2xl p-8 bg-white dark:bg-gray-800 max-w-xs">
-            <i class="fas fa-{{ $stat[2] }} fa-3x mb-4 text-blue-600 dark:text-blue-400"></i>
+          <div class="p-8">
+            <i class="fas fa-{{ $stat[2] }} fa-3x mb-4"></i>
             <h3 class="text-3xl font-semibold mb-2">{{ $stat[1] }}</h3>
             <p class="text-lg">{{ $stat[0] }}</p>
           </div>
