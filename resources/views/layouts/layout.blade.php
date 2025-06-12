@@ -14,7 +14,7 @@
       @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
   </head>
-  <body class="flex flex-col h-screen dark:bg-gray-900 dark:text-white"> 
+  <body class="flex flex-col h-screen dark:bg-gray-900 dark:text-white text-gray-800"> 
     @include('components.website.navigation')
 
     <main class="flex-1 relative">
