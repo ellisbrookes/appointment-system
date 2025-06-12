@@ -36,7 +36,6 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
         @foreach ($productsWithPrices as $product)
           @php
-            // Show only one price (e.g. monthly) for preview
             $price = collect($product->prices)->firstWhere('interval', 'month') ?? $product->prices[0];
           @endphp
 
