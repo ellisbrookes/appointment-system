@@ -19,11 +19,15 @@
           <option value="sidebar" {{ old('settings.navigation_style', $settings['navigation_style'] ?? '') === 'sidebar' ? 'selected' : '' }}>Sidebar</option>
           <option value="top_nav" {{ old('settings.navigation_style', $settings['navigation_style'] ?? '') === 'top_nav' ? 'selected' : '' }}>Top nav</option>
         </select>
+
+        <p class="mt-2 text-sm text-gray-500">
+          Navigation will be set on sidebar by default
+        </p>
       </div>
 
       {{-- Timeslot Section --}}
-      <div class="mt-10">
-        <h2 class="text-2xl font-bold mb-4">Timeslot Settings</h2>
+      <div class="mt-4">
+        <h2 class="text-2xl font-bold mb-4">Timeslot</h2>
         
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {{-- Start Time --}}
