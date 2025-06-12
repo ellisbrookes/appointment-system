@@ -20,10 +20,14 @@
   }" 
   class="text-gray-800 dark:text-white"
 >
-  @if(Auth::user()->settings['navigation_style'] === 'sidebar')
-    @include('components.dashboard.sidebar')
-  @elseif (Auth::user()->settings['navigation_style'] === 'top_nav')
-    @include('components.dashboard.top-nav')
+  @php
+    $navStyle = Auth::user()->settings['navigation_style'] ?? 'sidebar';
+  @endphp
+
+  @if($navStyle === 'sidebar')
+      @include('components.dashboard.sidebar')
+  @elseif($navStyle === 'top_nav')
+      @include('components.dashboard.top-nav')
   @endif
   
   <main
