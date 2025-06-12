@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PricingController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Middleware\CheckSubscription;
@@ -9,9 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 // Index
-Route::get('/', function () {
-  return view('index');
-})->name('index');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Pricing
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');

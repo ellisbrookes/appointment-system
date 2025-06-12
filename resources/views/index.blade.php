@@ -33,10 +33,17 @@
     <div class="container mx-auto text-center px-4">
       <h2 class="text-4xl font-bold mb-12">Our Achievements</h2>
 
+      @php
+        $stats = [
+          ['Users', number_format($userCount), 'users'],
+          ['Appointments Scheduled', number_format($appointmentCount), 'calendar-check'],
+        ];
+      @endphp
+
       <div class="flex flex-wrap justify-center gap-12">
-        @foreach ([['Users', '10,000+', 'users'], ['Appointments Scheduled', '50,000+', 'calendar-check']] as $stat)
+        @foreach ($stats as $stat)
           <div class="rounded-2xl p-8 bg-white dark:bg-gray-800 max-w-xs">
-            <i class="fas fa-{{ $stat[2] }} fa-3x mb-4"></i>
+            <i class="fas fa-{{ $stat[2] }} fa-3x mb-4 text-blue-600 dark:text-blue-400"></i>
             <h3 class="text-3xl font-semibold mb-2">{{ $stat[1] }}</h3>
             <p class="text-lg">{{ $stat[0] }}</p>
           </div>
