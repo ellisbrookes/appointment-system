@@ -3,7 +3,7 @@
 @section('content')
 
   {{-- Hero Section --}}
-  <div class="py-24 text-center border-b border-black dark:border-white">
+  <div class="py-24 text-center border-b border-gray-400 dark:border-white">
     <h1 class="text-4xl font-bold">Welcome to Appointment System</h1>
     <p class="mt-6 text-lg">
       Your reliable tool for managing appointments effectively.
@@ -11,7 +11,7 @@
   </div>
 
   {{-- Features Section --}}
-  <section id="features" class="py-24 border-b border-black dark:border-white">
+  <section id="features" class="py-24 border-b border-gray-400 dark:border-white">
     <div class="container mx-auto text-center px-4">
       <h2 class="text-4xl font-bold mb-12">Features</h2>
 
@@ -29,7 +29,7 @@
   </section>
 
   {{-- Statistics Section --}}
-  <section id="statistics" class="py-24 border-b border-black dark:border-white">
+  <section id="statistics" class="py-24 border-b border-gray-400 dark:border-white">
     <div class="container mx-auto text-center px-4">
       <h2 class="text-4xl font-bold mb-12">Our Achievements</h2>
 
