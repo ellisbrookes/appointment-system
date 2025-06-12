@@ -5,7 +5,7 @@
     <ul class="flex gap-6">
       <x-shared.nav-link>
         <li>
-          <a href="{{ route('index') }}" class="text-black dark:text-white hover:underline">Home</a>
+          <a href="{{ route('home') }}" class="text-black dark:text-white hover:underline">Home</a>
         </li>
         <li>
           <a href="#" class="text-black dark:text-white hover:underline">Features</a>
