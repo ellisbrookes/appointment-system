@@ -1,10 +1,15 @@
-@extends('dashboard.layout')
+@extends("dashboard.layout")
 
-@section('content')
-    <div class="flex flex-col justify-center mx-auto w-full max-w-2xl p-6">
-        <h2 class="text-3xl font-semibold mb-4 dark:text-gray-200">Choose a Service</h2>
+@section("content")
+    <div class="mx-auto flex w-full max-w-2xl flex-col justify-center p-6">
+        <h2 class="mb-4 text-3xl font-semibold dark:text-gray-200">
+            Choose a Service
+        </h2>
 
-        <form action="{{ route('dashboard.appointments.create.step.one.post') }}" method="POST">
+        <form
+            action="{{ route("dashboard.appointments.create.step.one.post") }}"
+            method="POST"
+        >
             @csrf
 
             @if ($errors->any())
@@ -19,23 +24,31 @@
 
             <!-- Service Selection -->
             <div class="mt-4">
-                <label for="service" class="block text-gray-800 dark:text-white text-lg">Choose a Service:</label>
-                <select name="service" id="service"
-                        class="w-full p-3 mt-2 border border-gray-300 dark:border-gray-200 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-800"
-                        value="{{ $appointment->service ?? '' }}">
+                <label
+                    for="service"
+                    class="block text-lg text-gray-800 dark:text-white"
+                >
+                    Choose a Service:
+                </label>
+
+                <select
+                    name="service"
+                    id="service"
+                    class="mt-2 w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-blue-500 focus:outline-hidden dark:border-gray-200 dark:bg-gray-800 dark:text-white"
+                    value="{{ $appointment->service ?? "" }}"
+                >
                     <option value="" disabled selected>Select a service</option>
-                    <option value="hair" class=>Hair</option>
+                    <option value="hair" class="">Hair</option>
                     <option value="nails">Nails</option>
                     <option value="wax">Wax</option>
                 </select>
             </div>
 
             <!-- Submit Button -->
-            <div class="mt-4 text-center">
-                <button type="submit"
-                        class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
-                    Next Step
-                </button>
+            <div class="mt-4">
+                <x-shared.primary-button type="submit">
+                    {{ __("Next Step") }}
+                </x-shared.primary-button>
             </div>
         </form>
     </div>
