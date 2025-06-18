@@ -22,7 +22,14 @@ class AppointmentController extends Controller
    */
   public function index(Request $request)
   {
-    $appointments = Appointment::with('user')->get();
+    $query = Appointment::with('user');
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    $appointments = $query->get();
+
     return view('dashboard.appointments.index', compact('appointments'));
   }
 
@@ -99,8 +106,16 @@ class AppointmentController extends Controller
     $appointment = $request->session()->get('appointment', []);
 
     // Calendar Data
-    $date = $request->get('date', now()->format('Y-m-d'));
-    $currentDate = Carbon::parse($date);
+    $today = Carbon::today();
+    
+    $year = $request->input('year', $today->year);
+    $month = $request->input('month', $today->month);
+
+    $startOfMonth = Carbon::create($year, $month, 1);
+    $endOfMonth = $startOfMonth->copy()->endOfMonth();
+    
+    $startDayOfWeek = $startOfMonth->dayOfWeek;
+    $daysInMonth = $endOfMonth->day;
 
     // Timeslots
     $timeslots = [
@@ -117,26 +132,16 @@ class AppointmentController extends Controller
 
     $firstTimeslot = Carbon::parse($timeslots[0]);
 
-    // Selected date
-    $selectedDay = $request->query('date', $currentDate->day);
-
-    // First and last day of the month
-    $firstDay = $currentDate->copy()->startOfMonth();
-    $lastDay = $currentDate->copy()->endOfMonth();
-
-    // Days for the calendar
-    $daysInMonth = $lastDay->day;
-    $startDayOfWeek = $firstDay->dayOfWeek;
-
-    return view('dashboard.appointments.create-step-two', compact(
+    return view('dashboard.appointments.create-step-two', [
       'appointment',
-      'currentDate',
-      'daysInMonth',
-      'startDayOfWeek',
-      'selectedDay',
-      'timeslots',
-      'firstTimeslot'
-    ));
+      'currentDate' => $today->toDateString(),
+      'daysInMonth' => $daysInMonth,
+      'startDayOfWeek' => $startDayOfWeek,
+      'month' => $month,
+      'year' => $year,
+      'timeslots' => $timeslots,
+      'firstTimeslot' => $firstTimeslot
+    ]);
   }
 
   /**
@@ -204,11 +209,14 @@ class AppointmentController extends Controller
     ]);
   }
 
-  public function destroy(Request $request, $id)
+ public function destroy(Request $request, $id)
   {
     $appointment = Appointment::findOrFail($id);
+
+    $appointment->status = 'cancelled';
+    $appointment->save();
+
     Mail::to($request->user())->send(new AppointmentCancelled($appointment));
-    $appointment->delete();
 
     $request->session()->forget('appointment');
 
