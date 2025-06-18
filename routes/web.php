@@ -3,7 +3,6 @@
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\Dashboard\CompanyController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\DashboardController;

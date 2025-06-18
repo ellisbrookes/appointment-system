@@ -24,7 +24,10 @@ class SettingsController extends Controller
     $user = Auth::user();
 
     $request->validate([
-      'settings.navigation_style' => 'required|string|in:sidebar,top_nav',
+      'settings.navigation_style' => 'required|in:sidebar,top_nav',
+      'settings.timeslot_start' => 'required|date_format:H:i',
+      'settings.timeslot_end' => 'required|date_format:H:i|after:settings.timeslot_start',
+      'settings.timeslot_interval' => 'required|integer|min:5|max:120',
     ]);
 
     $user->settings = $request->input('settings');
