@@ -1,6 +1,9 @@
-@extends('layouts.layout')
+@extends("layouts.layout")
 
-@section('content')
+@section("content")
+    <section id="pricing" class="bg-white px-4 py-12 pt-20">
+        <div class="container mx-auto text-center">
+            <h2 class="mb-8 text-4xl font-bold">Pricing</h2>
 
 <section id="pricing" class="py-16">
   <div class="container mx-auto text-center">
@@ -58,5 +61,4 @@
     </div>
   </div>
 </section>
-
 @endsection
