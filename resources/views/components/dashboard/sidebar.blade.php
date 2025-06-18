@@ -90,6 +90,12 @@
         </a>
       </li>
       <li>
+        <a href="{{ route('settings') }}" :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4 w-full">
+          <i :class="isSidebarOpen ? 'ml-4' : ''" class="fas fa-gear"></i>
+          <span :class="isSidebarOpen ? '' : 'hidden'">Settings</span>
+        </a>
+      </li>
+      <li>
         <form method="POST" action="{{ route('logout') }}">
           @csrf
           <button type="submit" :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'" class="flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 border-t block px-4 w-full">
