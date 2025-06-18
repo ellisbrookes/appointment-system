@@ -127,7 +127,7 @@
                 class="fas fa-chevron-down text-sm transition-transform duration-300"
             ></i>
         </a>
-        
+
         <ul
             x-show="isUserSidebarOpen"
             x-transition
