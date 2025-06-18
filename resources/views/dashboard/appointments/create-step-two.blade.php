@@ -47,13 +47,15 @@
                     <!-- Navigation -->
                     <div>
                         <x-shared.link
-                            :href="route('dashboard.appointments.create.step.two', ['month' => $prev->month, 'year' => $prev->year])"
+                            route="dashboard.appointments.create.step.two"
+                            :params="['month' => $prev->month, 'year' => $prev->year]"
                         >
                             {{ __("Prev") }}
                         </x-shared.link>
 
                         <x-shared.link
-                            :href="route('dashboard.appointments.create.step.two', ['month' => $next->month, 'year' => $next->year])"
+                            route="dashboard.appointments.create.step.two"
+                            :params="['month' => $next->month, 'year' => $next->year]"
                         >
                             {{ __("Next") }}
                         </x-shared.link>

@@ -43,7 +43,7 @@
                         >
                             <td class="border px-6 py-4 font-medium">Date</td>
                             <td class="border px-6 py-4">
-                                {{ Carbon::parse($appointment["date"])->format("jS F Y") ?? "" }}
+                                {{ isset($appointment["date"]) ? Carbon::parse($appointment["date"])->format("jS F Y") : "" }}
                             </td>
                         </tr>
 
