@@ -24,10 +24,7 @@
                     required
                     autofocus
                 />
-                <x-shared.input-error
-                    :messages="$errors->get('name')"
-                    class="mt-2"
-                />
+                <x-shared.input-error :messages="$errors->get('name')" />
             </div>
 
             <div class="mb-4">
@@ -40,10 +37,7 @@
                     required
                     autofocus
                 />
-                <x-shared.input-error
-                    :messages="$errors->get('email')"
-                    class="mt-2"
-                />
+                <x-shared.input-error :messages="$errors->get('email')" />
             </div>
 
             <div class="mb-4">
@@ -61,7 +55,6 @@
                 />
                 <x-shared.input-error
                     :messages="$errors->get('phone_number')"
-                    class="mt-2"
                 />
             </div>
 
@@ -74,10 +67,7 @@
                     :value="old('address')"
                     required
                 />
-                <x-shared.input-error
-                    :messages="$errors->get('address')"
-                    class="mt-2"
-                />
+                <x-shared.input-error :messages="$errors->get('address')" />
             </div>
 
             <div class="mb-4">
@@ -90,10 +80,7 @@
                     required
                     class="uppercase"
                 />
-                <x-shared.input-error
-                    :messages="$errors->get('postcode')"
-                    class="mt-2"
-                />
+                <x-shared.input-error :messages="$errors->get('postcode')" />
             </div>
 
             <div class="mb-4">
@@ -110,7 +97,6 @@
                 />
                 <x-shared.input-error
                     :messages="$errors->get('description')"
-                    class="mt-2"
                 />
             </div>
 
