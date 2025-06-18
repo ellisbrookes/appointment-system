@@ -6,57 +6,31 @@
             Appointment System
         </p>
 
-        <ul class="flex gap-6">
-            <x-shared.nav-link>
-                <li>
-                    <a
-                        href="{{ route("home") }}"
-                        class="text-black hover:underline dark:text-white"
-                    >
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="#"
-                        class="text-black hover:underline dark:text-white"
-                    >
-                        Features
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="{{ route("pricing") }}"
-                        class="text-black hover:underline dark:text-white"
-                    >
-                        Pricing
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="#"
-                        class="text-black hover:underline dark:text-white"
-                    >
-                        Contact
-                    </a>
-                </li>
-            </x-shared.nav-link>
-        </ul>
+        <div class="flex items-center gap-6">
+            <x-shared.link route="home" :active="request()->routeIs('home')">
+                Home
+            </x-shared.link>
+
+            <x-shared.link route="home" :active="false">
+                Features
+            </x-shared.link>
+
+            <x-shared.link
+                route="pricing"
+                :active="request()->routeIs('pricing')"
+            >
+                Pricing
+            </x-shared.link>
+
+            <x-shared.link route="home" :active="false">Contact</x-shared.link>
+        </div>
 
         @auth
-            <a
-                href="{{ route("dashboard") }}"
-                class="rounded-md border px-6 py-2 transition-colors hover:bg-gray-200 dark:hover:bg-gray-600"
-            >
+            <x-shared.link route="dashboard">
                 {{ Auth::user()->name }}
-            </a>
+            </x-shared.link>
         @else
-            <a
-                href="{{ route("login") }}"
-                class="rounded-md border px-6 py-2 transition-colors hover:bg-gray-200 dark:hover:bg-gray-600"
-            >
-                Get Started
-            </a>
+            <x-shared.link route="login">Get Started</x-shared.link>
         @endauth
     </div>
 </nav>
