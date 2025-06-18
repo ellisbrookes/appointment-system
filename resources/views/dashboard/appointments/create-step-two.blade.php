@@ -1,12 +1,29 @@
-@php use Carbon\Carbon; @endphp
-@extends('dashboard.layout')
+@php
+    use Carbon\Carbon;
 
-@section('content')
-    <div class="flex flex-col justify-center mx-auto w-full max-w-5xl p-6">
-        <h2 class="text-3xl font-semibold mb-4 dark:text-gray-300">Select an appointment date and time</h2>
+    $prev = Carbon::create($year, $month)->subMonth();
+    $next = Carbon::create($year, $month)->addMonth();
 
-        <form action="{{ route('dashboard.appointments.create.step.two.post') }}" method="POST"
-              class="flex flex-col space-y-4 w-full">
+    $currentMonthTitle = Carbon::create($year, $month)->format("F Y");
+    $timeslotDateTitle = Carbon::parse($currentDate)->format("jS F Y");
+
+    $dayCounter = 1;
+    $calendarCells = ceil(($startDayOfWeek + $daysInMonth) / 7) * 7;
+@endphp
+
+@extends("dashboard.layout")
+
+@section("content")
+    <div class="mx-auto flex w-full max-w-5xl flex-col justify-center p-6">
+        <h2 class="mb-4 text-2xl font-semibold dark:text-gray-300">
+            Select an appointment date and time
+        </h2>
+
+        <form
+            action="{{ route("dashboard.appointments.create.step.two.post") }}"
+            method="POST"
+            class="flex w-full flex-col space-y-4"
+        >
             @csrf
 
             @if ($errors->any())
@@ -20,83 +37,116 @@
             @endif
 
             <!-- Calendar Grid -->
-            <div class="border-2 border-gray-500 rounded-md p-6">
+            <div class="rounded-md border p-6">
                 <!-- Header with Month Display -->
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-4xl font-bold dark:text-gray-300">{{ $currentDate->format('F Y') }}</h2>
+                <div class="mb-6 flex items-center justify-between">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white">
+                        {{ $currentMonthTitle }}
+                    </h2>
 
                     <!-- Navigation -->
                     <div>
-                        <a href="{{ route('dashboard.appointments.create.step.two', ['date' => $currentDate->copy()->subMonth()->format('Y-m-d')]) }}"
-                           class="py-3 px-4 text-white bg-gray-600 rounded-md">Previous</a>
+                        <x-shared.link
+                            :href="route('dashboard.appointments.create.step.two', ['month' => $prev->month, 'year' => $prev->year])"
+                        >
+                            {{ __("Prev") }}
+                        </x-shared.link>
 
-                        <a href="{{ route('dashboard.appointments.create.step.two', ['date' => $currentDate->copy()->addMonth()->format('Y-m-d')]) }}"
-                           class="py-3 px-4 text-white bg-blue-600 rounded-md">Next</a>
+                        <x-shared.link
+                            :href="route('dashboard.appointments.create.step.two', ['month' => $next->month, 'year' => $next->year])"
+                        >
+                            {{ __("Next") }}
+                        </x-shared.link>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-7 gap-4 text-center dark:text-gray-300">
-                    @foreach(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as $day)
-                        <div class="font-bold tracking-wider">{{ $day }}</div>
+                <div class="grid grid-cols-7 gap-4 text-center">
+                    @foreach (["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as $day)
+                        <div
+                            class="font-bold tracking-wider text-gray-800 dark:text-white"
+                        >
+                            {{ $day }}
+                        </div>
                     @endforeach
 
-                    @for($i = 0; $i < $startDayOfWeek; $i++)
-                        <div></div>
-                    @endfor
+                    <input
+                        type="hidden"
+                        id="date"
+                        name="date"
+                        value="{{ $currentDate }}"
+                    />
 
-                    <input type="hidden" id="date" name="date" value="{{ $selectedDay }}">
+                    @for ($i = 0; $i < $calendarCells; $i++)
+                        @if ($i < $startDayOfWeek || $dayCounter > $daysInMonth)
+                            <div></div>
+                        @else
+                            @php
+                                $currentLoopDate = Carbon::create($year, $month, $dayCounter)->toDateString();
+                                $isToday = $currentLoopDate === $currentDate;
+                            @endphp
 
-                    @for($day = 1; $day <= $daysInMonth; $day++)
-                        <button
-                            type="button"
-                            class="py-3 rounded-md text-md text-white transition-all duration-250 ease-in-out cursor-pointer hover:bg-blue-700 focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105
-                                {{ $day == $currentDate->day ? 'cursor-pointer font-bold' : '' }}
-                                {{ isset($selectedDay) && $selectedDay == $day ? 'bg-blue-700 shadow-lg transform scale-105 font-bold' : 'bg-gray-800 hover:bg-blue-700' }}"
-                            onclick="updateDateField('{{ $currentDate->copy()->day($day)->format('Y-m-d') }}')"
-                        >
-                            <span>{{ $day }}</span>
-                        </button>
+                            <div
+                                class="{{ $isToday ? "bg-blue-300 font-bold" : "hover:bg-gray-200 dark:hover:bg-gray-800" }} flex h-10 cursor-pointer items-center justify-center rounded"
+                                onclick="selectDate('{{ $currentLoopDate }}', this)"
+                            >
+                                {{ $dayCounter++ }}
+                            </div>
+                        @endif
                     @endfor
                 </div>
             </div>
 
             <!-- Display Time Slots if a day is selected -->
-            @isset($selectedDay)
-                <div class="border-2 border-gray-500 rounded-md p-6">
-                    <h2 class="text-xl font-bold text-gray-800">
-                        Timeslots for <span id="timeslot-date">{{ $currentDate->format('jS F Y') }}</span>
+            @isset($currentDate)
+                <div class="rounded-md border p-6">
+                    <h2 class="text-xl font-bold">
+                        Timeslots for
+                        <span id="timeslot-date">
+                            {{ $timeslotDateTitle }}
+                        </span>
                     </h2>
 
-                    <input type="hidden" id="timeslot" name="timeslot"
-                           value="{{ Carbon::parse($firstTimeslot)->format('h:i') }}">
+                    <input
+                        type="hidden"
+                        id="timeslot"
+                        name="timeslot"
+                        value="{{ isset($timeslots[0]) ? Carbon::parse($timeslots[0])->format("H:i") : "" }}"
+                    />
 
-                    <div class="grid grid-cols-4 gap-4 mt-6">
-                        @foreach($timeslots as $timeslot)
-                            <button
-                                type="button"
-                                name="timeslot"
-                                class="bg-gray-800 py-3 rounded-md text-md text-white transition-all duration-250 ease-in-out cursor-pointer hover:bg-blue-700 focus:bg-blue-700 focus:font-bold focus:shadow-lg focus:transform focus:scale-105"
-                                onclick="updateTimeslotField('{{ $timeslot }}')"
+                    <div class="mt-6 grid grid-cols-4 gap-4">
+                        @foreach ($timeslots as $timeslot)
+                            @php
+                                if (! ($timeslot instanceof Carbon)) {
+                                    $timeslot = Carbon::parse($timeslot);
+                                }
+                            @endphp
+
+                            <div
+                                class="text-md flex cursor-pointer justify-center rounded-md py-3 hover:bg-gray-200 dark:hover:bg-gray-800"
+                                onclick="selectTimeslot('{{ $timeslot->format("H:i") }}', this)"
                             >
-                                {{ $timeslot }}
-                            </button>
+                                {{ $timeslot->format("H:i") }}
+                            </div>
                         @endforeach
                     </div>
 
                     <!-- Labels (Booked, Blocked, Unavailable) -->
-                    <div class="mt-8 w-full flex space-x-4 justify-center">
+                    <div class="mt-8 flex w-full justify-center space-x-4">
                         <div
-                            class="flex items-center space-x-2 bg-green-100 text-green-600 rounded-md px-4 py-2 cursor-pointer hover:bg-green-200">
+                            class="flex cursor-pointer items-center space-x-2 rounded-md bg-green-100 px-4 py-2 text-green-600 hover:bg-green-200"
+                        >
                             <span class="font-bold">Booked</span>
                         </div>
 
                         <div
-                            class="flex items-center space-x-2 bg-yellow-100 text-yellow-600 rounded-md px-4 py-2 cursor-pointer hover:bg-yellow-200">
+                            class="flex cursor-pointer items-center space-x-2 rounded-md bg-yellow-100 px-4 py-2 text-yellow-600 hover:bg-yellow-200"
+                        >
                             <span class="font-bold">Limited</span>
                         </div>
 
                         <div
-                            class="flex items-center space-x-2 bg-red-100 text-red-600 rounded-md px-4 py-2 cursor-pointer hover:bg-red-200">
+                            class="flex cursor-pointer items-center space-x-2 rounded-md bg-red-100 px-4 py-2 text-red-600 hover:bg-red-200"
+                        >
                             <span class="font-bold">Unavailable</span>
                         </div>
                     </div>
@@ -104,25 +154,103 @@
             @endisset
 
             <!-- Step Navigation Buttons -->
-            <div class="text-center flex justify-center space-x-2">
-                <a href="{{ route('dashboard.appointments.create.step.one') }}"
-                   class="bg-gray-600 text-white py-3 px-4 rounded-md hover:bg-gray-700 focus:outline-hidden focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-200">Previous
-                    Step</a>
-                <button type="submit"
-                        class="bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
-                    Next Step
-                </button>
+            <div class="flex justify-center space-x-2 text-center">
+                <x-shared.primary-button
+                    :href="route('dashboard.appointments.create.step.one')"
+                    class="bg-gray-600 hover:bg-gray-700 focus:ring-gray-500"
+                >
+                    {{ __("Previous Step") }}
+                </x-shared.primary-button>
+
+                <x-shared.primary-button
+                    type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
+                >
+                    {{ __("Next Step") }}
+                </x-shared.primary-button>
             </div>
         </form>
     </div>
 
     <script>
-        function updateDateField(value) {
-            document.getElementById('date').value = value;
+        let selectedCell = document.querySelector('.bg-blue-300');
+
+        function selectDate(date, cell) {
+            if (
+                selectedCell &&
+                !selectedCell.classList.contains('bg-blue-300')
+            ) {
+                selectedCell.classList.remove(
+                    'bg-blue-500',
+                    'text-white',
+                    'font-bold',
+                );
+                selectedCell.classList.add(
+                    'hover:bg-gray-200',
+                    'dark:hover:bg-gray-800',
+                );
+            }
+
+            if (!cell.classList.contains('bg-blue-300')) {
+                selectedCell = cell;
+                cell.classList.remove(
+                    'hover:bg-gray-200',
+                    'dark:hover:bg-gray-800',
+                );
+                cell.classList.add('bg-blue-500', 'text-white', 'font-bold');
+            }
+
+            document.getElementById('date').value = date;
+
+            const dateObj = new Date(date);
+            const day = dateObj.getDate();
+            const month = dateObj.toLocaleString('en-GB', { month: 'long' });
+            const year = dateObj.getFullYear();
+            const ordinal = (n) => {
+                if (n > 3 && n < 21) return n + 'th';
+                switch (n % 10) {
+                    case 1:
+                        return n + 'st';
+                    case 2:
+                        return n + 'nd';
+                    case 3:
+                        return n + 'rd';
+                    default:
+                        return n + 'th';
+                }
+            };
+            document.getElementById('timeslot-date').textContent =
+                `${ordinal(day)} ${month} ${year}`;
         }
 
-        function updateTimeslotField(value) {
-            document.getElementById('timeslot').value = value;
+        let selectedTimeslot = document.querySelector('.bg-blue-300');
+
+        function selectTimeslot(timeslot, cell) {
+            if (
+                selectedTimeslot &&
+                !selectedTimeslot.classList.contains('bg-blue-300')
+            ) {
+                selectedTimeslot.classList.remove(
+                    'bg-blue-500',
+                    'text-white',
+                    'font-bold',
+                );
+                selectedTimeslot.classList.add(
+                    'hover:bg-gray-200',
+                    'dark:hover:bg-gray-800',
+                );
+            }
+
+            if (!cell.classList.contains('bg-blue-300')) {
+                selectedTimeslot = cell;
+                cell.classList.remove(
+                    'hover:bg-gray-200',
+                    'dark:hover:bg-gray-800',
+                );
+                cell.classList.add('bg-blue-500', 'text-white', 'font-bold');
+            }
+
+            document.getElementById('timeslot').value = timeslot;
         }
     </script>
 @endsection

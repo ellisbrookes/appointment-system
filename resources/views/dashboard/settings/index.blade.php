@@ -1,13 +1,19 @@
-@extends('dashboard.layout')
+@extends("dashboard.layout")
 
-@section('content')
-  <h1 class="text-4xl font-bold mb-2 text-center">Settings</h1>
-  <p class="text-lg font-semibold text-center mb-6">Here you can find all the settings</p>
+@section("content")
+    <h1 class="mb-2 text-center text-4xl font-bold">Settings</h1>
+    <p class="mb-6 text-center text-lg font-semibold">
+        Here you can find all the settings
+    </p>
 
-  <div class="flex justify-center items-center">
-    <form action="{{ route('store') }}" method="POST" class="w-full max-w-7xl">
-      @csrf
-      @method('PUT')
+    <div class="flex items-center justify-center">
+        <form
+            action="{{ route("store") }}"
+            method="POST"
+            class="w-full max-w-7xl"
+        >
+            @csrf
+            @method("PUT")
 
       {{-- Appearance Section --}}
       <div>
