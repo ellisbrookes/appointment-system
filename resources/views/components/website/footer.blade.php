@@ -7,5 +7,4 @@
       <a href="/" class="hover:underline mx-2">Privacy Policy</a>
       <a href="/" class="hover:underline mx-2"> Uptime Status</a>
     </div>
-  </div>
 </footer>
