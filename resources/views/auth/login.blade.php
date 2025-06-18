@@ -58,22 +58,19 @@
                     <x-shared.primary-button>
                         {{ __("Login") }}
                     </x-shared.primary-button>
+                    
+        <div class="flex flex-col items-center justify-end space-y-2">
+          <x-shared.primary-button>
+            {{ __('Login') }}
+          </x-shared.primary-button>
 
-                    <a
-                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                        href="{{ route("register") }}"
-                    >
-                        {{ __("Need an account?") }}
-                    </a>
+          <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('register') }}">
+            {{ __('Need an account?') }}
+          </a>
 
-                    <a
-                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                        href="{{ route("password.request") }}"
-                    >
-                        {{ __("Forgot Password?") }}
-                    </a>
-                </div>
-            </form>
+          <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
+            {{ __('Forgot Password?') }}
+          </a>
         </div>
     </div>
 @endsection
