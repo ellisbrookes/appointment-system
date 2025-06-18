@@ -18,7 +18,7 @@
         @method("put")
 
         <div>
-            <x-input-label
+            <x-shared.input-label
                 for="update_password_current_password"
                 :value="__('Current Password')"
             />
@@ -29,17 +29,17 @@
                 class="mt-1 block w-full"
                 autocomplete="current-password"
             />
-            <x-input-error
+            <x-shared.input-error
                 :messages="$errors->updatePassword->get('current_password')"
             />
         </div>
 
         <div>
-            <x-input-label
+            <x-shared.input-label
                 for="update_password_password"
                 :value="__('New Password')"
             />
-            <x-text-input
+            <x-shared.text-input
                 id="update_password_password"
                 name="password"
                 type="password"
@@ -52,24 +52,26 @@
         </div>
 
         <div>
-            <x-input-label
+            <x-shared.input-label
                 for="update_password_password_confirmation"
                 :value="__('Confirm Password')"
             />
-            <x-text-input
+            <x-shared.text-input
                 id="update_password_password_confirmation"
                 name="password_confirmation"
                 type="password"
                 class="mt-1 block w-full"
                 autocomplete="new-password"
             />
-            <x-input-error
+            <x-shared.input-error
                 :messages="$errors->updatePassword->get('password_confirmation')"
             />
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __("Save") }}</x-primary-button>
+            <x-shared.primary-button>
+                {{ __("Save") }}
+            </x-shared.primary-button>
 
             @if (session("status") === "password-updated")
                 <p

@@ -57,6 +57,7 @@
 
 
 
+
     <div class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
       <div class="bg-white dark:bg-slate-800 rounded-lg p-6 max-w-lg mx-auto text-center shadow-lg">
         <h1 class="text-2xl font-semibold text-gray-800 dark:text-white mb-2">Your subscription is inactive</h1>
