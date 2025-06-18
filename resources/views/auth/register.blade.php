@@ -32,6 +32,14 @@
           <x-shared.input-error :messages="$errors->get('telephone_number')" class="mt-2" />
         </div>
 
+         <div class="mt-4">
+            <x-input-label for="company_name" :value="__('Company Name (Optional)')" />
+            <x-text-input type="text" name="company_name" id="company_name" class="block mt-1 w-full"
+                :value="old('company_name')" />
+            <x-input-error :messages="$errors->get('company_name')" class="mt-2" />
+        </div>
+
+
         <!-- Password -->
         <div>
           <x-shared.input-label for="password" :value="__('Password')" />
