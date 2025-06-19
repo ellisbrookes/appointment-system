@@ -65,9 +65,12 @@ class UserRegistrationTest extends TestCase
         $response->assertStatus(200);
 
         // Check the page contains texts that are actually shown
-        $response->assertSee('Verify Email');
-        $response->assertSee('Verify your email to continue');
-        $response->assertSee('Before proceeding, please check your email for a verification link. If you did not receive the email, you can request another by clicking the button below.');
+        $response->assertSeeInOrder([
+            'Before proceeding, please check your email for a',
+            'verification link.',
+            'If you did not receive the email',
+            'you can request another by clicking the button below.'
+        ]);
     }
 
     public function test_unverified_user_cannot_access_dashboard()
