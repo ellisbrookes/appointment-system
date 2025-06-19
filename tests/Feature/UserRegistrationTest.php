@@ -62,7 +62,6 @@ class UserRegistrationTest extends TestCase
 
         $response = $this->actingAs($user)->get('/auth/email/verify');
 
-        dd($response->getContent());
         $response->assertStatus(200);
 
         // Check the page contains texts that are actually shown
