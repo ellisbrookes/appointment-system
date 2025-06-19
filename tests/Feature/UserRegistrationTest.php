@@ -64,7 +64,7 @@ class UserRegistrationTest extends TestCase
 
         $response->assertStatus(200);
 
-        $response->assertSee('Verification link sent! Check your email.');
+        $response->assertSee('check your email for a verification link');
     }
 
     public function test_unverified_user_cannot_access_dashboard()
