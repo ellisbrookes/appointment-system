@@ -75,7 +75,7 @@ class UserLoginTest extends TestCase
 
         $response = $this->post('/logout');
 
-        $response->assertRedirect('/');
+        $response->assertRedirect('/auth/login');
         $this->assertGuest();
     }
 }
