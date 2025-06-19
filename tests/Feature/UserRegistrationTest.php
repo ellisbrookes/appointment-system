@@ -20,12 +20,12 @@ class UserRegistrationTest extends TestCase
         ]);
 
         // Attempt login
-        $loginResponse = $this->post('/login', [
+        $loginResponse = $this->post('/auth/login', [
             'email' => $user->email,
             'password' => 'password123',
         ]);
 
-        $loginResponse->assertRedirect('auth/email/verify');
+        $loginResponse->assertRedirect('/auth/email/verify');
 
         // Assert user is created and not verified
         $this->assertNull($user->fresh()->email_verified_at);
@@ -37,7 +37,7 @@ class UserRegistrationTest extends TestCase
         $user = User::factory()->unverified()->create();
 
         // Visit the default email verification notice page
-        $response = $this->actingAs($user)->get('auth/email/verify');
+        $response = $this->actingAs($user)->get('/auth/email/verify');
 
         $response->assertStatus(200);
 
@@ -55,7 +55,7 @@ class UserRegistrationTest extends TestCase
         $response = $this->actingAs($user)->get('/dashboard');
 
         // Should redirect to email verification notice page
-        $response->assertRedirect('auth/email/verify');
+        $response->assertRedirect('/auth/email/verify');
     }
 
     /** @test */
@@ -66,7 +66,7 @@ class UserRegistrationTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        $loginResponse = $this->post('auth/login', [
+        $loginResponse = $this->post('/auth/login', [
             'email' => $user->email,
             'password' => 'password123',
         ]);
