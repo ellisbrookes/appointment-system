@@ -62,6 +62,7 @@ class UserRegistrationTest extends TestCase
 
         $response = $this->actingAs($user)->get('/auth/email/verify');
 
+        dd($response->getContent());
         $response->assertStatus(200);
 
         $response->assertSee('check your email for a verification link');
