@@ -14,23 +14,23 @@ class UserRegistrationTest extends TestCase
     public function test_user_cannot_login_without_email_verification()
     {
         // Register a new user
-        $response = $this->post('auth/register', [
+        $response = $this->post('/auth/register', [
             'name' => 'Test User',
             'email' => 'testuser@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ]);
 
-        $response->assertRedirect('auth/verify'); // Redirected to verify page
+        $response->assertRedirect('/auth/verify'); // Redirected to verify page
 
         // Try logging in before verifying email
-        $loginResponse = $this->post('auth/login', [
+        $loginResponse = $this->post('/auth/login', [
             'email' => 'testuser@example.com',
             'password' => 'password123',
         ]);
 
         // Should redirect back with an error about verification
-        $loginResponse->assertRedirect('auth/login');
+        $loginResponse->assertRedirect('/auth/login');
         $loginResponse->assertSessionHasErrors('email');
 
         // Check user is created and not verified yet
@@ -53,7 +53,7 @@ class UserRegistrationTest extends TestCase
         $this->assertTrue($user->hasVerifiedEmail());
 
         // Attempt login now
-        $loginResponse = $this->post('auth/login', [
+        $loginResponse = $this->post('/auth/login', [
             'email' => 'testuser@example.com',
             'password' => 'password123',
         ]);
