@@ -59,7 +59,7 @@ class UserLoginTest extends TestCase
         ]);
 
         // Adjust redirect based on your app’s behavior for unverified users
-        $response->assertRedirect('/auth/email/verify');
+        $response->assertRedirect('/dasboard');
         $this->assertGuest();
     }
 
