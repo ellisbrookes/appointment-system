@@ -11,6 +11,7 @@ jobs:
         image: mysql:8
         env:
           MYSQL_DATABASE: appointment-system-test
+          MYSQL_ALLOW_EMPTY_PASSWORD
         ports:
           - 3306:3306
         options: >-
