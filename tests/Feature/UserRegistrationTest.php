@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -58,7 +57,26 @@ class UserRegistrationTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $loginResponse->assertRedirect('/dashoard');
+        $loginResponse->assertRedirect('/dashboard');
         $this->assertAuthenticatedAs($user);
+    }
+
+    public function test_verification_notice_page_is_accessible_to_unverified_users()
+    {
+        $user = User::factory()->unverified()->create();
+
+        $response = $this->actingAs($user)->get('/auth/verify');
+
+        $response->assertStatus(200);
+        $response->assertSee('Verification link sent! Check your email.');
+    }
+
+    public function test_unverified_user_cannot_access_dashboard()
+    {
+        $user = User::factory()->unverified()->create();
+
+        $response = $this->actingAs($user)->get('/dashboard');
+
+        $response->assertRedirect('/auth/verify');
     }
 }
