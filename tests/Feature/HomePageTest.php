@@ -4,12 +4,12 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-class ExampleTest extends TestCase
+class HomePageTest extends TestCase
 {
     /**
-     * A basic test example.
+     * Test that the homepage returns a 200 status, skipping if Stripe secret is not set.
      */
-    public function test_the_application_returns_a_successful_response(): void
+    public function test_homepage_returns_successful_response(): void
     {
         if (empty(config('services.stripe.secret'))) {
             $this->markTestSkipped('Skipping test: STRIPE_SECRET not set.');
@@ -19,5 +19,5 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
     }
-
 }
+
