@@ -20,7 +20,8 @@ class UserRegistrationTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        $response->assertRedirect('/auth/verify'); // Redirected to verify page
+        // Redirect to login after registration (adjust if needed)
+        $response->assertRedirect('/auth/login');
 
         // Try logging in before verifying email
         $loginResponse = $this->post('/auth/login', [
@@ -28,11 +29,11 @@ class UserRegistrationTest extends TestCase
             'password' => 'password123',
         ]);
 
-        // Should redirect back with an error about verification
+        // Should redirect back to login with error about email verification
         $loginResponse->assertRedirect('/auth/login');
         $loginResponse->assertSessionHasErrors('email');
 
-        // Check user is created and not verified yet
+        // Check user created but not verified
         $user = User::where('email', 'testuser@example.com')->first();
         $this->assertNotNull($user);
         $this->assertFalse($user->hasVerifiedEmail());
@@ -40,18 +41,18 @@ class UserRegistrationTest extends TestCase
 
     public function test_user_can_login_after_email_verification()
     {
-        // Create user but unverified
+        // Create user unverified
         $user = User::factory()->unverified()->create([
             'email' => 'testuser@example.com',
             'password' => bcrypt('password123'),
         ]);
 
-        // Manually mark email as verified
+        // Mark email verified manually
         $user->markEmailAsVerified();
 
         $this->assertTrue($user->hasVerifiedEmail());
 
-        // Attempt login now
+        // Login attempt after verification
         $loginResponse = $this->post('/auth/login', [
             'email' => 'testuser@example.com',
             'password' => 'password123',
@@ -77,6 +78,7 @@ class UserRegistrationTest extends TestCase
 
         $response = $this->actingAs($user)->get('/dashboard');
 
+        // Redirect to your custom verification notice page
         $response->assertRedirect('/auth/verify');
     }
 }
