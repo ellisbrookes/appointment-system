@@ -20,16 +20,13 @@ class UserRegistrationTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        // Assert the user was redirected after registration (usually home page)
-        $response->assertRedirect('auth/login'); // or wherever your app redirects after register
+        $response->assertRedirect('auth/login');
 
-        // Assert the user exists in the database
         $this->assertDatabaseHas('users', [
             'email' => 'testuser@example.com',
             'name' => 'Test User',
         ]);
 
-        // Assert the user is authenticated
         $this->assertAuthenticated();
     }
 
