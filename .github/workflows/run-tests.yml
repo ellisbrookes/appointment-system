@@ -10,8 +10,7 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: testing
+          MYSQL_DATABASE: appointment-system-test
         ports:
           - 3306:3306
         options: >-
@@ -48,9 +47,8 @@ jobs:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
-          DB_DATABASE: testing
+          DB_DATABASE: appointment-system-test
           DB_USERNAME: root
-          DB_PASSWORD: root
           APP_ENV: testing
           STRIPE_SECRET: sk_test_dummy123
 
@@ -60,7 +58,6 @@ jobs:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
-          DB_DATABASE: testing
+          DB_DATABASE: appointment-system-test
           DB_USERNAME: root
-          DB_PASSWORD: root
           APP_ENV: testing
