@@ -28,7 +28,8 @@ class UserRegistrationTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $loginResponse->assertRedirect('/dashboard');
+        // This should redirect to email verification notice since user is unverified
+        $loginResponse->assertRedirect('/auth/email/verify');
 
         // Check user created but not verified
         $user = User::where('email', 'testuser@example.com')->first();
@@ -64,12 +65,13 @@ class UserRegistrationTest extends TestCase
 
         $response->assertStatus(200);
 
-        // Check the page contains texts that are actually shown
-        $response->assertSee('Before proceeding, please check your email for a');
-        $response->assertSee('verification link.');
-        $response->assertSee('If you did not receive the email');
-        $response->assertSee('you can request another');
-        $response->assertSee('by clicking the button below');
+        $response->assertSeeInOrder([
+            'Before proceeding, please check your email for a',
+            'verification link.',
+            'If you did not receive the email',
+            'you can request another',
+            'by clicking the button below',
+        ]);
     }
 
     public function test_unverified_user_cannot_access_dashboard()
