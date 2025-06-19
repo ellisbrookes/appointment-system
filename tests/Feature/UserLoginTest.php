@@ -40,7 +40,7 @@ class UserLoginTest extends TestCase
             'password' => 'wrong-password',
         ]);
 
-        $response->assertRedirect('/auth/login');
+        $response->assertRedirect('/login');
         $response->assertSessionHasErrors('email');
         $this->assertGuest();
     }
