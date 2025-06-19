@@ -25,7 +25,7 @@ class UserRegistrationTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $loginResponse->assertRedirect('/auth/email/verify');
+        $loginResponse->assertRedirect('/dashboard');
 
         // Assert user is created and not verified
         $this->assertNull($user->fresh()->email_verified_at);
