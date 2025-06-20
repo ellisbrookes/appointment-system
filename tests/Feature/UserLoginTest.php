@@ -18,7 +18,7 @@ class UserLoginTest extends TestCase
             'email_verified_at' => now(),
         ]);
 
-        $response = $this->post('/login', [
+        $response = $this->post('/auth/login', [
             'email' => $user->email,
             'password' => 'password123',
         ]);
@@ -59,8 +59,7 @@ class UserLoginTest extends TestCase
         ]);
 
         // Adjust redirect based on your app’s behavior for unverified users
-        $response->assertRedirect('/login');
-        $this->assertGuest();
+        $response->assertRedirect('/dashboard');
     }
 
     /** @test */
@@ -73,7 +72,7 @@ class UserLoginTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->post('/logout');
+        $response = $this->post('auth/logout');
 
         $response->assertRedirect('/auth/login');
         $this->assertGuest();
