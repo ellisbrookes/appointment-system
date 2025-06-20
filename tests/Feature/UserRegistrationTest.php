@@ -5,12 +5,13 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 
 class UserRegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function user_cannot_login_without_email_verification()
     {
         // Create user but do NOT verify email
@@ -31,7 +32,7 @@ class UserRegistrationTest extends TestCase
         $this->assertNull($user->fresh()->email_verified_at);
     }
 
-    /** @test */
+    #[Test]
     public function verification_notice_page_is_accessible_to_unverified_users()
     {
         $user = User::factory()->unverified()->create();
@@ -47,7 +48,7 @@ class UserRegistrationTest extends TestCase
         // $response->assertSee('request another');
     }
 
-    /** @test */
+    #[Test]
     public function unverified_user_cannot_access_dashboard()
     {
         $user = User::factory()->unverified()->create();
@@ -58,7 +59,7 @@ class UserRegistrationTest extends TestCase
         $response->assertRedirect('/auth/email/verify');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_login_after_email_verification()
     {
         $user = User::factory()->create([
