@@ -58,7 +58,6 @@ class UserLoginTest extends TestCase
             'password' => 'password123',
         ]);
 
-        // Adjust redirect based on your app’s behavior for unverified users
         $response->assertRedirect('/dashboard');
     }
 
