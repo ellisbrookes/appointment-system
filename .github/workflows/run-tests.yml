@@ -50,8 +50,8 @@ jobs:
           DB_PORT: 3306
           DB_DATABASE: appointment-system-test
           DB_USERNAME: root
+          DB_PASSWORD: ""
           APP_ENV: testing
-          STRIPE_SECRET: sk_test_dummy123
 
       - name: Run tests
         run: php artisan test
@@ -61,4 +61,5 @@ jobs:
           DB_PORT: 3306
           DB_DATABASE: appointment-system-test
           DB_USERNAME: root
+          DB_PASSWORD: ""
           APP_ENV: testing
