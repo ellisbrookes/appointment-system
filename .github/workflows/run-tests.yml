@@ -14,7 +14,7 @@ jobs:
         with:
           php-version: '8.3'
           extensions: mbstring, pdo, sqlite3
-          coverage: none
+          coverage: xdebug
 
       - name: Create .env from .env.testing.example
         run: cp .env.testing.example .env
@@ -27,6 +27,14 @@ jobs:
 
       - name: Run tests
         run: php artisan test
+        env:
+          APP_ENV: testing
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+          STRIPE_SECRET: "sk_test_dummy_key_for_testing"
+
+      - name: Run tests with coverage
+        run: php artisan test --coverage --min=50
         env:
           APP_ENV: testing
           DB_CONNECTION: sqlite
