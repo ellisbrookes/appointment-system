@@ -29,7 +29,7 @@ class PricingService
                         'id' => $price->id,
                         'currency' => $price->currency,
                         'unit_amount' => $price->unit_amount,
-                        'interval' => $price['recurring']['interval'] ?? null,
+                        'interval' => $price->recurring->interval ?? null,
                     ];
                 });
 
