@@ -60,7 +60,13 @@ class AppointmentController extends Controller
 
     $appointment->update($validatedData);
 
-    Mail::to($request->user())->send(new AppointmentUpdated($appointment));
+    // Send email notification
+    try {
+      Mail::to($request->user())->send(new AppointmentUpdated($appointment));
+    } catch (\Exception $e) {
+      // Log the error but don't fail the request
+      \Log::error('Failed to send appointment update email: ' . $e->getMessage());
+    }
 
     return redirect()->route('dashboard.appointments.index')->with('alert', [
       'type' => 'success',
@@ -133,15 +139,16 @@ class AppointmentController extends Controller
 
     $firstTimeslot = Carbon::parse($timeslots[0]);
 
-    return view('dashboard.appointments.create-step-two', [
+    return view('dashboard.appointments.create-step-two', compact(
       'appointment',
-      'currentDate' => $today->toDateString(),
-      'daysInMonth' => $daysInMonth,
-      'startDayOfWeek' => $startDayOfWeek,
-      'month' => $month,
-      'year' => $year,
-      'timeslots' => $timeslots,
-      'firstTimeslot' => $firstTimeslot
+      'daysInMonth',
+      'startDayOfWeek',
+      'month',
+      'year',
+      'timeslots',
+      'firstTimeslot'
+    ))->with([
+      'currentDate' => $today->toDateString()
     ]);
   }
 
@@ -217,7 +224,13 @@ class AppointmentController extends Controller
     $appointment->status = 'cancelled';
     $appointment->save();
 
-    Mail::to($request->user())->send(new AppointmentCancelled($appointment));
+    // Send email notification
+    try {
+      Mail::to($request->user())->send(new AppointmentCancelled($appointment));
+    } catch (\Exception $e) {
+      // Log the error but don't fail the request
+      \Log::error('Failed to send appointment cancellation email: ' . $e->getMessage());
+    }
 
     $request->session()->forget('appointment');
 

@@ -60,11 +60,13 @@ class CompanyController extends Controller
   public function show(Company $company)
   {
     $this->authorizeCompany($company);
-    return view('companies.show', compact('company'));
+    return view('dashboard.company.show', compact('company'));
   }
 
   public function edit(Company $company)
   {
+    $this->authorizeCompany($company);
+    return view('dashboard.company.edit', compact('company'));
   }
 
   public function update(Request $request, Company $company)
@@ -88,12 +90,16 @@ class CompanyController extends Controller
 
     $company->update($validated);
 
-    return redirect()->route('dashboard.companies.index')->with('success', 'Company updated successfully.');
+    return redirect()->route('dashboard.companies.index')->with('alert', [
+      'type' => 'success',
+      'message' => 'Company updated successfully.',
+    ]);
   }
 
   // Delete a company
   public function destroy(Company $company)
   {
+    $this->authorizeCompany($company);
     $company->delete();
 
     return redirect()->route('dashboard.companies.index')->with('alert', [
@@ -101,4 +107,14 @@ class CompanyController extends Controller
       'message' => 'Company deleted successfully.',
     ]);
   }
-};
+
+  /**
+   * Authorize that the current user owns the company
+   */
+  private function authorizeCompany(Company $company)
+  {
+    if ($company->user_id !== auth()->id()) {
+      abort(403, 'Unauthorized action.');
+    }
+  }
+}

@@ -42,7 +42,7 @@ class SessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('auth/login')->with('alert', [
+        return redirect()->route('login')->with('alert', [
             'type' => 'success',
             'message' => 'You have been logged out'
         ]);
