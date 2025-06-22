@@ -6,20 +6,6 @@ jobs:
   laravel-tests:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8
-        env:
-          MYSQL_DATABASE: appointment-system-test
-          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
     steps:
       - uses: actions/checkout@v4
 
@@ -27,39 +13,22 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          extensions: mbstring, pdo, mysql
+          extensions: mbstring, pdo, sqlite3
           coverage: none
 
-      - name: Copy .env.testing
-        run: cp .env.testing .env
+      - name: Create .env from .env.testing.example
+        run: cp .env.testing.example .env
 
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist
 
       - name: Generate app key
         run: php artisan key:generate
-        env:
-          APP_ENV: testing
-
-      - name: Set up database
-        run: |
-          php artisan migrate --force
-        env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: appointment-system-test
-          DB_USERNAME: root
-          DB_PASSWORD: ""
-          APP_ENV: testing
 
       - name: Run tests
         run: php artisan test
         env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: appointment-system-test
-          DB_USERNAME: root
-          DB_PASSWORD: ""
           APP_ENV: testing
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+          STRIPE_SECRET: "sk_test_dummy_key_for_testing"
