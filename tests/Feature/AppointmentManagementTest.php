@@ -174,4 +174,207 @@ class AppointmentManagementTest extends TestCase
         $response->assertSessionHas('appointment.date', '2025-07-01');
         $response->assertSessionHas('appointment.timeslot', '14:00');
     }
+
+    #[Test]
+    public function user_cannot_submit_step_one_with_empty_service()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/dashboard/appointments/create-step-one', [
+            'service' => ''
+        ]);
+
+        $response->assertSessionHasErrors(['service']);
+    }
+
+    #[Test]
+    public function user_cannot_submit_step_one_without_service()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/dashboard/appointments/create-step-one', []);
+
+        $response->assertSessionHasErrors(['service']);
+    }
+
+    #[Test]
+    public function user_cannot_submit_step_two_with_invalid_date()
+    {
+        $user = User::factory()->create();
+        
+        $sessionData = [
+            'appointment' => ['service' => 'Test Service']
+        ];
+
+        $response = $this->actingAs($user)
+                         ->withSession($sessionData)
+                         ->post('/dashboard/appointments/create-step-two', [
+                             'date' => 'invalid-date',
+                             'timeslot' => '14:00'
+                         ]);
+
+        $response->assertSessionHasErrors(['date']);
+    }
+
+    #[Test]
+    public function user_cannot_submit_step_two_without_required_fields()
+    {
+        $user = User::factory()->create();
+        
+        $sessionData = [
+            'appointment' => ['service' => 'Test Service']
+        ];
+
+        $response = $this->actingAs($user)
+                         ->withSession($sessionData)
+                         ->post('/dashboard/appointments/create-step-two', []);
+
+        $response->assertSessionHasErrors(['date', 'timeslot']);
+    }
+
+    #[Test]
+    public function user_cannot_submit_step_two_with_empty_timeslot()
+    {
+        $user = User::factory()->create();
+        
+        $sessionData = [
+            'appointment' => ['service' => 'Test Service']
+        ];
+
+        $response = $this->actingAs($user)
+                         ->withSession($sessionData)
+                         ->post('/dashboard/appointments/create-step-two', [
+                             'date' => '2025-07-01',
+                             'timeslot' => ''
+                         ]);
+
+        $response->assertSessionHasErrors(['timeslot']);
+    }
+
+    #[Test]
+    public function step_two_merges_with_existing_session_data()
+    {
+        $user = User::factory()->create();
+        
+        $sessionData = [
+            'appointment' => [
+                'service' => 'Original Service',
+                'extra_field' => 'should be preserved'
+            ]
+        ];
+
+        $response = $this->actingAs($user)
+                         ->withSession($sessionData)
+                         ->post('/dashboard/appointments/create-step-two', [
+                             'date' => '2025-07-01',
+                             'timeslot' => '14:00'
+                         ]);
+
+        $response->assertRedirect('/dashboard/appointments/create-step-three');
+        $response->assertSessionHas('appointment.service', 'Original Service');
+        $response->assertSessionHas('appointment.extra_field', 'should be preserved');
+        $response->assertSessionHas('appointment.date', '2025-07-01');
+        $response->assertSessionHas('appointment.timeslot', '14:00');
+    }
+
+    #[Test]
+    public function step_one_merges_with_existing_session_data()
+    {
+        $user = User::factory()->create();
+        
+        $sessionData = [
+            'appointment' => [
+                'existing_data' => 'should be preserved'
+            ]
+        ];
+
+        $response = $this->actingAs($user)
+                         ->withSession($sessionData)
+                         ->post('/dashboard/appointments/create-step-one', [
+                             'service' => 'New Service'
+                         ]);
+
+        $response->assertRedirect('/dashboard/appointments/create-step-two');
+        $response->assertSessionHas('appointment.existing_data', 'should be preserved');
+        $response->assertSessionHas('appointment.service', 'New Service');
+    }
+
+    #[Test]
+    public function step_two_displays_calendar_with_current_date_parameters()
+    {
+        $user = User::factory()->create();
+        
+        $sessionData = [
+            'appointment' => ['service' => 'Test Service']
+        ];
+
+        $response = $this->actingAs($user)
+                         ->withSession($sessionData)
+                         ->get('/dashboard/appointments/create-step-two?year=2025&month=7');
+
+        $response->assertStatus(200);
+        $response->assertViewIs('dashboard.appointments.create-step-two');
+        $response->assertViewHas('year', 2025);
+        $response->assertViewHas('month', 7);
+    }
+
+    #[Test]
+    public function step_two_uses_default_year_and_month_when_not_provided()
+    {
+        $user = User::factory()->create();
+        
+        $sessionData = [
+            'appointment' => ['service' => 'Test Service']
+        ];
+
+        $response = $this->actingAs($user)
+                         ->withSession($sessionData)
+                         ->get('/dashboard/appointments/create-step-two');
+
+        $response->assertStatus(200);
+        $response->assertViewHas('year');
+        $response->assertViewHas('month');
+        $response->assertViewHas('daysInMonth');
+        $response->assertViewHas('startDayOfWeek');
+        $response->assertViewHas('timeslots');
+    }
+
+    #[Test]
+    public function step_one_handles_empty_session_gracefully()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/dashboard/appointments/create-step-one');
+
+        $response->assertStatus(200);
+        $response->assertViewIs('dashboard.appointments.create-step-one');
+        $response->assertViewHas('appointment');
+    }
+
+    #[Test]
+    public function step_two_handles_empty_session_gracefully()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/dashboard/appointments/create-step-two');
+
+        $response->assertStatus(200);
+        $response->assertViewIs('dashboard.appointments.create-step-two');
+    }
+
+    #[Test]
+    public function appointment_create_without_session_data_fails_gracefully()
+    {
+        $user = User::factory()->create();
+
+        // Try to post to step 3 without session data
+        $response = $this->actingAs($user)
+                         ->post('/dashboard/appointments/create-step-three', [
+                             'user_id' => $user->id,
+                         ]);
+
+        // Should redirect back to appointments (session data missing means no appointment data to save)
+        $response->assertRedirect('/dashboard/appointments');
+        $response->assertSessionHas('alert.type', 'success');
+    }
 }
