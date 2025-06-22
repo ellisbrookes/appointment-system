@@ -120,8 +120,8 @@ class HomeControllerTest extends TestCase
 
         // Mock successful pricing service response
         $mockProducts = collect([
-            (object) ['name' => 'Basic Plan', 'prices' => collect([['amount' => 999]])],
-            (object) ['name' => 'Premium Plan', 'prices' => collect([['amount' => 1999]])],
+            (object) ['name' => 'Basic Plan', 'prices' => collect([['unit_amount' => 999, 'currency' => 'usd', 'interval' => 'month']])],
+            (object) ['name' => 'Premium Plan', 'prices' => collect([['unit_amount' => 1999, 'currency' => 'usd', 'interval' => 'month']])],
         ]);
 
         $this->mock(PricingService::class, function ($mock) use ($mockProducts) {
@@ -149,7 +149,7 @@ class HomeControllerTest extends TestCase
         Cache::put('userCount', 100, 60);
         Cache::put('appointmentCount', 50, 60);
         Cache::put('productsWithPrices', collect([
-            (object) ['name' => 'Cached Plan', 'prices' => collect([['amount' => 100]])]
+            (object) ['name' => 'Cached Plan', 'prices' => collect([['unit_amount' => 100, 'currency' => 'usd', 'interval' => 'month']])]
         ]), 60);
 
         // Mock should not be called since we're using cached data
