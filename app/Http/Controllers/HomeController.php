@@ -15,7 +15,13 @@ class HomeController extends Controller
         $appointmentCount = Cache::remember('appointmentCount', 60, fn() => Appointment::count());
 
         $productsWithPrices = Cache::remember('productsWithPrices', 60, function () use ($pricingService) {
-            return $pricingService->getProductsWithPrices();
+            try {
+                return $pricingService->getProductsWithPrices();
+            } catch (\RuntimeException $e) {
+                // Log the error and return empty collection to prevent homepage from breaking
+                \Log::error('Failed to fetch pricing data: ' . $e->getMessage());
+                return collect();
+            }
         });
 
         return view('index', compact('productsWithPrices', 'userCount', 'appointmentCount'));
