@@ -30,6 +30,8 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::get('/', 'index')->name('index');
     Route::get('create', 'create')->name('create');
     Route::post('/', 'store')->name('store');
+    Route::get('{company}', 'show')->name('show');
+    Route::get('{company}/edit', 'edit')->name('edit');
     Route::put('{company}', 'update')->name('update');
     Route::delete('{company}/destroy', 'destroy')->name('destroy');
   });
