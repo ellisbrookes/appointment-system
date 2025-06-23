@@ -175,7 +175,7 @@ class CompanyMemberController extends Controller
     return $this->invite($request, $company);
   }
   
-  public function currentUserCompanyUpdateRole(Request $request, $member)
+  public function currentUserCompanyUpdateRole(Request $request, CompanyMember $member)
   {
     $company = auth()->user()->company;
     
@@ -187,7 +187,7 @@ class CompanyMemberController extends Controller
     return $this->updateRole($request, $company, $member);
   }
   
-  public function currentUserCompanyRemove($member)
+  public function currentUserCompanyRemove(CompanyMember $member)
   {
     $company = auth()->user()->company;
     
