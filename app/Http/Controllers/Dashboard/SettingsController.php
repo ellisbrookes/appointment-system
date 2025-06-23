@@ -14,7 +14,7 @@ class SettingsController extends Controller
 {
   public function index(): View
   {
-    $settings = Auth::user()->settings;
+    $settings = Auth::user()->settings ?? [];
 
     return view('dashboard.settings.index', compact('settings'));
   }

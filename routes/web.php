@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PricingController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\Dashboard\CompanyController;
 use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\CheckSubscription;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -16,15 +16,44 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
-  // Dashboard Home
-  Route::get('/', function () {
-    return view('dashboard.index');
-  })->name('dashboard');
+    // Dashboard Home
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
   // Dashboard settings
   Route::get('settings', [SettingsController::class, 'index'])->name('settings');
   Route::put('settings', [SettingsController::class, 'store'])->name('store');
 
+  // Companies
+  Route::prefix('companies')->name('dashboard.companies.')->controller(CompanyController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('create', 'create')->name('create');
+    Route::post('/', 'store')->name('store');
+    Route::get('{company}', 'show')->name('show');
+    Route::get('{company}/edit', 'edit')->name('edit');
+    Route::put('{company}', 'update')->name('update');
+    Route::delete('{company}/destroy', 'destroy')->name('destroy');
+  });
+
+  // Current User's Company Management
+  Route::prefix('company')->name('dashboard.company.')->group(function () {
+    Route::get('/', [CompanyController::class, 'currentUserCompany'])->name('index');
+    Route::prefix('members')->name('members.')->controller(App\Http\Controllers\Dashboard\CompanyMemberController::class)->group(function () {
+      Route::get('/', 'currentUserCompanyMembers')->name('index');
+      Route::post('/invite', 'currentUserCompanyInvite')->name('invite');
+      Route::put('/{member}', 'currentUserCompanyUpdateRole')->name('update');
+      Route::delete('/{member}', 'currentUserCompanyRemove')->name('destroy');
+    });
+  });
+
+  // Company Members
+  Route::prefix('companies/{company}/members')->name('dashboard.companies.members.')->controller(App\Http\Controllers\Dashboard\CompanyMemberController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/invite', 'invite')->name('invite');
+    Route::post('/accept', 'acceptInvite')->name('accept');
+    Route::put('/{member}/role', 'updateRole')->name('update-role');
+    Route::delete('/{member}', 'remove')->name('remove');
+    Route::delete('/leave', 'leave')->name('leave');
+  });
   // Appointments
   Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {
     Route::get('/', 'index')->name('index');

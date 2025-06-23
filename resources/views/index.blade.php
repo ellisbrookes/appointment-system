@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends("layouts.layout")
 
 @section('content')
 
@@ -26,7 +26,6 @@
         @endforeach
       </div>
     </div>
-  </section>
 
   {{-- Pricing Preview Section --}}
   <section id="homepage-pricing" class="py-24 border-b border-gray-400 dark:border-white dark:bg-gray-900">
@@ -123,5 +122,4 @@
       </form>
     </div>
   </section>
-
 @endsection
