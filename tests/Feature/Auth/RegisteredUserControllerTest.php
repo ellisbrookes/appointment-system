@@ -150,7 +150,7 @@ class RegisteredUserControllerTest extends TestCase
 
     public function test_registration_validates_email_max_length(): void
     {
-        $longEmail = str_repeat('a', 240) . '@example.com'; // Exceeds max of 255
+        $longEmail = str_repeat('a', 244) . '@example.com'; // 244 + 12 = 256 characters, exceeds max of 255
 
         $response = $this->post('/auth/register', [
             'name' => 'Test User',

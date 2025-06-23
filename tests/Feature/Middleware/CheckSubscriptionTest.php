@@ -190,15 +190,25 @@ class CheckSubscriptionTest extends TestCase
     {
         $user = User::factory()->create();
         
-        // Mock the subscribed method to return false
-        $user = $this->getMockBuilder(User::class)
+        // Mock the User class to override the subscribed method
+        $mockUser = $this->getMockBuilder(User::class)
             ->onlyMethods(['subscribed'])
-            ->setConstructorArgs([['id' => 1, 'name' => 'Test User', 'email' => 'test@example.com']])
             ->getMock();
         
-        $user->method('subscribed')->with('basic')->willReturn(false);
+        // Set all the required attributes
+        $mockUser->id = $user->id;
+        $mockUser->name = $user->name;
+        $mockUser->email = $user->email;
+        $mockUser->email_verified_at = $user->email_verified_at;
+        $mockUser->password = $user->password;
+        $mockUser->remember_token = $user->remember_token;
+        $mockUser->telephone_number = $user->telephone_number;
+        $mockUser->created_at = $user->created_at;
+        $mockUser->updated_at = $user->updated_at;
+        
+        $mockUser->method('subscribed')->with('basic')->willReturn(false);
 
-        $response = $this->actingAs($user)->get('/dashboard/appointments');
+        $response = $this->actingAs($mockUser)->get('/dashboard/appointments');
 
         $response->assertRedirect(route('pricing'));
         $response->assertSessionHas('alert.type', 'danger');

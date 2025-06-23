@@ -64,7 +64,7 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::delete('/leave', 'leave')->name('leave');
   });
   // Appointments
-  Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {
+  Route::prefix('appointments')->name('dashboard.appointments.')->middleware('check.subscription')->controller(AppointmentController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('{appointment}/edit', 'edit')->name('edit');
     Route::get('create-step-one', 'createStepOne')->name('create.step.one');
