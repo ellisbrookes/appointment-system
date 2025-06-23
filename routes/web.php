@@ -36,6 +36,17 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::delete('{company}/destroy', 'destroy')->name('destroy');
   });
 
+  // Current User's Company Management
+  Route::prefix('company')->name('dashboard.company.')->group(function () {
+    Route::get('/', [CompanyController::class, 'currentUserCompany'])->name('index');
+    Route::prefix('members')->name('members.')->controller(App\Http\Controllers\Dashboard\CompanyMemberController::class)->group(function () {
+      Route::get('/', 'currentUserCompanyMembers')->name('index');
+      Route::post('/invite', 'currentUserCompanyInvite')->name('invite');
+      Route::put('/{member}', 'currentUserCompanyUpdateRole')->name('update');
+      Route::delete('/{member}', 'currentUserCompanyRemove')->name('destroy');
+    });
+  });
+
   // Company Members
   Route::prefix('companies/{company}/members')->name('dashboard.companies.members.')->controller(App\Http\Controllers\Dashboard\CompanyMemberController::class)->group(function () {
     Route::get('/', 'index')->name('index');

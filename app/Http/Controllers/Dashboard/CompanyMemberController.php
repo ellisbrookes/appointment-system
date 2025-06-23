@@ -146,4 +146,56 @@ class CompanyMemberController extends Controller
             abort(403, 'Unauthorized action. Admin access required.');
         }
     }
+
+    // Current user's company member management methods
+  
+  public function currentUserCompanyMembers()
+  {
+    $company = auth()->user()->company;
+    
+    if (!$company) {
+      return redirect()->route('dashboard.companies.create')
+        ->with('error', 'You need to create a company first.');
+    }
+    
+    $members = $company->members()->with('user')->get();
+    
+    return view('dashboard.company.members.index', compact('members', 'company'));
+  }
+  
+  public function currentUserCompanyInvite(Request $request)
+  {
+    $company = auth()->user()->company;
+    
+    if (!$company) {
+      return redirect()->route('dashboard.companies.create')
+        ->with('error', 'You need to create a company first.');
+    }
+    
+    return $this->invite($request, $company);
+  }
+  
+  public function currentUserCompanyUpdateRole(Request $request, $member)
+  {
+    $company = auth()->user()->company;
+    
+    if (!$company) {
+      return redirect()->route('dashboard.companies.create')
+        ->with('error', 'You need to create a company first.');
+    }
+    
+    return $this->updateRole($request, $company, $member);
+  }
+  
+  public function currentUserCompanyRemove($member)
+  {
+    $company = auth()->user()->company;
+    
+    if (!$company) {
+      return redirect()->route('dashboard.companies.create')
+        ->with('error', 'You need to create a company first.');
+    }
+    
+    return $this->remove($company, $member);
+  }
 }

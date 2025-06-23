@@ -117,6 +117,21 @@ class CompanyController extends Controller
     ]);
   }
 
+  /**
+   * Show the current user's company.
+   */
+  public function currentUserCompany()
+  {
+    $company = auth()->user()->company;
+    
+    if (!$company) {
+      return redirect()->route('dashboard.companies.create')
+        ->with('error', 'You need to create a company first.');
+    }
+    
+    return redirect()->route('dashboard.companies.show', $company);
+  }
+
   private function authorizeCompany(Company $company)
   {
     $user = auth()->user();
@@ -136,4 +151,4 @@ class CompanyController extends Controller
       abort(403, 'Unauthorized action. Admin access required.');
     }
   }
-};
+}
