@@ -33,7 +33,6 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::put('{company}', 'update')->name('update');
     Route::delete('{company}/destroy', 'destroy')->name('destroy');
   });
-
   // Appointments
   Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {
     Route::get('/', 'index')->name('index');
