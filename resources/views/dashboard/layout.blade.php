@@ -20,7 +20,7 @@
     <body
         x-data="{
             navigationStyle:
-                '{{ Auth::user()->settings["navigation_style"] ?? "sidebar" }}',
+                '{{ (Auth::user()->settings ?? [])["navigation_style"] ?? "sidebar" }}',
             isSidebarOpen: true,
             isDropdownOpen: false,
             isUserSidebarOpen: false,
@@ -29,9 +29,9 @@
         }"
         class="text-gray-800 dark:text-white"
     >
-        @if (Auth::user()->settings["navigation_style"] === "sidebar")
+        @if ((Auth::user()->settings ?? [])["navigation_style"] === "sidebar")
             @include("components.dashboard.sidebar")
-        @elseif (Auth::user()->settings["navigation_style"] === "top_nav")
+        @elseif ((Auth::user()->settings ?? [])["navigation_style"] === "top_nav")
             @include("components.dashboard.top-nav")
         @endif
 
