@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\shared;
+namespace App\View\Components\Website;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class modal extends Component
+class Footer extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class modal extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.shared.modal');
+        return view('components.website.footer');
     }
 }

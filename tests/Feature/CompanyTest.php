@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Company;
+use App\Models\CompanyMember;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -16,6 +17,15 @@ class CompanyTest extends TestCase
     {
         $user = User::factory()->create();
         $company = Company::factory()->create(['user_id' => $user->id]);
+        
+        // Create company membership
+        CompanyMember::create([
+            'user_id' => $user->id,
+            'company_id' => $company->id,
+            'role' => 'owner',
+            'status' => 'active',
+            'joined_at' => now(),
+        ]);
 
         $response = $this->actingAs($user)->get("/dashboard/companies/{$company->id}");
 
@@ -28,6 +38,15 @@ class CompanyTest extends TestCase
     {
         $user = User::factory()->create();
         $company = Company::factory()->create(['user_id' => $user->id]);
+        
+        // Create company membership with admin access
+        CompanyMember::create([
+            'user_id' => $user->id,
+            'company_id' => $company->id,
+            'role' => 'owner',
+            'status' => 'active',
+            'joined_at' => now(),
+        ]);
 
         $response = $this->actingAs($user)->get("/dashboard/companies/{$company->id}/edit");
 

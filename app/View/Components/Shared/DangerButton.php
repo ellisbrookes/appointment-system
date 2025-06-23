@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\shared;
+namespace App\View\Components\Shared;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class dropdown-link extends Component
+class DangerButton extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class dropdown-link extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.shared.dropdown-link');
+        return view('components.shared.danger-button');
     }
 }

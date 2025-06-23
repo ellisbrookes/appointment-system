@@ -8,12 +8,12 @@
 
     <div class="flex items-center justify-center">
         <form
-            action="{{ route('dashboard.companies.update', $company->id) }}"
+            action="{{ route("dashboard.companies.update", $company->id) }}"
             method="POST"
             class="w-full max-w-md space-y-4"
         >
             @csrf
-            @method('PUT')
+            @method("PUT")
 
             <div class="mb-4">
                 <x-shared.input-label for="name" :value="__('Name')" />
@@ -99,9 +99,9 @@
                 <x-shared.primary-button>
                     {{ __("Update") }}
                 </x-shared.primary-button>
-                
+
                 <a
-                    href="{{ route('dashboard.companies.show', $company->id) }}"
+                    href="{{ route("dashboard.companies.show", $company->id) }}"
                     class="rounded-lg bg-gray-600 px-4 py-2 text-white transition duration-200 hover:bg-gray-700"
                 >
                     Cancel

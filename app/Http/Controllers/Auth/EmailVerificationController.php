@@ -10,8 +10,15 @@ use Illuminate\View\View;
 
 class EmailVerificationController extends Controller
 {
-  public function notice(): View
+  public function notice(): View|RedirectResponse
   {
+    if (auth()->user()->hasVerifiedEmail()) {
+      return redirect()->route('dashboard')->with('alert', [
+        'type' => 'info',
+        'message' => 'Your email is already verified.'
+      ]);
+    }
+    
     return view('auth.verify');
   }
 

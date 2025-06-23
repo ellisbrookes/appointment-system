@@ -21,8 +21,7 @@
             $navigationStyle = optional(Auth::user()->settings)["navigation_style"] ?? "sidebar";
         @endphp
         x-data="{
-            navigationStyle:
-                '{{ (Auth::user()->settings ?? [])["navigation_style"] ?? "sidebar" }}',
+            navigationStyle: '{{ $navigationStyle }}',
             isSidebarOpen: true,
             isDropdownOpen: false,
             isUserSidebarOpen: false,
@@ -31,9 +30,9 @@
         }"
         class="text-gray-800 dark:text-white"
     >
-        @if ((Auth::user()->settings ?? [])["navigation_style"] === "sidebar")
+        @if ($navigationStyle === "sidebar")
             @include("components.dashboard.sidebar")
-        @elseif ((Auth::user()->settings ?? [])["navigation_style"] === "top_nav")
+        @elseif ($navigationStyle === "top_nav")
             @include("components.dashboard.top-nav")
         @endif
 
@@ -42,7 +41,7 @@
             :class="{
                 'ml-64': isSidebarOpen && navigationStyle === 'sidebar',
                 'ml-16': !isSidebarOpen && navigationStyle === 'sidebar',
-                'ml-0': !isSidebarOpen && navigationStyle === 'top_nav'
+                'ml-0': navigationStyle === 'top_nav'
             }"
             class="flex h-screen flex-1 flex-col bg-white px-6 py-8 dark:bg-gray-900"
         >
