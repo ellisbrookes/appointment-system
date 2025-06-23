@@ -241,6 +241,15 @@ class CompanyMemberControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $company = Company::factory()->create(['user_id' => $user->id]);
+        
+        // Create the CompanyMember relationship
+        CompanyMember::create([
+            'company_id' => $company->id,
+            'user_id' => $user->id,
+            'role' => 'owner',
+            'status' => 'active',
+            'joined_at' => now(),
+        ]);
 
         $response = $this->actingAs($user)->get('/dashboard/company/members');
 
@@ -263,6 +272,15 @@ class CompanyMemberControllerTest extends TestCase
         $user = User::factory()->create();
         $company = Company::factory()->create(['user_id' => $user->id]);
         $newUser = User::factory()->create();
+        
+        // Create the CompanyMember relationship for the owner
+        CompanyMember::create([
+            'company_id' => $company->id,
+            'user_id' => $user->id,
+            'role' => 'owner',
+            'status' => 'active',
+            'joined_at' => now(),
+        ]);
 
         $response = $this->actingAs($user)->post('/dashboard/company/members/invite', [
             'email' => $newUser->email,
@@ -297,6 +315,15 @@ class CompanyMemberControllerTest extends TestCase
         $company = Company::factory()->create(['user_id' => $user->id]);
         $targetUser = User::factory()->create();
         
+        // Create the CompanyMember relationship for the owner
+        CompanyMember::create([
+            'company_id' => $company->id,
+            'user_id' => $user->id,
+            'role' => 'owner',
+            'status' => 'active',
+            'joined_at' => now(),
+        ]);
+        
         $member = CompanyMember::create([
             'company_id' => $company->id,
             'user_id' => $targetUser->id,
@@ -321,6 +348,15 @@ class CompanyMemberControllerTest extends TestCase
         $user = User::factory()->create();
         $company = Company::factory()->create(['user_id' => $user->id]);
         $targetUser = User::factory()->create();
+        
+        // Create the CompanyMember relationship for the owner
+        CompanyMember::create([
+            'company_id' => $company->id,
+            'user_id' => $user->id,
+            'role' => 'owner',
+            'status' => 'active',
+            'joined_at' => now(),
+        ]);
         
         $member = CompanyMember::create([
             'company_id' => $company->id,

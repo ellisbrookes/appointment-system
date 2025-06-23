@@ -13,7 +13,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_can_view_appointments_list()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
 
         $response = $this->actingAs($user)->get('/dashboard/appointments');
 
@@ -24,7 +24,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_can_filter_appointments_by_status()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         
         // Create appointments with different statuses
         Appointment::factory()->create(['status' => 'open']);
@@ -40,7 +40,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_can_view_edit_appointment_form()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         $appointment = Appointment::factory()->create();
 
         $response = $this->actingAs($user)->get("/dashboard/appointments/{$appointment->id}/edit");
@@ -53,7 +53,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_can_update_appointment()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         $appointment = Appointment::factory()->create();
         
         $updateData = [
@@ -80,7 +80,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_cannot_update_appointment_with_invalid_data()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         $appointment = Appointment::factory()->create();
         
         $updateData = [
@@ -98,7 +98,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_can_cancel_appointment()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         $appointment = Appointment::factory()->create(['status' => 'open']);
 
         $response = $this->actingAs($user)->delete("/dashboard/appointments/{$appointment->id}/destroy");
@@ -115,7 +115,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_can_access_create_step_one()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
 
         $response = $this->actingAs($user)->get('/dashboard/appointments/create-step-one');
 
@@ -126,7 +126,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_can_submit_create_step_one()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
 
         $response = $this->actingAs($user)->post('/dashboard/appointments/create-step-one', [
             'service' => 'Test Service'
@@ -139,7 +139,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_can_access_create_step_two()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         
         $sessionData = [
             'appointment' => ['service' => 'Test Service']
@@ -156,7 +156,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_can_submit_create_step_two()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         
         $sessionData = [
             'appointment' => ['service' => 'Test Service']
@@ -178,7 +178,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_cannot_submit_step_one_with_empty_service()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
 
         $response = $this->actingAs($user)->post('/dashboard/appointments/create-step-one', [
             'service' => ''
@@ -190,7 +190,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_cannot_submit_step_one_without_service()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
 
         $response = $this->actingAs($user)->post('/dashboard/appointments/create-step-one', []);
 
@@ -200,7 +200,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_cannot_submit_step_two_with_invalid_date()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         
         $sessionData = [
             'appointment' => ['service' => 'Test Service']
@@ -219,7 +219,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_cannot_submit_step_two_without_required_fields()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         
         $sessionData = [
             'appointment' => ['service' => 'Test Service']
@@ -235,7 +235,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function user_cannot_submit_step_two_with_empty_timeslot()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         
         $sessionData = [
             'appointment' => ['service' => 'Test Service']
@@ -254,7 +254,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function step_two_merges_with_existing_session_data()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         
         $sessionData = [
             'appointment' => [
@@ -280,7 +280,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function step_one_merges_with_existing_session_data()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         
         $sessionData = [
             'appointment' => [
@@ -302,7 +302,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function step_two_displays_calendar_with_current_date_parameters()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         
         $sessionData = [
             'appointment' => ['service' => 'Test Service']
@@ -321,7 +321,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function step_two_uses_default_year_and_month_when_not_provided()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
         
         $sessionData = [
             'appointment' => ['service' => 'Test Service']
@@ -342,7 +342,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function step_one_handles_empty_session_gracefully()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
 
         $response = $this->actingAs($user)->get('/dashboard/appointments/create-step-one');
 
@@ -354,7 +354,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function step_two_handles_empty_session_gracefully()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
 
         $response = $this->actingAs($user)->get('/dashboard/appointments/create-step-two');
 
@@ -365,7 +365,7 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function appointment_create_without_session_data_fails_gracefully()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
 
         // Try to post to step 3 without session data
         $response = $this->actingAs($user)
