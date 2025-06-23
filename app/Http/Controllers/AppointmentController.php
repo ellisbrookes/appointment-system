@@ -125,19 +125,39 @@ class AppointmentController extends Controller
 
     // Timeslots
     $settings = auth()->user()->settings ?? [];
-
-    $startTime = isset($settings['timeslot_start']) ? Carbon::createFromTimeString($settings['timeslot_start']) : Carbon::createFromTimeString('09:00');
-    $endTime = isset($settings['timeslot_end']) ? Carbon::createFromTimeString($settings['timeslot_end']) : Carbon::createFromTimeString('17:00');
-    $interval = isset($settings['timeslot_interval']) ? (int)$settings['timeslot_interval'] : 60;
+    
+    // Set defaults for timeslot settings
+    $defaultSettings = [
+      'timeslot_start' => '09:00',
+      'timeslot_end' => '17:00', 
+      'timeslot_interval' => 30,
+      'time_format' => '24',
+      'timezone' => 'UTC'
+    ];
+    
+    $settings = array_merge($defaultSettings, $settings);
+    
+    // Set timezone for this user
+    $userTimezone = $settings['timezone'];
+    
+    $startTime = Carbon::createFromTimeString($settings['timeslot_start'], $userTimezone);
+    $endTime = Carbon::createFromTimeString($settings['timeslot_end'], $userTimezone);
+    $interval = (int)$settings['timeslot_interval'];
+    $timeFormat = $settings['time_format'];
 
     $timeslots = [];
 
     while ($startTime < $endTime) {
-      $timeslots[] = $startTime->format('H:i');
+      // Format based on user preference: 12-hour (g:i A) or 24-hour (H:i)
+      $formattedTime = $timeFormat === '12' ? $startTime->format('g:i A') : $startTime->format('H:i');
+      $timeslots[] = [
+        'value' => $startTime->format('H:i'), // Always store in 24-hour format for consistency
+        'display' => $formattedTime // Display in user's preferred format
+      ];
       $startTime->addMinutes($interval);
     }
 
-    $firstTimeslot = Carbon::parse($timeslots[0]);
+    $firstTimeslot = count($timeslots) > 0 ? Carbon::parse($timeslots[0]['value']) : Carbon::parse('09:00');
 
     return view('dashboard.appointments.create-step-two', compact(
       'appointment',
@@ -236,8 +256,8 @@ class AppointmentController extends Controller
 
     return redirect()
       ->route('dashboard.appointments.index')->with('alert', [
-        'type' => 'success',
-        'message' => 'Appointment successfully cancelled!'
-    ]);
+          'type' => 'success',
+          'message' => 'Appointment successfully cancelled!'
+      ]);
   }
 }

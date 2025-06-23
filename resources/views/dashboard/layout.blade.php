@@ -21,13 +21,13 @@
             $navigationStyle = optional(Auth::user()->settings)["navigation_style"] ?? "sidebar";
         @endphp
         x-data="{
-        navigationStyle: '{{ $navigationStyle }}',
-        isSidebarOpen: true,
-        isDropdownOpen: false,
-        isUserSidebarOpen: false,
-        isCompanyDropdownOpen: false,
-        isAppointmentsDropdownOpen: false,
-    }"
+            navigationStyle: '{{ $navigationStyle }}',
+            isSidebarOpen: true,
+            isDropdownOpen: false,
+            isUserSidebarOpen: false,
+            isCompanyDropdownOpen: false,
+            isAppointmentsDropdownOpen: false,
+        }"
         class="text-gray-800 dark:text-white"
     >
         @if ($navigationStyle === "sidebar")
@@ -39,10 +39,10 @@
         {{-- Main Content --}}
         <main
             :class="{
-            'ml-64': isSidebarOpen && navigationStyle === 'sidebar',
-            'ml-16': !isSidebarOpen && navigationStyle === 'sidebar',
-            'ml-0': !isSidebarOpen && navigationStyle === 'top_nav'
-        }"
+                'ml-64': isSidebarOpen && navigationStyle === 'sidebar',
+                'ml-16': !isSidebarOpen && navigationStyle === 'sidebar',
+                'ml-0': navigationStyle === 'top_nav'
+            }"
             class="flex h-screen flex-1 flex-col bg-white px-6 py-8 dark:bg-gray-900"
         >
             @if (session("alert"))

@@ -51,7 +51,7 @@
             <div class="mt-4">
                 <h2 class="mb-4 text-2xl font-bold">Timeslot</h2>
 
-                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {{-- Start Time --}}
                     <div>
                         <x-shared.input-label
@@ -61,7 +61,7 @@
                         <input
                             type="time"
                             name="settings[timeslot_start]"
-                            value="{{ old("settings.timeslot_start", $settings["timeslot_start"] ?? "") }}"
+                            value="{{ old('settings.timeslot_start', $settings['timeslot_start'] ?? '') }}"
                             class="w-full rounded-md border-gray-300 dark:bg-gray-800"
                         />
                     </div>
@@ -75,7 +75,7 @@
                         <input
                             type="time"
                             name="settings[timeslot_end]"
-                            value="{{ old("settings.timeslot_end", $settings["timeslot_end"] ?? "") }}"
+                            value="{{ old('settings.timeslot_end', $settings['timeslot_end'] ?? '') }}"
                             class="w-full rounded-md border-gray-300 dark:bg-gray-800"
                         />
                     </div>
@@ -92,15 +92,63 @@
                             min="5"
                             max="120"
                             step="5"
-                            value="{{ old("settings.timeslot_interval", $settings["timeslot_interval"] ?? 30) }}"
+                            value="{{ old('settings.timeslot_interval', $settings['timeslot_interval'] ?? 30) }}"
                             class="w-full rounded-md border-gray-300 dark:bg-gray-800"
                         />
+                    </div>
+
+                    {{-- Time Format --}}
+                    <div>
+                        <x-shared.input-label
+                            for="settings[time_format]"
+                            :value="'Time Format'"
+                        />
+                        <select
+                            name="settings[time_format]"
+                            id="time_format"
+                            class="w-full rounded-md border-gray-300 dark:bg-gray-800"
+                        >
+                            <option
+                                value="24"
+                                {{ old("settings.time_format", $settings["time_format"] ?? '') === "24" ? "selected" : "" }}
+                            >
+                                24 Hour (14:30)
+                            </option>
+                            <option
+                                value="12"
+                                {{ old("settings.time_format", $settings["time_format"] ?? '') === "12" ? "selected" : "" }}
+                            >
+                                12 Hour (2:30 PM)
+                            </option>
+                        </select>
+                    </div>
+
+                    {{-- Timezone --}}
+                    <div>
+                        <x-shared.input-label
+                            for="settings[timezone]"
+                            :value="'Timezone'"
+                        />
+                        <select
+                            name="settings[timezone]"
+                            id="timezone"
+                            class="w-full rounded-md border-gray-300 dark:bg-gray-800"
+                        >
+                            @foreach($timezones as $value => $label)
+                                <option
+                                    value="{{ $value }}"
+                                    {{ old("settings.timezone", $settings["timezone"] ?? '') === $value ? "selected" : "" }}
+                                >
+                                    {{ $label }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
                 <p class="mt-2 text-sm text-gray-500">
                     Timeslots will be automatically generated between start and
-                    end time, using intervals of 30 minutes.
+                    end time, using your specified interval. Timezone affects how times are displayed and stored.
                 </p>
             </div>
 

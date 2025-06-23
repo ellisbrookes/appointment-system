@@ -22,6 +22,7 @@ class HomeController extends Controller
                 \Log::error('Failed to fetch pricing data: ' . $e->getMessage());
                 return collect();
             }
+            return $pricingService->getProductsWithPrices();
         });
 
         return view('index', compact('productsWithPrices', 'userCount', 'appointmentCount'));
