@@ -56,7 +56,6 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::delete('/{member}', 'remove')->name('remove');
     Route::delete('/leave', 'leave')->name('leave');
   });
-
   // Appointments
   Route::prefix('appointments')->name('dashboard.appointments.')->controller(AppointmentController::class)->group(function () {
     Route::get('/', 'index')->name('index');
