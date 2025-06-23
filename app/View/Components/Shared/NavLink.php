@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\shared;
+namespace App\View\Components\Shared;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class nav-link extends Component
+class NavLink extends Component
 {
     /**
      * Create a new component instance.

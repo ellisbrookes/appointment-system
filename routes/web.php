@@ -5,6 +5,7 @@ use App\Http\Controllers\PricingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Dashboard\CompanyController;
 use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\CheckSubscription;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,13 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
   // Dashboard settings
   Route::get('settings', [SettingsController::class, 'index'])->name('settings');
   Route::put('settings', [SettingsController::class, 'store'])->name('store');
+
+  // Profile
+  Route::controller(ProfileController::class)->group(function () {
+      Route::get('profile/edit', 'edit')->name('dashboard.profile.edit');
+      Route::put('profile/update', 'update')->name('dashboard.profile.update');
+      Route::delete('profile/destroy', 'destroy')->name('dashboard.profile.destroy');
+  });
 
   // Companies
   Route::prefix('companies')->name('dashboard.companies.')->controller(CompanyController::class)->group(function () {
