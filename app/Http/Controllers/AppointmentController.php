@@ -118,29 +118,51 @@ class AppointmentController extends Controller
     $daysInMonth = $endOfMonth->day;
 
     // Timeslots
-    $timeslots = [
-      '9:00',
-      '10:00',
-      '11:00',
-      '12:00',
-      '1:00',
-      '2:00',
-      '3:00',
-      '4:00',
-      '5:00'
+    $settings = auth()->user()->settings ?? [];
+    
+    // Set defaults for timeslot settings
+    $defaultSettings = [
+      'timeslot_start' => '09:00',
+      'timeslot_end' => '17:00', 
+      'timeslot_interval' => 30,
+      'time_format' => '24',
+      'timezone' => 'UTC'
     ];
+    
+    $settings = array_merge($defaultSettings, $settings);
+    
+    // Set timezone for this user
+    $userTimezone = $settings['timezone'];
+    
+    $startTime = Carbon::createFromTimeString($settings['timeslot_start'], $userTimezone);
+    $endTime = Carbon::createFromTimeString($settings['timeslot_end'], $userTimezone);
+    $interval = (int)$settings['timeslot_interval'];
+    $timeFormat = $settings['time_format'];
 
-    $firstTimeslot = Carbon::parse($timeslots[0]);
+    $timeslots = [];
 
-    return view('dashboard.appointments.create-step-two', [
+    while ($startTime < $endTime) {
+      // Format based on user preference: 12-hour (g:i A) or 24-hour (H:i)
+      $formattedTime = $timeFormat === '12' ? $startTime->format('g:i A') : $startTime->format('H:i');
+      $timeslots[] = [
+        'value' => $startTime->format('H:i'), // Always store in 24-hour format for consistency
+        'display' => $formattedTime // Display in user's preferred format
+      ];
+      $startTime->addMinutes($interval);
+    }
+
+    $firstTimeslot = count($timeslots) > 0 ? Carbon::parse($timeslots[0]['value']) : Carbon::parse('09:00');
+
+    return view('dashboard.appointments.create-step-two', compact(
       'appointment',
-      'currentDate' => $today->toDateString(),
-      'daysInMonth' => $daysInMonth,
-      'startDayOfWeek' => $startDayOfWeek,
-      'month' => $month,
-      'year' => $year,
-      'timeslots' => $timeslots,
-      'firstTimeslot' => $firstTimeslot
+      'daysInMonth',
+      'startDayOfWeek',
+      'month',
+      'year',
+      'timeslots',
+      'firstTimeslot'
+    ))->with([
+      'currentDate' => $today->toDateString()
     ]);
   }
 

@@ -74,7 +74,6 @@
                         name="password"
                         required
                     />
-
                     <x-shared.input-error
                         :messages="$errors->get('telephone_number')"
                     />
