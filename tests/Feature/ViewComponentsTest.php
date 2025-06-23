@@ -28,36 +28,51 @@ class ViewComponentsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_dashboard_sidebar_component_renders(): void
+public function test_dashboard_sidebar_component_renders(): void
     {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
         $component = new Sidebar();
         $view = $component->render();
 
-        $this->assertEquals('components.dashboard.sidebar', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.dashboard.sidebar', $view->name());
     }
 
-    public function test_dashboard_top_nav_component_renders(): void
+public function test_dashboard_top_nav_component_renders(): void
     {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
         $component = new TopNav();
         $view = $component->render();
 
-        $this->assertEquals('components.dashboard.top-nav', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.dashboard.top-nav', $view->name());
     }
 
-    public function test_shared_alert_component_renders(): void
+public function test_shared_alert_component_renders(): void
     {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
         $component = new Alert('success');
         $view = $component->render();
 
-        $this->assertEquals('components.shared.alert', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.alert', $view->name());
     }
 
     public function test_shared_danger_button_component_renders(): void
     {
+        $user = User::factory()->create();
+        $this->actingAs($user);
         $component = new DangerButton();
         $view = $component->render();
 
-        $this->assertEquals('components.shared.danger-button', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.danger-button', $view->name());
     }
 
     public function test_shared_dropdown_component_renders(): void
@@ -65,7 +80,8 @@ class ViewComponentsTest extends TestCase
         $component = new Dropdown();
         $view = $component->render();
 
-        $this->assertEquals('components.shared.dropdown', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.dropdown', $view->name());
     }
 
     public function test_shared_dropdown_link_component_renders(): void
@@ -73,7 +89,8 @@ class ViewComponentsTest extends TestCase
         $component = new DropdownLink();
         $view = $component->render();
 
-        $this->assertEquals('components.shared.dropdown-link', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.dropdown-link', $view->name());
     }
 
     public function test_shared_header_component_renders(): void
@@ -81,7 +98,8 @@ class ViewComponentsTest extends TestCase
         $component = new Header('page', 'Test Heading', 'Test subheading');
         $view = $component->render();
 
-        $this->assertEquals('components.shared.header', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.header', $view->name());
     }
 
     public function test_shared_input_error_component_renders(): void
@@ -89,7 +107,8 @@ class ViewComponentsTest extends TestCase
         $component = new InputError();
         $view = $component->render();
 
-        $this->assertEquals('components.shared.input-error', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.input-error', $view->name());
     }
 
     public function test_shared_input_label_component_renders(): void
@@ -97,7 +116,8 @@ class ViewComponentsTest extends TestCase
         $component = new InputLabel('test_for', 'Test Label');
         $view = $component->render();
 
-        $this->assertEquals('components.shared.input-label', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.input-label', $view->name());
         $this->assertEquals('test_for', $component->for);
         $this->assertEquals('Test Label', $component->value);
     }
@@ -107,7 +127,8 @@ class ViewComponentsTest extends TestCase
         $component = new Link('test.route');
         $view = $component->render();
 
-        $this->assertEquals('components.shared.link', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.link', $view->name());
         $this->assertEquals('test.route', $component->route);
     }
 
@@ -116,7 +137,8 @@ class ViewComponentsTest extends TestCase
         $component = new Modal();
         $view = $component->render();
 
-        $this->assertEquals('components.shared.modal', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.modal', $view->name());
     }
 
     public function test_shared_nav_link_component_renders(): void
@@ -124,7 +146,8 @@ class ViewComponentsTest extends TestCase
         $component = new NavLink();
         $view = $component->render();
 
-        $this->assertEquals('components.shared.nav-link', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.nav-link', $view->name());
     }
 
     public function test_shared_primary_button_component_renders(): void
@@ -132,7 +155,8 @@ class ViewComponentsTest extends TestCase
         $component = new PrimaryButton();
         $view = $component->render();
 
-        $this->assertEquals('components.shared.primary-button', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.primary-button', $view->name());
     }
 
     public function test_shared_responsive_nav_link_component_renders(): void
@@ -140,7 +164,8 @@ class ViewComponentsTest extends TestCase
         $component = new ResponsiveNavLink();
         $view = $component->render();
 
-        $this->assertEquals('components.shared.responsive-nav-link', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.responsive-nav-link', $view->name());
     }
 
     public function test_shared_secondary_button_component_renders(): void
@@ -148,7 +173,8 @@ class ViewComponentsTest extends TestCase
         $component = new SecondaryButton();
         $view = $component->render();
 
-        $this->assertEquals('components.shared.secondary-button', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.secondary-button', $view->name());
     }
 
     public function test_shared_text_input_component_renders(): void
@@ -156,7 +182,8 @@ class ViewComponentsTest extends TestCase
         $component = new TextInput();
         $view = $component->render();
 
-        $this->assertEquals('components.shared.text-input', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.shared.text-input', $view->name());
     }
 
     public function test_website_footer_component_renders(): void
@@ -164,7 +191,8 @@ class ViewComponentsTest extends TestCase
         $component = new Footer();
         $view = $component->render();
 
-        $this->assertEquals('components.website.footer', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.website.footer', $view->name());
     }
 
     public function test_website_navigation_component_renders(): void
@@ -172,11 +200,15 @@ class ViewComponentsTest extends TestCase
         $component = new Navigation();
         $view = $component->render();
 
-        $this->assertEquals('components.website.navigation', $view);
+        $this->assertInstanceOf('Illuminate\View\View', $view);
+        $this->assertEquals('components.website.navigation', $view->name());
     }
 
     public function test_components_can_be_instantiated(): void
     {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
         // Test that all components can be instantiated without errors
         $components = [
             new Sidebar(),
@@ -199,7 +231,8 @@ class ViewComponentsTest extends TestCase
 
         foreach ($components as $component) {
             $this->assertNotNull($component);
-            $this->assertIsString($component->render());
+            $view = $component->render();
+            $this->assertInstanceOf('Illuminate\View\View', $view);
         }
     }
 
@@ -220,12 +253,16 @@ class ViewComponentsTest extends TestCase
         $this->assertEquals('dashboard', $header1->type);
         $this->assertEquals('Dashboard', $header1->heading);
         $this->assertEquals('Welcome to your dashboard', $header1->subheading);
-        $this->assertEquals('components.shared.header', $header1->render());
+        $view1 = $header1->render();
+        $this->assertInstanceOf('Illuminate\View\View', $view1);
+        $this->assertEquals('components.shared.header', $view1->name());
         
         $header2 = new Header('auth', 'Login', 'Sign in to your account');
         $this->assertEquals('auth', $header2->type);
         $this->assertEquals('Login', $header2->heading);
         $this->assertEquals('Sign in to your account', $header2->subheading);
-        $this->assertEquals('components.shared.header', $header2->render());
+        $view2 = $header2->render();
+        $this->assertInstanceOf('Illuminate\View\View', $view2);
+        $this->assertEquals('components.shared.header', $view2->name());
     }
 }
