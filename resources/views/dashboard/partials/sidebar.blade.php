@@ -93,6 +93,70 @@
                 </ul>
             </li>
 
+            <!-- Company -->
+            <li>
+                <a
+                    href="#"
+                    @click.prevent="isCompanyDropdownOpen = !isCompanyDropdownOpen"
+                    :class="isSidebarOpen ? 'px-4 py-2 justify-between space-x-4' : 'justify-center p-4'"
+                    class="block flex w-full items-center border-b px-4 hover:bg-gray-200 dark:hover:bg-gray-600"
+                >
+                    <div class="flex w-full items-center justify-between">
+                        <div>
+                            <i
+                                :class="isSidebarOpen ? 'mr-4' : 'mr-2'"
+                                class="fas fa-building text-lg"
+                            ></i>
+                            <span :class="isSidebarOpen ? '' : 'hidden'">
+                                Company
+                            </span>
+                        </div>
+
+                        <i
+                            :class="[isCompanyDropdownOpen ? 'rotate-180' : '', isSidebarOpen ? 'ml-4' : '']"
+                            class="fas fa-chevron-down text-sm transition-transform duration-300"
+                        ></i>
+                    </div>
+                </a>
+
+                <ul
+                    x-show="isCompanyDropdownOpen"
+                    x-transition
+                    class="mt-2 space-y-1"
+                >
+                    <li>
+                        <a
+                            href="{{ route('dashboard.company.index') }}"
+                            :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+                            class="block flex w-full items-center border-b px-4 hover:bg-gray-200 dark:hover:bg-gray-600"
+                        >
+                            <i
+                                :class="isSidebarOpen ? 'ml-4' : ''"
+                                class="fas fa-info-circle"
+                            ></i>
+                            <span :class="isSidebarOpen ? '' : 'hidden'">
+                                Company Info
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="{{ route('dashboard.company.members.index') }}"
+                            :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+                            class="block flex w-full items-center border-b px-4 hover:bg-gray-200 dark:hover:bg-gray-600"
+                        >
+                            <i
+                                :class="isSidebarOpen ? 'ml-4' : ''"
+                                class="fas fa-users"
+                            ></i>
+                            <span :class="isSidebarOpen ? '' : 'hidden'">
+                                Team Members
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
             <!-- Admin -->
             @if (Auth::user()->admin)
                 <li>

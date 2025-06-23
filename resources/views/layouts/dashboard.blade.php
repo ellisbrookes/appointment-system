@@ -21,6 +21,7 @@
         x-data="{
             isSidebarOpen: true,
             isDropdownOpen: false,
+            isCompanyDropdownOpen: false,
             isUserSidebarOpen: false,
         }"
         class="text-gray-800 dark:text-white"
