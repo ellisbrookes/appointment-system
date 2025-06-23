@@ -11,7 +11,7 @@ class CreateAppointmentTest extends TestCase
     #[Test]
     public function user_can_visit_appointment_page()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
 
         $response = $this->actingAs($user)->get('/dashboard/appointments');
 
@@ -21,7 +21,7 @@ class CreateAppointmentTest extends TestCase
     #[Test]
     public function authenticated_user_can_create_appointment_through_multi_step_form()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->subscribed()->create();
 
         // Simulate the session data that would be stored in steps 1 and 2
         $sessionData = [

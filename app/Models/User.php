@@ -69,6 +69,11 @@ class User extends Authenticatable implements MustVerifyEmail
                     ->exists();
     }
 
+    public function company()
+    {
+        return $this->hasOne(Company::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

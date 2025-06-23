@@ -49,7 +49,7 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::prefix('members')->name('members.')->controller(App\Http\Controllers\Dashboard\CompanyMemberController::class)->group(function () {
       Route::get('/', 'currentUserCompanyMembers')->name('index');
       Route::post('/invite', 'currentUserCompanyInvite')->name('invite');
-      Route::put('/{member}', 'currentUserCompanyUpdateRole')->name('update');
+      Route::patch('/{member}/role', 'currentUserCompanyUpdateRole')->name('update-role');
       Route::delete('/{member}', 'currentUserCompanyRemove')->name('destroy');
     });
   });
@@ -59,9 +59,9 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::get('/', 'index')->name('index');
     Route::post('/invite', 'invite')->name('invite');
     Route::post('/accept', 'acceptInvite')->name('accept');
-    Route::put('/{member}/role', 'updateRole')->name('update-role');
-    Route::delete('/{member}', 'remove')->name('remove');
     Route::delete('/leave', 'leave')->name('leave');
+    Route::patch('/{member}/role', 'updateRole')->name('update-role');
+    Route::delete('/{member}', 'remove')->name('remove');
   });
   // Appointments
   Route::prefix('appointments')->name('dashboard.appointments.')->middleware('check.subscription')->controller(AppointmentController::class)->group(function () {
