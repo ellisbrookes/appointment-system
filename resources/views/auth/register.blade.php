@@ -13,7 +13,7 @@
         <div class="h-full md:flex md:w-full md:items-center md:justify-center">
             <form
                 method="POST"
-                action="{{ route('register') }}"
+                action="{{ route("register") }}"
                 class="flex flex-col space-y-4 rounded-md border p-16"
             >
                 @csrf
@@ -58,7 +58,9 @@
                         class="mt-1 block w-full"
                         :value="old('company_name')"
                     />
-                    <x-shared.input-error :messages="$errors->get('company_name')" />
+                    <x-shared.input-error
+                        :messages="$errors->get('company_name')"
+                    />
                 </div>
 
                 <!-- Password -->
@@ -73,7 +75,9 @@
                         name="password"
                         required
                     />
-                    <x-shared.input-error :messages="$errors->get('password')" />
+                    <x-shared.input-error
+                        :messages="$errors->get('password')"
+                    />
                 </div>
 
                 <!-- Confirm password -->
@@ -96,13 +100,13 @@
                 <div class="flex items-center justify-end">
                     <a
                         class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                        href="{{ route('login') }}"
+                        href="{{ route("login") }}"
                     >
-                        {{ __('Already registered?') }}
+                        {{ __("Already registered?") }}
                     </a>
 
                     <x-shared.primary-button class="ms-4">
-                        {{ __('Register') }}
+                        {{ __("Register") }}
                     </x-shared.primary-button>
                 </div>
             </form>
