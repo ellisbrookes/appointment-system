@@ -14,7 +14,12 @@ class SettingsController extends Controller
 {
   public function index(): View
   {
-    $settings = Auth::user()->settings;
+    $userSettings = Auth::user()->settings;
+    
+    // Ensure settings is always an array
+    if (is_string($userSettings)) {
+      $userSettings = json_decode($userSettings, true) ?? [];
+    }
     
     // Set default values if not already set
     $defaultSettings = [
@@ -26,7 +31,7 @@ class SettingsController extends Controller
       'timezone' => 'UTC'
     ];
     
-    $settings = array_merge($defaultSettings, $settings ?? []);
+    $settings = array_merge($defaultSettings, $userSettings ?? []);
     
     // Get list of common timezones for the dropdown
     $timezones = [
