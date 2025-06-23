@@ -7,7 +7,9 @@
 @section("content")
     <div class="container mx-auto">
         <div class="mb-6 flex items-center justify-between">
-            <h2 class="text-center text-4xl font-bold text-gray-700 dark:text-white">
+            <h2
+                class="text-center text-4xl font-bold text-gray-700 dark:text-white"
+            >
                 Appointments List
             </h2>
             <a
@@ -61,7 +63,9 @@
             </p>
         @else
             <div class="overflow-x-auto">
-                <table class="text-md w-full table-auto border-collapse border border-gray-400 text-center md:table-fixed">
+                <table
+                    class="text-md w-full table-auto border-collapse border border-gray-400 text-center md:table-fixed"
+                >
                     <thead>
                         <tr
                             class="bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-white"
@@ -104,19 +108,18 @@
                                     @php
                                         $settings = auth()->user()->settings ?? [];
                                         $defaultSettings = [
-                                            'time_format' => '24',
-                                            'timezone' => 'UTC'
+                                            "time_format" => "24",
+                                            "timezone" => "UTC",
                                         ];
                                         $settings = array_merge($defaultSettings, $settings);
-                                        
-                                        $timezone = $settings['timezone'];
-                                        $timeFormat = $settings['time_format'];
-                                        
+
+                                        $timezone = $settings["timezone"];
+                                        $timeFormat = $settings["time_format"];
+
                                         $timeslot = Carbon::parse($appointment->timeslot)->setTimezone($timezone);
-                                        $formattedTime = $timeFormat === '12' 
-                                            ? $timeslot->format('g:i A') 
-                                            : $timeslot->format('H:i');
+                                        $formattedTime = $timeFormat === "12" ? $timeslot->format("g:i A") : $timeslot->format("H:i");
                                     @endphp
+
                                     {{ $formattedTime }}
                                 </td>
                                 <td

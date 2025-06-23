@@ -31,7 +31,7 @@ jobs:
           APP_ENV: testing
           DB_CONNECTION: sqlite
           DB_DATABASE: ":memory:"
-          STRIPE_SECRET: "sk_test_dummy_key_for_testing"
+          STRIPE_SECRET: "sk_test_dummy_example_key_not_real"
 
       - name: Run tests with coverage
         run: php artisan test --coverage --min=50
@@ -39,4 +39,4 @@ jobs:
           APP_ENV: testing
           DB_CONNECTION: sqlite
           DB_DATABASE: ":memory:"
-          STRIPE_SECRET: "sk_test_dummy_key_for_testing"
+          STRIPE_SECRET: "sk_test_dummy_example_key_not_real"

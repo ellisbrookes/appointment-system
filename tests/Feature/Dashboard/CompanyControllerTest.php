@@ -3,6 +3,7 @@
 namespace Tests\Feature\Dashboard;
 
 use App\Models\Company;
+use App\Models\CompanyMember;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -115,6 +116,15 @@ class CompanyControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $company = Company::factory()->create(['user_id' => $user->id]);
+        
+        // Create company membership
+        CompanyMember::create([
+            'user_id' => $user->id,
+            'company_id' => $company->id,
+            'role' => 'owner',
+            'status' => 'active',
+            'joined_at' => now(),
+        ]);
 
         $response = $this->actingAs($user)->get("/dashboard/companies/{$company->id}");
 
@@ -140,6 +150,15 @@ class CompanyControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $company = Company::factory()->create(['user_id' => $user->id]);
+        
+        // Create company membership with admin access
+        CompanyMember::create([
+            'user_id' => $user->id,
+            'company_id' => $company->id,
+            'role' => 'owner',
+            'status' => 'active',
+            'joined_at' => now(),
+        ]);
 
         $response = $this->actingAs($user)->get("/dashboard/companies/{$company->id}/edit");
 
@@ -165,6 +184,15 @@ class CompanyControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $company = Company::factory()->create(['user_id' => $user->id]);
+        
+        // Create company membership with admin access
+        CompanyMember::create([
+            'user_id' => $user->id,
+            'company_id' => $company->id,
+            'role' => 'owner',
+            'status' => 'active',
+            'joined_at' => now(),
+        ]);
 
         $updateData = [
             'name' => 'Updated Company Name',
@@ -206,6 +234,15 @@ class CompanyControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $company = Company::factory()->create(['user_id' => $user->id]);
+        
+        // Create company membership with admin access
+        CompanyMember::create([
+            'user_id' => $user->id,
+            'company_id' => $company->id,
+            'role' => 'owner',
+            'status' => 'active',
+            'joined_at' => now(),
+        ]);
 
         $response = $this->actingAs($user)->delete("/dashboard/companies/{$company->id}/destroy");
 

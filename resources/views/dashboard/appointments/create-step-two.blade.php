@@ -112,16 +112,16 @@
                         type="hidden"
                         id="timeslot"
                         name="timeslot"
-                        value="{{ isset($timeslots[0]) ? $timeslots[0]['value'] : "" }}"
+                        value="{{ isset($timeslots[0]) ? $timeslots[0]["value"] : "" }}"
                     />
 
                     <div class="mt-6 grid grid-cols-4 gap-4">
                         @foreach ($timeslots as $timeslot)
                             <div
                                 class="text-md flex cursor-pointer justify-center rounded-md py-3 hover:bg-gray-200 dark:hover:bg-gray-800"
-                                onclick="selectTimeslot('{{ $timeslot['value'] }}', this)"
+                                onclick="selectTimeslot('{{ $timeslot["value"] }}', this)"
                             >
-                                {{ $timeslot['display'] }}
+                                {{ $timeslot["display"] }}
                             </div>
                         @endforeach
                     </div>

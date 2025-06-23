@@ -34,6 +34,8 @@ class SettingsControllerTest extends TestCase
                 'timeslot_start' => '09:00',
                 'timeslot_end' => '17:00',
                 'timeslot_interval' => 60,
+                'time_format' => '24',
+                'timezone' => 'UTC',
             ]
         ];
 
@@ -223,6 +225,8 @@ class SettingsControllerTest extends TestCase
                 'timeslot_start' => '08:00',
                 'timeslot_end' => '18:00',
                 'timeslot_interval' => 30,
+                'time_format' => '24',
+                'timezone' => 'UTC',
             ]
         ]);
 
