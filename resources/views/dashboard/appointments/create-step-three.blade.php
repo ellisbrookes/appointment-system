@@ -52,7 +52,25 @@
                         >
                             <td class="border px-6 py-4 font-medium">Time</td>
                             <td class="border px-6 py-4">
-                                {{ $appointment["timeslot"] ?? "" }}
+                                @php
+                                    $settings = auth()->user()->settings ?? [];
+                                    $defaultSettings = [
+                                        'time_format' => '24',
+                                        'timezone' => 'UTC'
+                                    ];
+                                    $settings = array_merge($defaultSettings, $settings);
+                                    
+                                    $timezone = $settings['timezone'];
+                                    $timeFormat = $settings['time_format'];
+                                    $timeslot = $appointment["timeslot"] ?? "";
+                                    
+                                    $formattedTime = $timeslot ? (
+                                        $timeFormat === '12' 
+                                            ? Carbon::parse($timeslot)->setTimezone($timezone)->format('g:i A') 
+                                            : Carbon::parse($timeslot)->setTimezone($timezone)->format('H:i')
+                                    ) : "";
+                                @endphp
+                                {{ $formattedTime }}
                             </td>
                         </tr>
 
