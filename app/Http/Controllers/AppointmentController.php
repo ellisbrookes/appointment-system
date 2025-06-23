@@ -222,8 +222,8 @@ class AppointmentController extends Controller
 
     return redirect()
       ->route('dashboard.appointments.index')->with('alert', [
-        'type' => 'success',
-        'message' => 'Appointment successfully cancelled!'
-    ]);
+          'type' => 'success',
+          'message' => 'Appointment successfully cancelled!'
+      ]);
   }
 }

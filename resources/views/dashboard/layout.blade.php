@@ -37,10 +37,10 @@
 
         <main
             :class="{
-      'ml-64': isSidebarOpen && navigationStyle === 'sidebar',
-      'ml-16': !isSidebarOpen && navigationStyle === 'sidebar',
-      'ml-0': !isSidebarOpen && navigationStyle === 'top_nav'
-    }"
+                'ml-64': isSidebarOpen && navigationStyle === 'sidebar',
+                'ml-16': !isSidebarOpen && navigationStyle === 'sidebar',
+                'ml-0': !isSidebarOpen && navigationStyle === 'top_nav'
+            }"
             class="flex h-screen flex-1 flex-col bg-white px-6 py-8 dark:bg-gray-900"
         >
             @if (session("alert"))
