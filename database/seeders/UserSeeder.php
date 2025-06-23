@@ -23,8 +23,8 @@ class UserSeeder extends Seeder
       'timezone' => 'UTC'
     ];
 
-    // Admin user with default settings
-    User::create([
+    // Admin user with default settings and active subscription
+    User::factory()->subscribed()->create([
       'name' => 'Admin User',
       'email' => 'admin@example.com',
       'password' => Hash::make('admin123'),
@@ -34,14 +34,14 @@ class UserSeeder extends Seeder
       'settings' => json_encode($defaultSettings)
     ]);
 
-    // Regular user with different timezone and 12-hour format
+    // Regular user with different timezone and 12-hour format and active subscription
     $userSettings = array_merge($defaultSettings, [
       'navigation_style' => 'top_nav',
       'time_format' => '12',
       'timezone' => 'America/New_York'
     ]);
 
-    User::create([
+    User::factory()->subscribed()->create([
       'name' => 'Regular User',
       'email' => 'user@example.com',
       'password' => Hash::make('password123'),
@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
       'settings' => json_encode($userSettings)
     ]);
 
-    // Create additional test users with various settings
+    // Create additional test users with various settings and active subscriptions
     for ($i = 1; $i <= 3; $i++) {
       $randomSettings = array_merge($defaultSettings, [
         'navigation_style' => $faker->randomElement(['sidebar', 'top_nav']),
@@ -62,7 +62,7 @@ class UserSeeder extends Seeder
         'timezone' => $faker->randomElement(['UTC', 'America/New_York', 'Europe/London', 'Asia/Tokyo'])
       ]);
 
-      User::create([
+      User::factory()->subscribed()->create([
         'name' => $faker->name(),
         'email' => $faker->unique()->safeEmail(),
         'password' => Hash::make('password123'),
