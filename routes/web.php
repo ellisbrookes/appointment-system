@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 // Index
-Route::get('/', function () {
-  return view('index');
-})->name('index');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Pricing
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
