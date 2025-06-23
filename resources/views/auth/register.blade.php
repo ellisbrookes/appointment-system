@@ -48,19 +48,34 @@
                 </div>
 
                 <div class="mt-4">
-                    <x-shared.input-label
+                    <x-input-label
                         for="company_name"
                         :value="__('Company Name (Optional)')"
                     />
-                    <x-shared.text-input
+                    <x-text-input
                         type="text"
                         name="company_name"
                         id="company_name"
                         class="mt-1 block w-full"
                         :value="old('company_name')"
                     />
+                    <x-input-error :messages="$errors->get('company_name')" />
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <x-shared.input-label
+                        for="password"
+                        :value="__('Password')"
+                    />
+                    <x-shared.text-input
+                        id="password"
+                        type="password"
+                        name="password"
+                        required
+                    />
                     <x-shared.input-error
-                        :messages="$errors->get('company_name')"
+                        :messages="$errors->get('telephone_number')"
                     />
                 </div>
 
@@ -78,7 +93,7 @@
                     />
 
                     <x-shared.input-error
-                        :messages="$errors->get('telephone_number')"
+                        :messages="$errors->get('password')"
                     />
                 </div>
 

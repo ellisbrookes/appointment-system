@@ -88,8 +88,14 @@
                                 <td class="border-b border-gray-300 px-6 py-4">
                                     <div class="flex justify-center space-x-2">
                                         <a
-                                            href="{{ route("dashboard.companies.index") }}"
-                                            class="align-center focus:ring-opacity-50 flex rounded-md bg-blue-600 px-4 py-2 text-white transition duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                                            href="{{ route("dashboard.companies.show", $company->id) }}"
+                                            class="align-center focus:ring-opacity-50 flex rounded-md bg-green-600 px-3 py-2 text-white transition duration-200 hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:outline-hidden"
+                                        >
+                                            View
+                                        </a>
+                                        <a
+                                            href="{{ route("dashboard.companies.edit", $company->id) }}"
+                                            class="align-center focus:ring-opacity-50 flex rounded-md bg-blue-600 px-3 py-2 text-white transition duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
                                         >
                                             Edit
                                         </a>
@@ -97,7 +103,7 @@
                                         <form
                                             method="POST"
                                             action="{{ route("dashboard.companies.destroy", $company->id) }}"
-                                            onsubmit="return confirm('Are you sure you want to delete this company');"
+                                            onsubmit="return confirm('Are you sure you want to delete this company?');"
                                             style="display: inline"
                                         >
                                             @csrf

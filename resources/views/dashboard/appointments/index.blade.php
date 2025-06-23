@@ -7,9 +7,7 @@
 @section("content")
     <div class="container mx-auto">
         <div class="mb-6 flex items-center justify-between">
-            <h2
-                class="text-center text-4xl font-bold text-gray-700 dark:text-white"
-            >
+            <h2 class="text-center text-4xl font-bold text-gray-700 dark:text-white">
                 Appointments List
             </h2>
             <a
@@ -63,9 +61,7 @@
             </p>
         @else
             <div class="overflow-x-auto">
-                <table
-                    class="text-md w-full table-auto border-collapse border border-gray-400 text-center md:table-fixed"
-                >
+                <table class="text-md w-full table-auto border-collapse border border-gray-400 text-center md:table-fixed">
                     <thead>
                         <tr
                             class="bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-white"
@@ -122,6 +118,11 @@
                                             : $timeslot->format('H:i');
                                     @endphp
                                     {{ $formattedTime }}
+                                </td>
+                                <td
+                                    class="border border-gray-300 px-6 py-4 capitalize"
+                                >
+                                    {{ $appointment->status }}
                                 </td>
                                 <td
                                     class="border border-gray-300 px-6 py-4 capitalize"

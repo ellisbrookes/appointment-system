@@ -21,28 +21,29 @@
             $navigationStyle = optional(Auth::user()->settings)["navigation_style"] ?? "sidebar";
         @endphp
         x-data="{
-        navigationStyle: '{{ $navigationStyle }}',
-        isSidebarOpen: true,
-        isDropdownOpen: false,
-        isUserSidebarOpen: false,
-        isCompanyDropdownOpen: false,
-        isAppointmentsDropdownOpen: false,
-    }"
+            navigationStyle:
+                '{{ (Auth::user()->settings ?? [])["navigation_style"] ?? "sidebar" }}',
+            isSidebarOpen: true,
+            isDropdownOpen: false,
+            isUserSidebarOpen: false,
+            isCompanyDropdownOpen: false,
+            isAppointmentsDropdownOpen: false,
+        }"
         class="text-gray-800 dark:text-white"
     >
-        @if ($navigationStyle === "sidebar")
+        @if ((Auth::user()->settings ?? [])["navigation_style"] === "sidebar")
             @include("components.dashboard.sidebar")
-        @elseif ($navigationStyle === "top_nav")
+        @elseif ((Auth::user()->settings ?? [])["navigation_style"] === "top_nav")
             @include("components.dashboard.top-nav")
         @endif
 
         {{-- Main Content --}}
         <main
             :class="{
-            'ml-64': isSidebarOpen && navigationStyle === 'sidebar',
-            'ml-16': !isSidebarOpen && navigationStyle === 'sidebar',
-            'ml-0': !isSidebarOpen && navigationStyle === 'top_nav'
-        }"
+                'ml-64': isSidebarOpen && navigationStyle === 'sidebar',
+                'ml-16': !isSidebarOpen && navigationStyle === 'sidebar',
+                'ml-0': !isSidebarOpen && navigationStyle === 'top_nav'
+            }"
             class="flex h-screen flex-1 flex-col bg-white px-6 py-8 dark:bg-gray-900"
         >
             @if (session("alert"))
