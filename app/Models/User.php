@@ -69,6 +69,11 @@ class User extends Authenticatable implements MustVerifyEmail
                     ->exists();
     }
 
+    public function company()
+    {
+        return $this->hasOne(Company::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -85,7 +90,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -102,7 +107,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'settings' => 'array'
+            'settings' => 'array',
         ];
     }
 }

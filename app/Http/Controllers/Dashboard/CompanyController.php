@@ -10,12 +10,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-
 class CompanyController extends Controller
 {
   public function index(): View
   {
-    // Get companies where user is owner or active member
     $companies = auth()->user()->activeCompanies()->with(['user', 'members.user'])->get();
     return view('dashboard.company.index', compact('companies'));
   }
@@ -31,13 +29,13 @@ class CompanyController extends Controller
       'name' => 'required|string|max:255',
       'email' => 'nullable|email|max:255',
       'phone_number' => [
-          'nullable',
-          'regex:/^(?:0|\+?44)(?:\d\s?){9,10}$/i'
+        'nullable',
+        'regex:/^(?:0|\+?44)(?:\d\s?){9,10}$/i'
       ],
       'address' => 'nullable|max:255',
       'postcode' => [
-          'nullable',
-          'regex:/^([A-Z]{1,2}[0-9][0-9A-Z]? ?[0-9][A-Z]{2})$/i'
+        'nullable',
+        'regex:/^([A-Z]{1,2}[0-9][0-9A-Z]? ?[0-9][A-Z]{2})$/i'
       ],
       'description' => 'nullable|string',
     ]);
@@ -52,7 +50,6 @@ class CompanyController extends Controller
       'user_id' => auth()->id(),
     ]);
 
-    // Create owner membership record
     $company->members()->create([
       'user_id' => auth()->id(),
       'role' => 'owner',
@@ -86,13 +83,13 @@ class CompanyController extends Controller
       'name' => 'required|string|max:255',
       'email' => 'nullable|email|max:255',
       'phone_number' => [
-          'nullable',
-          'regex:/^(\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3}$/'
+        'nullable',
+        'regex:/^(\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3}$/'
       ],
       'address' => 'nullable|max:255',
       'postcode' => [
-          'nullable',
-          'regex:/^([A-Z]{1,2}[0-9][0-9A-Z]? ?[0-9][A-Z]{2})$/i'
+        'nullable',
+        'regex:/^([A-Z]{1,2}[0-9][0-9A-Z]? ?[0-9][A-Z]{2})$/i'
       ],
       'description' => 'nullable|string',
     ]);
@@ -105,7 +102,6 @@ class CompanyController extends Controller
     ]);
   }
 
-  // Delete a company
   public function destroy(Company $company)
   {
     $this->authorizeCompanyAdmin($company);
@@ -123,30 +119,34 @@ class CompanyController extends Controller
   public function currentUserCompany()
   {
     $company = auth()->user()->company;
-    
+
     if (!$company) {
       return redirect()->route('dashboard.companies.create')
         ->with('error', 'You need to create a company first.');
     }
-    
+
     return redirect()->route('dashboard.companies.show', $company);
   }
 
+  /**
+   * Authorize that the current user is a member of the company.
+   */
   private function authorizeCompany(Company $company)
   {
     $user = auth()->user();
-    
-    // Check if user is a member of this company
+
     if (!$user->isMemberOf($company->id)) {
       abort(403, 'Unauthorized action.');
     }
   }
 
+  /**
+   * Authorize that the current user is an admin or owner of the company.
+   */
   private function authorizeCompanyAdmin(Company $company)
   {
     $user = auth()->user();
-    
-    // Check if user is an admin or owner of this company
+
     if (!$user->isAdminOf($company->id)) {
       abort(403, 'Unauthorized action. Admin access required.');
     }

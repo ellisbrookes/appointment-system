@@ -76,10 +76,6 @@
                     @endforeach
                 </div>
             </div>
-          @endforeach
-        @endforeach
-      </div>
-    </div>
-  </div>
-</section>
+        </div>
+    </section>
 @endsection

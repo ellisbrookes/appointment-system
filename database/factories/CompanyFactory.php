@@ -11,6 +11,11 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CompanyFactory extends Factory
 {
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
     protected $model = Company::class;
 
     /**
@@ -22,11 +27,11 @@ class CompanyFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'email' => $this->faker->companyEmail(),
-            'phone_number' => $this->faker->phoneNumber(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'phone_number' => $this->faker->regexify('07[0-9]{9}'),
             'address' => $this->faker->streetAddress(),
-            'postcode' => $this->faker->postcode(),
-            'description' => $this->faker->sentence(),
+            'postcode' => $this->faker->regexify('[A-Z]{1,2}[0-9][0-9A-Z]? [0-9][A-Z]{2}'),
+            'description' => $this->faker->optional()->paragraph(),
             'user_id' => User::factory(),
         ];
     }

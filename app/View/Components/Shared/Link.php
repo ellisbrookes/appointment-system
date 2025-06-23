@@ -1,19 +1,22 @@
 <?php
 
-namespace App\View\Components\shared;
+namespace App\View\Components\Shared;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class danger-button extends Component
+class Link extends Component
 {
+    public $route;
+
     /**
      * Create a new component instance.
+     * @param $route
      */
-    public function __construct()
+    public function __construct($route)
     {
-        //
+        $this->route = $route;
     }
 
     /**
@@ -21,6 +24,6 @@ class danger-button extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.shared.danger-button');
+        return view('components.shared.link');
     }
 }
