@@ -30,10 +30,7 @@
                         autofocus
                     />
 
-                    <x-shared.input-error
-                        :messages="$errors->get('name')"
-                        class="mt-2"
-                    />
+                    <x-shared.input-error :messages="$errors->get('name')" />
                 </div>
 
                 <!-- Email address -->
@@ -47,28 +44,39 @@
                         required
                     />
 
-                    <x-shared.input-error
-                        :messages="$errors->get('email')"
-                        class="mt-2"
-                    />
+                    <x-shared.input-error :messages="$errors->get('email')" />
                 </div>
 
-                <!-- Telephone number -->
+                <div class="mt-4">
+                    <x-input-label
+                        for="company_name"
+                        :value="__('Company Name (Optional)')"
+                    />
+                    <x-text-input
+                        type="text"
+                        name="company_name"
+                        id="company_name"
+                        class="mt-1 block w-full"
+                        :value="old('company_name')"
+                    />
+                    <x-input-error :messages="$errors->get('company_name')" />
+                </div>
+
+                <!-- Password -->
                 <div>
                     <x-shared.input-label
-                        for="telephone_number"
-                        :value="__('Telephone number')"
+                        for="password"
+                        :value="__('Password')"
                     />
                     <x-shared.text-input
-                        id="telephone_number"
-                        type="tel"
-                        name="telephone_number"
-                        :value="old('telephone_number')"
+                        id="password"
+                        type="password"
+                        name="password"
+                        required
                     />
 
                     <x-shared.input-error
                         :messages="$errors->get('telephone_number')"
-                        class="mt-2"
                     />
                 </div>
 
@@ -87,7 +95,6 @@
 
                     <x-shared.input-error
                         :messages="$errors->get('password')"
-                        class="mt-2"
                     />
                 </div>
 
@@ -106,7 +113,6 @@
 
                     <x-shared.input-error
                         :messages="$errors->get('password_confirmation')"
-                        class="mt-2"
                     />
                 </div>
 

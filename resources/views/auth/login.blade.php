@@ -29,10 +29,7 @@
                         required
                     />
 
-                    <x-shared.input-error
-                        :messages="$errors->get('email')"
-                        class="mt-2"
-                    />
+                    <x-shared.input-error :messages="$errors->get('email')" />
                 </div>
 
                 <!-- Password -->
@@ -50,7 +47,6 @@
 
                     <x-shared.input-error
                         :messages="$errors->get('password')"
-                        class="mt-2"
                     />
                 </div>
 

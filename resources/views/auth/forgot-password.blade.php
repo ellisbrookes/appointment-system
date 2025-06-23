@@ -29,10 +29,7 @@
                         required
                     />
 
-                    <x-shared.input-error
-                        :messages="$errors->get('email')"
-                        class="mt-2"
-                    />
+                    <x-shared.input-error :messages="$errors->get('email')" />
                 </div>
 
                 <div class="flex items-center justify-end">

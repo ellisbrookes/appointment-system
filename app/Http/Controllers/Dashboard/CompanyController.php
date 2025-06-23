@@ -15,7 +15,8 @@ class CompanyController extends Controller
 {
   public function index(): View
   {
-    $companies = Company::with('user')->get();
+    // Get companies where user is owner or active member
+    $companies = auth()->user()->activeCompanies()->with(['user', 'members.user'])->get();
     return view('dashboard.company.index', compact('companies'));
   }
 
@@ -51,6 +52,14 @@ class CompanyController extends Controller
       'user_id' => auth()->id(),
     ]);
 
+    // Create owner membership record
+    $company->members()->create([
+      'user_id' => auth()->id(),
+      'role' => 'owner',
+      'status' => 'active',
+      'joined_at' => now(),
+    ]);
+
     return redirect()->route('dashboard.companies.index')->with('alert', [
       'type' => 'success',
       'message' => 'Company created successfully.',
@@ -60,16 +69,18 @@ class CompanyController extends Controller
   public function show(Company $company)
   {
     $this->authorizeCompany($company);
-    return view('companies.show', compact('company'));
+    return view('dashboard.company.show', compact('company'));
   }
 
   public function edit(Company $company)
   {
+    $this->authorizeCompanyAdmin($company);
+    return view('dashboard.company.edit', compact('company'));
   }
 
   public function update(Request $request, Company $company)
   {
-    $this->authorizeCompany($company);
+    $this->authorizeCompanyAdmin($company);
 
     $validated = $request->validate([
       'name' => 'required|string|max:255',
@@ -88,12 +99,16 @@ class CompanyController extends Controller
 
     $company->update($validated);
 
-    return redirect()->route('dashboard.companies.index')->with('success', 'Company updated successfully.');
+    return redirect()->route('dashboard.companies.index')->with('alert', [
+      'type' => 'success',
+      'message' => 'Company updated successfully.',
+    ]);
   }
 
   // Delete a company
   public function destroy(Company $company)
   {
+    $this->authorizeCompanyAdmin($company);
     $company->delete();
 
     return redirect()->route('dashboard.companies.index')->with('alert', [
@@ -101,4 +116,39 @@ class CompanyController extends Controller
       'message' => 'Company deleted successfully.',
     ]);
   }
-};
+
+  /**
+   * Show the current user's company.
+   */
+  public function currentUserCompany()
+  {
+    $company = auth()->user()->company;
+    
+    if (!$company) {
+      return redirect()->route('dashboard.companies.create')
+        ->with('error', 'You need to create a company first.');
+    }
+    
+    return redirect()->route('dashboard.companies.show', $company);
+  }
+
+  private function authorizeCompany(Company $company)
+  {
+    $user = auth()->user();
+    
+    // Check if user is a member of this company
+    if (!$user->isMemberOf($company->id)) {
+      abort(403, 'Unauthorized action.');
+    }
+  }
+
+  private function authorizeCompanyAdmin(Company $company)
+  {
+    $user = auth()->user();
+    
+    // Check if user is an admin or owner of this company
+    if (!$user->isAdminOf($company->id)) {
+      abort(403, 'Unauthorized action. Admin access required.');
+    }
+  }
+}
