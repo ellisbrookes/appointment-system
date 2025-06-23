@@ -123,25 +123,32 @@ class AppointmentController extends Controller
     $startTime = isset($settings['timeslot_start']) ? Carbon::createFromTimeString($settings['timeslot_start']) : Carbon::createFromTimeString('09:00');
     $endTime = isset($settings['timeslot_end']) ? Carbon::createFromTimeString($settings['timeslot_end']) : Carbon::createFromTimeString('17:00');
     $interval = isset($settings['timeslot_interval']) ? (int)$settings['timeslot_interval'] : 60;
+    $timeFormat = isset($settings['time_format']) ? $settings['time_format'] : '24';
 
     $timeslots = [];
 
     while ($startTime < $endTime) {
-      $timeslots[] = $startTime->format('H:i');
+      // Format based on user preference: 12-hour (g:i A) or 24-hour (H:i)
+      $formattedTime = $timeFormat === '12' ? $startTime->format('g:i A') : $startTime->format('H:i');
+      $timeslots[] = [
+        'value' => $startTime->format('H:i'), // Always store in 24-hour format for consistency
+        'display' => $formattedTime // Display in user's preferred format
+      ];
       $startTime->addMinutes($interval);
     }
 
-    $firstTimeslot = Carbon::parse($timeslots[0]);
+    $firstTimeslot = count($timeslots) > 0 ? Carbon::parse($timeslots[0]['value']) : Carbon::parse('09:00');
 
-    return view('dashboard.appointments.create-step-two', [
+    return view('dashboard.appointments.create-step-two', compact(
       'appointment',
-      'currentDate' => $today->toDateString(),
-      'daysInMonth' => $daysInMonth,
-      'startDayOfWeek' => $startDayOfWeek,
-      'month' => $month,
-      'year' => $year,
-      'timeslots' => $timeslots,
-      'firstTimeslot' => $firstTimeslot
+      'daysInMonth',
+      'startDayOfWeek',
+      'month',
+      'year',
+      'timeslots',
+      'firstTimeslot'
+    ))->with([
+      'currentDate' => $today->toDateString()
     ]);
   }
 

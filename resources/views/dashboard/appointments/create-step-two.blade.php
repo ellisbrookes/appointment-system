@@ -112,22 +112,16 @@
                         type="hidden"
                         id="timeslot"
                         name="timeslot"
-                        value="{{ isset($timeslots[0]) ? Carbon::parse($timeslots[0])->format("H:i") : "" }}"
+                        value="{{ isset($timeslots[0]) ? $timeslots[0]['value'] : "" }}"
                     />
 
                     <div class="mt-6 grid grid-cols-4 gap-4">
                         @foreach ($timeslots as $timeslot)
-                            @php
-                                if (! ($timeslot instanceof Carbon)) {
-                                    $timeslot = Carbon::parse($timeslot);
-                                }
-                            @endphp
-
                             <div
                                 class="text-md flex cursor-pointer justify-center rounded-md py-3 hover:bg-gray-200 dark:hover:bg-gray-800"
-                                onclick="selectTimeslot('{{ $timeslot->format("H:i") }}', this)"
+                                onclick="selectTimeslot('{{ $timeslot['value'] }}', this)"
                             >
-                                {{ $timeslot->format("H:i") }}
+                                {{ $timeslot['display'] }}
                             </div>
                         @endforeach
                     </div>

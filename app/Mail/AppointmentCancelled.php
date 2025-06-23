@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Appointment;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -37,12 +38,19 @@ class AppointmentCancelled extends Mailable
      */
     public function content(): Content
     {
+        // Format time based on user's preference
+        $timeFormat = $this->appointment->user->settings['time_format'] ?? '24';
+        $formattedTimeslot = $timeFormat === '12' 
+            ? Carbon::parse($this->appointment->timeslot)->format('g:i A')
+            : Carbon::parse($this->appointment->timeslot)->format('H:i');
+
         return new Content(
             view: 'emails.appointment_cancelled',
             with: [
                 'service' => $this->appointment->service,
                 'date' => $this->appointment->date,
                 'timeslot' => $this->appointment->timeslot,
+                'formattedTimeslot' => $formattedTimeslot,
             ],
         );
     }

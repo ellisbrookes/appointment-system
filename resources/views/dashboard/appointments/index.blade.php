@@ -105,7 +105,13 @@
                                     {{ $appointment->user->name ?? "Guest" }}
                                 </td>
                                 <td class="border border-gray-300 px-6 py-4">
-                                    {{ Carbon::parse($appointment->timeslot)->format("g:i A") }}
+                                    @php
+                                        $timeFormat = auth()->user()->settings['time_format'] ?? '24';
+                                        $formattedTime = $timeFormat === '12' 
+                                            ? Carbon::parse($appointment->timeslot)->format('g:i A') 
+                                            : Carbon::parse($appointment->timeslot)->format('H:i');
+                                    @endphp
+                                    {{ $formattedTime }}
                                 </td>
                                 <td
                                     class="border border-gray-300 px-6 py-4 capitalize"

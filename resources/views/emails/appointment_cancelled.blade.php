@@ -82,7 +82,7 @@
                     </p>
                     <p style="margin: 0; font-size: 16px">
                         <strong>Time:</strong>
-                        {{ Carbon::parse($timeslot)->format("g:i A") }}
+                        {{ $formattedTimeslot }}
                     </p>
                 </div>
             </div>

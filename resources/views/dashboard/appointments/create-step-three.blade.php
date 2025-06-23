@@ -52,7 +52,16 @@
                         >
                             <td class="border px-6 py-4 font-medium">Time</td>
                             <td class="border px-6 py-4">
-                                {{ $appointment["timeslot"] ?? "" }}
+                                @php
+                                    $timeFormat = auth()->user()->settings['time_format'] ?? '24';
+                                    $timeslot = $appointment["timeslot"] ?? "";
+                                    $formattedTime = $timeslot ? (
+                                        $timeFormat === '12' 
+                                            ? Carbon::parse($timeslot)->format('g:i A') 
+                                            : Carbon::parse($timeslot)->format('H:i')
+                                    ) : "";
+                                @endphp
+                                {{ $formattedTime }}
                             </td>
                         </tr>
 

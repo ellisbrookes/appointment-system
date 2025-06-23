@@ -28,6 +28,7 @@ class SettingsController extends Controller
       'settings.timeslot_start' => 'required|date_format:H:i',
       'settings.timeslot_end' => 'required|date_format:H:i|after:settings.timeslot_start',
       'settings.timeslot_interval' => 'required|integer|min:5|max:120',
+      'settings.time_format' => 'required|in:12,24',
     ]);
 
     $user->settings = $request->input('settings');
