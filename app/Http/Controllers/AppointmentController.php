@@ -124,7 +124,12 @@ class AppointmentController extends Controller
     $daysInMonth = $endOfMonth->day;
 
     // Timeslots
-    $settings = auth()->user()->settings ?? [];
+    $userSettings = auth()->user()->settings ?? [];
+    
+    // Ensure settings is always an array
+    if (is_string($userSettings)) {
+      $userSettings = json_decode($userSettings, true) ?? [];
+    }
     
     // Set defaults for timeslot settings
     $defaultSettings = [
@@ -135,7 +140,7 @@ class AppointmentController extends Controller
       'timezone' => 'UTC'
     ];
     
-    $settings = array_merge($defaultSettings, $settings);
+    $settings = array_merge($defaultSettings, $userSettings ?? []);
     
     // Set timezone for this user
     $userTimezone = $settings['timezone'];
