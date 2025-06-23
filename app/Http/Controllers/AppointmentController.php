@@ -119,11 +119,25 @@ class AppointmentController extends Controller
 
     // Timeslots
     $settings = auth()->user()->settings ?? [];
-
-    $startTime = isset($settings['timeslot_start']) ? Carbon::createFromTimeString($settings['timeslot_start']) : Carbon::createFromTimeString('09:00');
-    $endTime = isset($settings['timeslot_end']) ? Carbon::createFromTimeString($settings['timeslot_end']) : Carbon::createFromTimeString('17:00');
-    $interval = isset($settings['timeslot_interval']) ? (int)$settings['timeslot_interval'] : 60;
-    $timeFormat = isset($settings['time_format']) ? $settings['time_format'] : '24';
+    
+    // Set defaults for timeslot settings
+    $defaultSettings = [
+      'timeslot_start' => '09:00',
+      'timeslot_end' => '17:00', 
+      'timeslot_interval' => 30,
+      'time_format' => '24',
+      'timezone' => 'UTC'
+    ];
+    
+    $settings = array_merge($defaultSettings, $settings);
+    
+    // Set timezone for this user
+    $userTimezone = $settings['timezone'];
+    
+    $startTime = Carbon::createFromTimeString($settings['timeslot_start'], $userTimezone);
+    $endTime = Carbon::createFromTimeString($settings['timeslot_end'], $userTimezone);
+    $interval = (int)$settings['timeslot_interval'];
+    $timeFormat = $settings['time_format'];
 
     $timeslots = [];
 

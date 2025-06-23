@@ -38,11 +38,22 @@ class AppointmentCancelled extends Mailable
      */
     public function content(): Content
     {
-        // Format time based on user's preference
-        $timeFormat = $this->appointment->user->settings['time_format'] ?? '24';
+        // Get user settings with defaults
+        $settings = $this->appointment->user->settings ?? [];
+        $defaultSettings = [
+            'time_format' => '24',
+            'timezone' => 'UTC'
+        ];
+        $settings = array_merge($defaultSettings, $settings);
+        
+        // Format time based on user's preference and timezone
+        $timezone = $settings['timezone'];
+        $timeFormat = $settings['time_format'];
+        
+        $timeslot = Carbon::parse($this->appointment->timeslot)->setTimezone($timezone);
         $formattedTimeslot = $timeFormat === '12' 
-            ? Carbon::parse($this->appointment->timeslot)->format('g:i A')
-            : Carbon::parse($this->appointment->timeslot)->format('H:i');
+            ? $timeslot->format('g:i A T')
+            : $timeslot->format('H:i T');
 
         return new Content(
             view: 'emails.appointment_cancelled',

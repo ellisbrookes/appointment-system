@@ -106,10 +106,20 @@
                                 </td>
                                 <td class="border border-gray-300 px-6 py-4">
                                     @php
-                                        $timeFormat = auth()->user()->settings['time_format'] ?? '24';
+                                        $settings = auth()->user()->settings ?? [];
+                                        $defaultSettings = [
+                                            'time_format' => '24',
+                                            'timezone' => 'UTC'
+                                        ];
+                                        $settings = array_merge($defaultSettings, $settings);
+                                        
+                                        $timezone = $settings['timezone'];
+                                        $timeFormat = $settings['time_format'];
+                                        
+                                        $timeslot = Carbon::parse($appointment->timeslot)->setTimezone($timezone);
                                         $formattedTime = $timeFormat === '12' 
-                                            ? Carbon::parse($appointment->timeslot)->format('g:i A') 
-                                            : Carbon::parse($appointment->timeslot)->format('H:i');
+                                            ? $timeslot->format('g:i A') 
+                                            : $timeslot->format('H:i');
                                     @endphp
                                     {{ $formattedTime }}
                                 </td>
