@@ -101,7 +101,28 @@
                                     {{ $appointment->user->name ?? "Guest" }}
                                 </td>
                                 <td class="border border-gray-300 px-6 py-4">
-                                    {{ Carbon::parse($appointment->timeslot)->format("g:i A") }}
+                                    @php
+                                        $settings = auth()->user()->settings ?? [];
+                                        $defaultSettings = [
+                                            'time_format' => '24',
+                                            'timezone' => 'UTC'
+                                        ];
+                                        $settings = array_merge($defaultSettings, $settings);
+                                        
+                                        $timezone = $settings['timezone'];
+                                        $timeFormat = $settings['time_format'];
+                                        
+                                        $timeslot = Carbon::parse($appointment->timeslot)->setTimezone($timezone);
+                                        $formattedTime = $timeFormat === '12' 
+                                            ? $timeslot->format('g:i A') 
+                                            : $timeslot->format('H:i');
+                                    @endphp
+                                    {{ $formattedTime }}
+                                </td>
+                                <td
+                                    class="border border-gray-300 px-6 py-4 capitalize"
+                                >
+                                    {{ $appointment->status }}
                                 </td>
                                 <td
                                     class="border border-gray-300 px-6 py-4 capitalize"

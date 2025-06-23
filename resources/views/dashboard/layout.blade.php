@@ -12,12 +12,14 @@
             src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js"
             defer
         ></script>
-
         @if (file_exists(public_path("build/manifest.json")) || file_exists(public_path("hot")))
             @vite(["resources/css/app.css", "resources/js/app.js"])
         @endif
     </head>
     <body
+        @php
+            $navigationStyle = optional(Auth::user()->settings)["navigation_style"] ?? "sidebar";
+        @endphp
         x-data="{
             navigationStyle:
                 '{{ (Auth::user()->settings ?? [])["navigation_style"] ?? "sidebar" }}',
@@ -35,6 +37,7 @@
             @include("components.dashboard.top-nav")
         @endif
 
+        {{-- Main Content --}}
         <main
             :class="{
                 'ml-64': isSidebarOpen && navigationStyle === 'sidebar',
