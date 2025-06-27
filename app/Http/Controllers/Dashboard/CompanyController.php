@@ -118,11 +118,23 @@ class CompanyController extends Controller
    */
   public function currentUserCompany()
   {
-    $company = auth()->user()->company;
+    $user = auth()->user();
+    $company = $user->company;
 
+    // If they don't own a company, check if they're a member of any active companies
     if (!$company) {
-      return redirect()->route('dashboard.companies.create')
-        ->with('error', 'You need to create a company first.');
+      $activeCompanies = $user->activeCompanies;
+      
+      if ($activeCompanies->isEmpty()) {
+        return redirect()->route('dashboard.companies.create')
+          ->with('alert', [
+            'type' => 'error',
+            'message' => 'You need to create a company or be invited to one first.'
+          ]);
+      }
+      
+      // Use the first active company they're a member of
+      $company = $activeCompanies->first();
     }
 
     return redirect()->route('dashboard.companies.show', $company);

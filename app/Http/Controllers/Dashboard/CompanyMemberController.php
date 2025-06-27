@@ -151,25 +151,55 @@ class CompanyMemberController extends Controller
   
   public function currentUserCompanyMembers()
   {
-    $company = auth()->user()->company;
+    $user = auth()->user();
     
+    // Get the user's owned company first
+    $company = $user->company;
+    
+    // If they don't own a company, check if they're a member of any active companies with admin access
     if (!$company) {
-      return redirect()->route('dashboard.companies.create')
-        ->with('error', 'You need to create a company first.');
+      $adminCompanies = $user->activeCompanies()->wherePivotIn('role', ['admin', 'owner'])->get();
+      
+      if ($adminCompanies->isEmpty()) {
+        return redirect()->route('dashboard.companies.create')
+          ->with('alert', [
+            'type' => 'error',
+            'message' => 'You need to create a company or have admin access to manage team members.'
+          ]);
+      }
+      
+      // Use the first company they have admin access to
+      $company = $adminCompanies->first();
     }
     
-    $members = $company->members()->with('user')->get();
+    // Double-check user has admin access to this company
+    if (!$user->isAdminOf($company->id)) {
+      abort(403, 'Unauthorized. You need admin access to manage team members.');
+    }
+    
+    $members = $company->members()->with('user')->orderBy('role')->orderBy('created_at')->get();
     
     return view('dashboard.company.members.index', compact('members', 'company'));
   }
   
   public function currentUserCompanyInvite(Request $request)
   {
-    $company = auth()->user()->company;
+    $user = auth()->user();
+    $company = $user->company;
     
+    // If they don't own a company, check if they're an admin of any active companies
     if (!$company) {
-      return redirect()->route('dashboard.companies.create')
-        ->with('error', 'You need to create a company first.');
+      $adminCompanies = $user->activeCompanies()->wherePivotIn('role', ['admin', 'owner'])->get();
+      
+      if ($adminCompanies->isEmpty()) {
+        return redirect()->route('dashboard.companies.create')
+          ->with('alert', [
+            'type' => 'error',
+            'message' => 'You need admin access to invite members.'
+          ]);
+      }
+      
+      $company = $adminCompanies->first();
     }
     
     return $this->invite($request, $company);
@@ -177,11 +207,22 @@ class CompanyMemberController extends Controller
   
   public function currentUserCompanyUpdateRole(Request $request, CompanyMember $member)
   {
-    $company = auth()->user()->company;
+    $user = auth()->user();
+    $company = $user->company;
     
+    // If they don't own a company, check if they're an admin of any active companies
     if (!$company) {
-      return redirect()->route('dashboard.companies.create')
-        ->with('error', 'You need to create a company first.');
+      $adminCompanies = $user->activeCompanies()->wherePivotIn('role', ['admin', 'owner'])->get();
+      
+      if ($adminCompanies->isEmpty()) {
+        return redirect()->route('dashboard.companies.create')
+          ->with('alert', [
+            'type' => 'error',
+            'message' => 'You need admin access to manage members.'
+          ]);
+      }
+      
+      $company = $adminCompanies->first();
     }
     
     return $this->updateRole($request, $company, $member);
@@ -189,11 +230,22 @@ class CompanyMemberController extends Controller
   
   public function currentUserCompanyRemove(CompanyMember $member)
   {
-    $company = auth()->user()->company;
+    $user = auth()->user();
+    $company = $user->company;
     
+    // If they don't own a company, check if they're an admin of any active companies
     if (!$company) {
-      return redirect()->route('dashboard.companies.create')
-        ->with('error', 'You need to create a company first.');
+      $adminCompanies = $user->activeCompanies()->wherePivotIn('role', ['admin', 'owner'])->get();
+      
+      if ($adminCompanies->isEmpty()) {
+        return redirect()->route('dashboard.companies.create')
+          ->with('alert', [
+            'type' => 'error',
+            'message' => 'You need admin access to remove members.'
+          ]);
+      }
+      
+      $company = $adminCompanies->first();
     }
     
     return $this->remove($company, $member);

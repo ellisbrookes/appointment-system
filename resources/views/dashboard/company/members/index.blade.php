@@ -27,15 +27,17 @@
         </div>
 
         <!-- Alerts -->
-        @if (session("success"))
-            <x-shared.alert type="success">
-                {{ session("success") }}
+        @if (session("alert"))
+            <x-shared.alert :type="session('alert')['type']">
+                {{ session("alert")["message"] }}
             </x-shared.alert>
         @endif
 
-        @if (session("error"))
-            <x-shared.alert type="danger">
-                {{ session("error") }}
+        @if ($errors->any())
+            <x-shared.alert type="error">
+                @foreach ($errors->all() as $error)
+                    {{ $error }}<br>
+                @endforeach
             </x-shared.alert>
         @endif
 
