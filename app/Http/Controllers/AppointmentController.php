@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\AppointmentConfirmation;
 use App\Mail\AppointmentCancelled;
 use App\Mail\AppointmentUpdated;
+use App\Mail\GuestAppointmentConfirmation;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -254,6 +255,45 @@ class AppointmentController extends Controller
           'type' => 'success',
           'message' => 'Appointment successfully cancelled!'
       ]);
+  }
+
+  /**
+   * Approve a pending appointment.
+   * @param Request $request
+   * @param Appointment $appointment
+   * @return RedirectResponse
+   */
+  public function approve(Request $request, Appointment $appointment)
+  {
+    // Only allow approval of pending appointments
+    if ($appointment->status !== 'pending') {
+      return redirect()->route('dashboard.appointments.index')->with('alert', [
+        'type' => 'error',
+        'message' => 'Only pending appointments can be approved.'
+      ]);
+    }
+    
+    // Update the appointment status to 'open'
+    $appointment->update(['status' => 'open']);
+    
+    // Send confirmation email
+    try {
+      if ($appointment->user) {
+        // Send to registered user
+        Mail::to($appointment->user)->send(new AppointmentConfirmation($appointment));
+      } elseif ($appointment->customer_email) {
+        // Send to guest customer
+        Mail::to($appointment->customer_email)->send(new GuestAppointmentConfirmation($appointment));
+      }
+    } catch (\Exception $e) {
+      // Log the error but don't fail the request
+      \Log::error('Failed to send appointment approval email: ' . $e->getMessage());
+    }
+    
+    return redirect()->route('dashboard.appointments.index')->with('alert', [
+      'type' => 'success',
+      'message' => 'Appointment approved successfully!'
+    ]);
   }
 
   /**

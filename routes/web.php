@@ -83,6 +83,7 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::post('create-step-three', 'createPostStepThree')->name('create.step.three.post');
     
     Route::put('{appointment}', 'update')->name('update');
+    Route::patch('{appointment}/approve', 'approve')->name('approve');
     
     Route::delete('{appointment}/destroy', 'destroy')->name('destroy');
   });

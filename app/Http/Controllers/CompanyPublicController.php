@@ -47,24 +47,17 @@ class CompanyPublicController extends Controller
             'message' => 'nullable|string|max:500'
         ]);
         
-        // Create the appointment directly
+        // Create the appointment with customer information
         $appointment = $company->appointments()->create([
             'date' => $validated['appointment_date'],
             'timeslot' => $validated['appointment_time'],
             'service' => $validated['service'] ?? 'General Appointment',
             'status' => 'pending', // Set as pending for company approval
             'user_id' => null, // No user account required for public bookings
-        ]);
-        
-        // Store customer details (you might want a separate customer table)
-        session([
-            'booking_customer' => [
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'],
-                'message' => $validated['message'] ?? null,
-                'appointment_id' => $appointment->id
-            ]
+            'customer_name' => $validated['name'],
+            'customer_email' => $validated['email'],
+            'customer_phone' => $validated['phone'],
+            'customer_message' => $validated['message'] ?? null,
         ]);
         
         return redirect()->route('company.public', $companyUrl)
