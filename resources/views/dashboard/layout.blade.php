@@ -31,9 +31,9 @@
         class="text-gray-800 dark:text-white"
     >
         @if ($navigationStyle === "sidebar")
-            @include("components.dashboard.sidebar")
+            <x-dashboard.sidebar />
         @elseif ($navigationStyle === "top_nav")
-            @include("components.dashboard.top-nav")
+            <x-dashboard.top-nav />
         @endif
 
         {{-- Main Content --}}
