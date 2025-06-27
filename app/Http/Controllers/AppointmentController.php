@@ -29,13 +29,18 @@ class AppointmentController extends Controller
    */
   public function index(Request $request)
   {
-    $query = Appointment::with('user');
+    $user = $request->user();
+    
+    // Get appointments that the user has access to:
+    // 1. Their own personal appointments (no company_id)
+    // 2. Appointments from companies they belong to
+    $query = Appointment::accessibleByUser($user)->with(['user', 'company']);
 
     if ($request->filled('status')) {
         $query->where('status', $request->status);
     }
 
-    $appointments = $query->get();
+    $appointments = $query->orderBy('date', 'desc')->orderBy('timeslot', 'desc')->get();
 
     return view('dashboard.appointments.index', compact('appointments'));
   }
@@ -200,8 +205,18 @@ class AppointmentController extends Controller
     $appointmentData = $request->session()->get('appointment');
 
     if ($appointmentData) {
-      // Merge user ID with appointment data and save it to the database
+      // Merge user ID with appointment data
       $appointmentData = array_merge($appointmentData, $validatedData);
+      
+      // Optionally set company_id based on the current user's company
+      // This allows both personal and company appointments
+      $user = $request->user();
+      $companyId = $this->getUserCompanyId($user);
+      if ($companyId) {
+        $appointmentData['company_id'] = $companyId;
+      }
+      // If no company_id, the appointment will be a personal appointment
+      
       $appointment = Appointment::create($appointmentData); // Create and retrieve the Appointment instance
 
       // Send an email confirmation
@@ -239,5 +254,25 @@ class AppointmentController extends Controller
           'type' => 'success',
           'message' => 'Appointment successfully cancelled!'
       ]);
+  }
+
+  /**
+   * Get the company ID for the given user.
+   * Returns the user's owned company or first active company they're a member of.
+   */
+  private function getUserCompanyId(User $user): ?int
+  {
+    // First try to get their owned company
+    $company = $user->company;
+    
+    // If they don't own a company, get the first active company they're a member of
+    if (!$company) {
+      $activeCompanies = $user->activeCompanies;
+      if ($activeCompanies->isNotEmpty()) {
+        $company = $activeCompanies->first();
+      }
+    }
+    
+    return $company ? $company->id : null;
   }
 }
