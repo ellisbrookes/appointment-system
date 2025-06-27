@@ -58,7 +58,8 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
   Route::prefix('companies/{company}/members')->name('dashboard.companies.members.')->controller(App\Http\Controllers\Dashboard\CompanyMemberController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/invite', 'invite')->name('invite');
-    Route::post('/accept', 'acceptInvite')->name('accept');
+    Route::get('/accept', 'showAcceptInvite')->name('accept');
+    Route::post('/accept', 'acceptInvite')->name('accept.submit');
     Route::delete('/leave', 'leave')->name('leave');
     Route::patch('/{member}/role', 'updateRole')->name('update-role');
     Route::delete('/{member}', 'remove')->name('remove');

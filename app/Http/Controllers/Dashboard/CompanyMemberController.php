@@ -83,6 +83,27 @@ class CompanyMemberController extends Controller
         ]);
     }
 
+    public function showAcceptInvite(Company $company): View|RedirectResponse
+    {
+        $user = auth()->user();
+        
+        // Check if user has a pending invitation
+        $membership = CompanyMember::where('company_id', $company->id)
+            ->where('user_id', $user->id)
+            ->where('status', 'invited')
+            ->first();
+            
+        if (!$membership) {
+            return redirect()->route('dashboard.companies.index')
+                ->with('alert', [
+                    'type' => 'error',
+                    'message' => 'No pending invitation found for this company.'
+                ]);
+        }
+        
+        return view('dashboard.company.members.accept', compact('company', 'membership'));
+    }
+    
     public function acceptInvite(Company $company): RedirectResponse
     {
         $user = auth()->user();

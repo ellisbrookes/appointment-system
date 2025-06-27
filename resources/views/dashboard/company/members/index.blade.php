@@ -18,7 +18,7 @@
             <button
                 type="button"
                 class="inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                onclick="document.getElementById('inviteModal').style.display='block'"
+                onclick="openInviteModal()"
             >
                 <i class="fas fa-envelope"></i>
                 Invite Member
@@ -55,7 +55,7 @@
                 <button
                     type="button"
                     class="mt-4 inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                    onclick="document.getElementById('inviteModal').style.display='block'"
+                    onclick="openInviteModal()"
                 >
                     <i class="fas fa-plus"></i>
                     Invite Member
@@ -205,11 +205,17 @@
     <!-- Invite Member Modal -->
     <div id="inviteModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="inviteModalLabel">
         <div class="flex min-h-screen items-center justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="document.getElementById('inviteModal').style.display='none'"></div>
-            <div class="inline-block transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all dark:bg-gray-800 sm:my-8 sm:w-full sm:max-w-lg sm:p-6 sm:align-middle">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="closeInviteModal()"></div>
+            
+            <!-- This element is to trick the browser into centering the modal contents. -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            
+            <!-- Modal panel -->
+            <div class="relative inline-block transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all dark:bg-gray-800 sm:my-8 sm:w-full sm:max-w-lg sm:p-6 sm:align-middle">
                 <div class="absolute top-0 right-0 pt-4 pr-4">
                     <button type="button" class="rounded-md bg-white text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-500 dark:hover:text-gray-300" 
-                            onclick="document.getElementById('inviteModal').style.display='none'">
+                            onclick="closeInviteModal()">
                         <span class="sr-only">Close</span>
                         <i class="fas fa-times h-6 w-6"></i>
                     </button>
@@ -293,7 +299,7 @@
                         </button>
                         <button type="button" 
                                 class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600 sm:col-start-1 sm:mt-0 sm:text-sm"
-                                onclick="document.getElementById('inviteModal').style.display='none'">
+                                onclick="closeInviteModal()">
                             Cancel
                         </button>
                     </div>
@@ -385,6 +391,16 @@
     </div>
 
     <script>
+        function openInviteModal() {
+            const modal = document.getElementById('inviteModal');
+            modal.classList.remove('hidden');
+        }
+        
+        function closeInviteModal() {
+            const modal = document.getElementById('inviteModal');
+            modal.classList.add('hidden');
+        }
+        
         function openEditModal(memberId, memberRole, memberEmail) {
             const modal = document.getElementById('editRoleModal');
             const form = document.getElementById('editRoleForm');
@@ -395,11 +411,12 @@
             emailSpan.textContent = memberEmail;
             roleSelect.value = memberRole;
             
-            modal.style.display = 'block';
+            modal.classList.remove('hidden');
         }
         
         function closeEditModal() {
-            document.getElementById('editRoleModal').style.display = 'none';
+            const modal = document.getElementById('editRoleModal');
+            modal.classList.add('hidden');
         }
         
         // Close modal when clicking outside
@@ -407,10 +424,10 @@
             const inviteModal = document.getElementById('inviteModal');
             const editModal = document.getElementById('editRoleModal');
             if (event.target === inviteModal) {
-                inviteModal.style.display = 'none';
+                closeInviteModal();
             }
             if (event.target === editModal) {
-                editModal.style.display = 'none';
+                closeEditModal();
             }
         }
     </script>
