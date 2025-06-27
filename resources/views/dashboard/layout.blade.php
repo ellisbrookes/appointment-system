@@ -23,10 +23,6 @@
         x-data="{
             navigationStyle: '{{ $navigationStyle }}',
             isSidebarOpen: true,
-            isDropdownOpen: false,
-            isUserSidebarOpen: false,
-            isCompanyDropdownOpen: false,
-            isAppointmentsDropdownOpen: false,
         }"
         class="min-h-screen bg-white text-gray-800 dark:bg-gray-900 dark:text-white"
     >

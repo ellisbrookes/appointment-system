@@ -228,7 +228,7 @@
                                         type="email"
                                         name="email"
                                         id="email"
-                                        class="block w-full rounded-lg border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+                                        class="block w-full px-4 py-3 text-sm transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
                                         placeholder="john@example.com"
                                         value="{{ old('email') }}"
                                         required
@@ -255,7 +255,7 @@
                                     <select
                                         name="role"
                                         id="role"
-                                        class="block w-full rounded-lg border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                        class="block w-full rounded-lg border-gray-300 px-4 py-3 text-sm transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                         required
                                     >
                                         <option value="">Choose a role...</option>
