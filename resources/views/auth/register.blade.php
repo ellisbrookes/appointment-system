@@ -6,8 +6,8 @@
     >
         <x-shared.header
             type="sidebar"
-            heading="Register"
-            subheading="Use this page to register your account"
+            heading="{{ isset($companyInvite) ? 'Join ' . $companyInvite->name : 'Register' }}"
+            subheading="{{ isset($companyInvite) ? 'Create your account to join ' . $companyInvite->name : 'Use this page to register your account' }}"
         />
 
         <div class="h-full md:flex md:w-full md:items-center md:justify-center">
@@ -39,11 +39,39 @@
                         id="email"
                         type="email"
                         name="email"
-                        :value="old('email')"
+                        :value="old('email', $prefilledEmail ?? '')"
+                        {{ isset($prefilledEmail) ? 'readonly' : '' }}
                         required
                     />
+                    @if(isset($prefilledEmail))
+                        <p class="mt-1 text-sm text-gray-600">This email is pre-filled from your invitation.</p>
+                    @endif
                     <x-shared.input-error :messages="$errors->get('email')" />
                 </div>
+                
+                @if(isset($companyInvite))
+                    <!-- Hidden company invitation field -->
+                    <input type="hidden" name="company_invite" value="{{ $companyInvite->id }}">
+                    
+                    <!-- Company invitation notice -->
+                    <div class="rounded-md bg-blue-50 p-4 border border-blue-200">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-blue-800">
+                                    You're joining {{ $companyInvite->name }}
+                                </h3>
+                                <div class="mt-2 text-sm text-blue-700">
+                                    <p>After creating your account, you'll automatically become a member of this company.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
                 <!-- Company Name (Optional) -->
                 <div class="mt-4">

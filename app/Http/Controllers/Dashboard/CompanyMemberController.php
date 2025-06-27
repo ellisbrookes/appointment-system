@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\CompanyMember;
 use App\Models\User;
+use App\Mail\CompanyInvitation;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail;
 
 class CompanyMemberController extends Controller
 {
@@ -55,7 +57,7 @@ class CompanyMemberController extends Controller
         }
         
         // Create invitation
-        CompanyMember::create([
+        $invitation = CompanyMember::create([
             'company_id' => $company->id,
             'user_id' => $user ? $user->id : null,
             'email' => $validated['email'], // Store email for non-existing users
@@ -63,7 +65,17 @@ class CompanyMemberController extends Controller
             'status' => 'invited',
         ]);
         
-        // TODO: Send invitation email
+        // Send invitation email
+        try {
+            Mail::to($validated['email'])->send(new CompanyInvitation($invitation, $company));
+        } catch (\Exception $e) {
+            // Log the error but don't fail the invitation creation
+            \Log::error('Failed to send company invitation email', [
+                'email' => $validated['email'],
+                'company_id' => $company->id,
+                'error' => $e->getMessage()
+            ]);
+        }
         
         return back()->with('alert', [
             'type' => 'success',
