@@ -17,6 +17,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Pricing
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 
+// Public Company Invitation Routes (No Auth Required)
+Route::get('/dashboard/companies/{company}/members/accept', [App\Http\Controllers\Dashboard\CompanyMemberController::class, 'showAcceptInvite'])->name('dashboard.companies.members.accept');
+
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
     // Dashboard Home
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -52,13 +55,17 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
       Route::patch('/{member}/role', 'currentUserCompanyUpdateRole')->name('update-role');
       Route::delete('/{member}', 'currentUserCompanyRemove')->name('destroy');
     });
+    Route::prefix('calendar')->name('calendar.')->controller(App\Http\Controllers\Dashboard\CompanyCalendarController::class)->group(function () {
+      Route::get('/', 'index')->name('index');
+      Route::get('/date/{date}', 'showDate')->name('date');
+    });
   });
 
-  // Company Members
+  // Company Members (Auth Required)
   Route::prefix('companies/{company}/members')->name('dashboard.companies.members.')->controller(App\Http\Controllers\Dashboard\CompanyMemberController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/invite', 'invite')->name('invite');
-    Route::post('/accept', 'acceptInvite')->name('accept');
+    Route::post('/accept', 'acceptInvite')->name('accept.submit');
     Route::delete('/leave', 'leave')->name('leave');
     Route::patch('/{member}/role', 'updateRole')->name('update-role');
     Route::delete('/{member}', 'remove')->name('remove');
@@ -76,6 +83,7 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     Route::post('create-step-three', 'createPostStepThree')->name('create.step.three.post');
     
     Route::put('{appointment}', 'update')->name('update');
+    Route::patch('{appointment}/approve', 'approve')->name('approve');
     
     Route::delete('{appointment}/destroy', 'destroy')->name('destroy');
   });
@@ -95,5 +103,14 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
       ]);
   })->name('subscription');
 });
+
+// Company Public Booking Pages - Must be at the end to catch company URLs
+Route::get('/{companyUrl}', [App\Http\Controllers\CompanyPublicController::class, 'show'])
+    ->where('companyUrl', '[a-z0-9-]+') // Only match valid company URL patterns
+    ->name('company.public');
+
+Route::post('/{companyUrl}', [App\Http\Controllers\CompanyPublicController::class, 'processBooking'])
+    ->where('companyUrl', '[a-z0-9-]+')
+    ->name('company.public.booking.submit');
 
 require __DIR__.'/auth.php';

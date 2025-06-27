@@ -9,15 +9,16 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
   use HasFactory;
-  protected $fillable = [
-      'name',
-      'email',
-      'phone_number',
-      'address',
-      'postcode',
-      'description',
-      'user_id',
-  ];
+    protected $fillable = [
+        'name',
+        'email',
+        'phone_number',
+        'address',
+        'postcode',
+        'description',
+        'url',
+        'user_id',
+    ];
 
   public function user()
   {

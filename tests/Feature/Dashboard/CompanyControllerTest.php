@@ -22,7 +22,8 @@ class CompanyControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('dashboard.company.index');
-        $response->assertViewHas('companies');
+        $response->assertViewHas('activeCompanies');
+        $response->assertViewHas('pendingInvitations');
     }
 
     #[Test]

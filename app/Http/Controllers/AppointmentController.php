@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\AppointmentConfirmation;
 use App\Mail\AppointmentCancelled;
 use App\Mail\AppointmentUpdated;
+use App\Mail\GuestAppointmentConfirmation;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -29,13 +30,18 @@ class AppointmentController extends Controller
    */
   public function index(Request $request)
   {
-    $query = Appointment::with('user');
+    $user = $request->user();
+    
+    // Get appointments that the user has access to:
+    // 1. Their own personal appointments (no company_id)
+    // 2. Appointments from companies they belong to
+    $query = Appointment::accessibleByUser($user)->with(['user', 'company']);
 
     if ($request->filled('status')) {
         $query->where('status', $request->status);
     }
 
-    $appointments = $query->get();
+    $appointments = $query->orderBy('date', 'desc')->orderBy('timeslot', 'desc')->get();
 
     return view('dashboard.appointments.index', compact('appointments'));
   }
@@ -132,6 +138,10 @@ class AppointmentController extends Controller
 
     // Timeslots
     $userSettings = auth()->user()->settings ?? [];
+    // Ensure userSettings is always an array
+    if (!is_array($userSettings)) {
+        $userSettings = [];
+    }
     $timeslots = $this->timeslotService->generateTimeslots($userSettings);
     $firstTimeslot = $this->timeslotService->getFirstTimeslot($timeslots);
 
@@ -196,8 +206,18 @@ class AppointmentController extends Controller
     $appointmentData = $request->session()->get('appointment');
 
     if ($appointmentData) {
-      // Merge user ID with appointment data and save it to the database
+      // Merge user ID with appointment data
       $appointmentData = array_merge($appointmentData, $validatedData);
+      
+      // Optionally set company_id based on the current user's company
+      // This allows both personal and company appointments
+      $user = $request->user();
+      $companyId = $this->getUserCompanyId($user);
+      if ($companyId) {
+        $appointmentData['company_id'] = $companyId;
+      }
+      // If no company_id, the appointment will be a personal appointment
+      
       $appointment = Appointment::create($appointmentData); // Create and retrieve the Appointment instance
 
       // Send an email confirmation
@@ -235,5 +255,64 @@ class AppointmentController extends Controller
           'type' => 'success',
           'message' => 'Appointment successfully cancelled!'
       ]);
+  }
+
+  /**
+   * Approve a pending appointment.
+   * @param Request $request
+   * @param Appointment $appointment
+   * @return RedirectResponse
+   */
+  public function approve(Request $request, Appointment $appointment)
+  {
+    // Only allow approval of pending appointments
+    if ($appointment->status !== 'pending') {
+      return redirect()->route('dashboard.appointments.index')->with('alert', [
+        'type' => 'error',
+        'message' => 'Only pending appointments can be approved.'
+      ]);
+    }
+    
+    // Update the appointment status to 'open'
+    $appointment->update(['status' => 'open']);
+    
+    // Send confirmation email
+    try {
+      if ($appointment->user) {
+        // Send to registered user
+        Mail::to($appointment->user)->send(new AppointmentConfirmation($appointment));
+      } elseif ($appointment->customer_email) {
+        // Send to guest customer
+        Mail::to($appointment->customer_email)->send(new GuestAppointmentConfirmation($appointment));
+      }
+    } catch (\Exception $e) {
+      // Log the error but don't fail the request
+      \Log::error('Failed to send appointment approval email: ' . $e->getMessage());
+    }
+    
+    return redirect()->route('dashboard.appointments.index')->with('alert', [
+      'type' => 'success',
+      'message' => 'Appointment approved successfully!'
+    ]);
+  }
+
+  /**
+   * Get the company ID for the given user.
+   * Returns the user's owned company or first active company they're a member of.
+   */
+  private function getUserCompanyId(User $user): ?int
+  {
+    // First try to get their owned company
+    $company = $user->company;
+    
+    // If they don't own a company, get the first active company they're a member of
+    if (!$company) {
+      $activeCompanies = $user->activeCompanies;
+      if ($activeCompanies->isNotEmpty()) {
+        $company = $activeCompanies->first();
+      }
+    }
+    
+    return $company ? $company->id : null;
   }
 }

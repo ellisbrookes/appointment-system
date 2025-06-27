@@ -14,8 +14,18 @@ class CompanyController extends Controller
 {
   public function index(): View
   {
-    $companies = auth()->user()->activeCompanies()->with(['user', 'members.user'])->get();
-    return view('dashboard.company.index', compact('companies'));
+    $user = auth()->user();
+    
+    // Get active companies (where user is an active member)
+    $activeCompanies = $user->activeCompanies()->with(['user', 'members.user'])->get();
+    
+    // Get pending invitations (where user has been invited but not accepted)
+    $pendingInvitations = $user->companies()
+      ->wherePivot('status', 'invited')
+      ->with(['user', 'members.user'])
+      ->get();
+    
+    return view('dashboard.company.index', compact('activeCompanies', 'pendingInvitations'));
   }
 
   public function create()
@@ -38,6 +48,7 @@ class CompanyController extends Controller
         'regex:/^([A-Z]{1,2}[0-9][0-9A-Z]? ?[0-9][A-Z]{2})$/i'
       ],
       'description' => 'nullable|string',
+      'url' => 'nullable|string|max:255|regex:/^[a-z0-9-]+$/|unique:companies,url',
     ]);
 
     $company = Company::create([
@@ -47,6 +58,7 @@ class CompanyController extends Controller
       'address' => $validated['address'],
       'postcode' => $validated['postcode'],
       'description' => $validated['description'] ?? null,
+      'url' => $validated['url'] ?? null,
       'user_id' => auth()->id(),
     ]);
 
@@ -92,6 +104,7 @@ class CompanyController extends Controller
         'regex:/^([A-Z]{1,2}[0-9][0-9A-Z]? ?[0-9][A-Z]{2})$/i'
       ],
       'description' => 'nullable|string',
+      'url' => 'nullable|string|max:255|regex:/^[a-z0-9-]+$/|unique:companies,url,' . $company->id,
     ]);
 
     $company->update($validated);
@@ -118,11 +131,23 @@ class CompanyController extends Controller
    */
   public function currentUserCompany()
   {
-    $company = auth()->user()->company;
+    $user = auth()->user();
+    $company = $user->company;
 
+    // If they don't own a company, check if they're a member of any active companies
     if (!$company) {
-      return redirect()->route('dashboard.companies.create')
-        ->with('error', 'You need to create a company first.');
+      $activeCompanies = $user->activeCompanies;
+      
+      if ($activeCompanies->isEmpty()) {
+        return redirect()->route('dashboard.companies.create')
+          ->with('alert', [
+            'type' => 'error',
+            'message' => 'You need to create a company or be invited to one first.'
+          ]);
+      }
+      
+      // Use the first active company they're a member of
+      $company = $activeCompanies->first();
     }
 
     return redirect()->route('dashboard.companies.show', $company);

@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
       'is_admin' => true,
       'telephone_number' => $faker->phoneNumber(),
       'email_verified_at' => now(),
-      'settings' => json_encode($defaultSettings)
+      'settings' => $defaultSettings
     ]);
 
     // Regular user with different timezone and 12-hour format and active subscription
@@ -48,11 +48,12 @@ class UserSeeder extends Seeder
       'is_admin' => false,
       'telephone_number' => $faker->phoneNumber(),
       'email_verified_at' => now(),
-      'settings' => json_encode($userSettings)
+      'settings' => $userSettings
     ]);
 
     // Create additional test users with various settings and active subscriptions
-    for ($i = 1; $i <= 3; $i++) {
+    // We need more users to properly seed companies and appointments
+    for ($i = 1; $i <= 15; $i++) {
       $randomSettings = array_merge($defaultSettings, [
         'navigation_style' => $faker->randomElement(['sidebar', 'top_nav']),
         'timeslot_start' => $faker->randomElement(['08:00', '09:00', '10:00']),
@@ -62,14 +63,17 @@ class UserSeeder extends Seeder
         'timezone' => $faker->randomElement(['UTC', 'America/New_York', 'Europe/London', 'Asia/Tokyo'])
       ]);
 
-      User::factory()->subscribed()->create([
+      // Mix of subscribed and unsubscribed users for realistic data
+      $userFactory = rand(1, 10) <= 7 ? User::factory()->subscribed() : User::factory();
+      
+      $userFactory->create([
         'name' => $faker->name(),
         'email' => $faker->unique()->safeEmail(),
         'password' => Hash::make('password123'),
         'is_admin' => false,
         'telephone_number' => $faker->phoneNumber(),
-        'email_verified_at' => now(),
-        'settings' => json_encode($randomSettings)
+        'email_verified_at' => rand(1, 10) <= 8 ? now() : null, // 80% verified
+        'settings' => $randomSettings
       ]);
     }
   }

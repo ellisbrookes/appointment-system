@@ -12,7 +12,13 @@ class PricingService
 
     public function __construct()
     {
-        $this->stripe = new StripeClient(env('STRIPE_SECRET'));
+        $stripeSecret = config('cashier.secret');
+        
+        if (empty($stripeSecret)) {
+            throw new \RuntimeException('Stripe secret key is not configured. Please set STRIPE_SECRET in your .env file.');
+        }
+        
+        $this->stripe = new StripeClient($stripeSecret);
     }
 
     public function getProductsWithPrices(): Collection
