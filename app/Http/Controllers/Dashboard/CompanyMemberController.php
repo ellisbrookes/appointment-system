@@ -116,10 +116,26 @@ class CompanyMemberController extends Controller
     {
         $user = auth()->user();
         
+        if (!$user) {
+            return redirect()->route('login')
+                ->with('alert', [
+                    'type' => 'error',
+                    'message' => 'You must be logged in to accept an invitation.'
+                ]);
+        }
+        
         $membership = CompanyMember::where('company_id', $company->id)
             ->where('user_id', $user->id)
             ->where('status', 'invited')
-            ->firstOrFail();
+            ->first();
+            
+        if (!$membership) {
+            return redirect()->route('dashboard.companies.index')
+                ->with('alert', [
+                    'type' => 'error',
+                    'message' => 'No pending invitation found for this company.'
+                ]);
+        }
             
         $membership->update([
             'status' => 'active',
