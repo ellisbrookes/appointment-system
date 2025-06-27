@@ -1,6 +1,6 @@
 <aside
     :class="isSidebarOpen ? 'w-64' : 'w-16'"
-    class="fixed flex h-screen flex-col border-r bg-white transition-all duration-250 ease-in-out dark:bg-gray-900"
+    class="fixed z-40 flex h-screen flex-col border-r bg-white transition-all duration-250 ease-in-out dark:bg-gray-900"
 >
     <!-- Sidebar Title & Toggle -->
     <div class="flex flex-1 flex-col space-y-4">
@@ -31,130 +31,122 @@
 
             <!-- Appointments -->
             <li>
-                <a
-                    href="#"
-                    @click.prevent="isAppointmentsDropdownOpen = !isAppointmentsDropdownOpen"
-                    :class="isSidebarOpen ? 'px-4 py-2 justify-between space-x-4' : 'justify-center p-4'"
-                    class="flex w-full items-center border-b px-4 hover:bg-gray-200 dark:hover:bg-gray-600"
-                >
-                    <div class="flex w-full items-center justify-between">
-                        <div>
+                <details class="group">
+                    <summary
+                        :class="isSidebarOpen ? 'px-4 py-2 justify-between space-x-4' : 'justify-center p-4'"
+                        class="flex w-full items-center border-b px-4 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer list-none"
+                    >
+                        <div class="flex w-full items-center justify-between">
+                            <div>
+                                <i
+                                    :class="isSidebarOpen ? 'mr-4' : 'mr-2'"
+                                    class="fas fa-calendar-check text-lg"
+                                ></i>
+                                <span :class="isSidebarOpen ? '' : 'hidden'">
+                                    Appointments
+                                </span>
+                            </div>
+
                             <i
-                                :class="isSidebarOpen ? 'mr-4' : 'mr-2'"
-                                class="fas fa-calendar-check text-lg"
+                                :class="isSidebarOpen ? 'ml-4' : ''"
+                                class="fas fa-chevron-down text-sm transition-transform duration-300 group-open:rotate-180"
                             ></i>
-                            <span :class="isSidebarOpen ? '' : 'hidden'">
-                                Appointments
-                            </span>
                         </div>
+                    </summary>
 
-                        <i
-                            :class="[isAppointmentsDropdownOpen ? 'rotate-180' : '', isSidebarOpen ? 'ml-4' : '']"
-                            class="fas fa-chevron-down text-sm transition-transform duration-300"
-                        ></i>
-                    </div>
-                </a>
-
-                <ul
-                    x-show="isAppointmentsDropdownOpen"
-                    x-transition
-                    class="mt-2 space-y-1"
-                >
-                    <li>
-                        <a
-                            href="/dashboard/appointments"
-                            :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
-                            class="flex w-full items-center border-b px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-600"
-                        >
-                            <i
-                                :class="isSidebarOpen ? 'ml-4' : ''"
-                                class="fas fa-eye"
-                            ></i>
-                            <span :class="isSidebarOpen ? '' : 'hidden'">
-                                View Appointments
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="/dashboard/appointments/create-step-one"
-                            :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
-                            class="flex w-full items-center border-b px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-600"
-                        >
-                            <i
-                                :class="isSidebarOpen ? 'ml-4' : ''"
-                                class="fas fa-plus-circle"
-                            ></i>
-                            <span :class="isSidebarOpen ? '' : 'hidden'">
-                                Create Appointment
-                            </span>
-                        </a>
-                    </li>
-                </ul>
+                    <ul class="mt-2 space-y-1">
+                        <li>
+                            <a
+                                href="/dashboard/appointments"
+                                :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+                                class="flex w-full items-center border-b px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-600"
+                            >
+                                <i
+                                    :class="isSidebarOpen ? 'ml-4' : ''"
+                                    class="fas fa-eye"
+                                ></i>
+                                <span :class="isSidebarOpen ? '' : 'hidden'">
+                                    View Appointments
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/dashboard/appointments/create-step-one"
+                                :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+                                class="flex w-full items-center border-b px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-600"
+                            >
+                                <i
+                                    :class="isSidebarOpen ? 'ml-4' : ''"
+                                    class="fas fa-plus-circle"
+                                ></i>
+                                <span :class="isSidebarOpen ? '' : 'hidden'">
+                                    Create Appointment
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </details>
             </li>
 
             <!-- Company -->
             <li>
-                <a
-                    href="#"
-                    @click.prevent="isCompanyDropdownOpen = !isCompanyDropdownOpen"
-                    :class="isSidebarOpen ? 'px-4 py-2 justify-between space-x-4' : 'justify-center p-4'"
-                    class="flex w-full items-center border-b px-4 hover:bg-gray-200 dark:hover:bg-gray-600"
-                >
-                    <div class="flex w-full items-center justify-between">
-                        <div>
+                <details class="group">
+                    <summary
+                        :class="isSidebarOpen ? 'px-4 py-2 justify-between space-x-4' : 'justify-center p-4'"
+                        class="flex w-full items-center border-b px-4 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer list-none"
+                    >
+                        <div class="flex w-full items-center justify-between">
+                            <div>
+                                <i
+                                    :class="isSidebarOpen ? 'mr-4' : 'mr-2'"
+                                    class="fas fa-building text-lg"
+                                ></i>
+                                <span :class="isSidebarOpen ? '' : 'hidden'">
+                                    Company
+                                </span>
+                            </div>
+
                             <i
-                                :class="isSidebarOpen ? 'mr-4' : 'mr-2'"
-                                class="fas fa-building text-lg"
+                                :class="isSidebarOpen ? 'ml-4' : ''"
+                                class="fas fa-chevron-down text-sm transition-transform duration-300 group-open:rotate-180"
                             ></i>
-                            <span :class="isSidebarOpen ? '' : 'hidden'">
-                                Company
-                            </span>
                         </div>
+                    </summary>
 
-                        <i
-                            :class="[isCompanyDropdownOpen ? 'rotate-180' : '', isSidebarOpen ? 'ml-4' : '']"
-                            class="fas fa-chevron-down text-sm transition-transform duration-300"
-                        ></i>
-                    </div>
-                </a>
-
-                <ul
-                    x-show="isCompanyDropdownOpen"
-                    x-transition
-                    class="mt-2 space-y-1"
-                >
-                    <li>
-                        <a
-                            href="/dashboard/companies"
-                            :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
-                            class="flex w-full items-center border-b px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-600"
-                        >
-                            <i
-                                :class="isSidebarOpen ? 'ml-4' : ''"
-                                class="fas fa-eye"
-                            ></i>
-                            <span :class="isSidebarOpen ? '' : 'hidden'">
-                                View Company
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="/dashboard/companies/create"
-                            :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
-                            class="flex w-full items-center border-b px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-600"
-                        >
-                            <i
-                                :class="isSidebarOpen ? 'ml-4' : ''"
-                                class="fas fa-plus-circle"
-                            ></i>
-                            <span :class="isSidebarOpen ? '' : 'hidden'">
-                                Create Company
-                            </span>
-                        </a>
-                    </li>
-                </ul>
+                    <ul class="mt-2 space-y-1">
+                        <li>
+                            <a
+                                href="/dashboard/companies"
+                                :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+                                class="flex w-full items-center border-b px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-600"
+                            >
+                                <i
+                                    :class="isSidebarOpen ? 'ml-4' : ''"
+                                    class="fas fa-eye"
+                                ></i>
+                                <span :class="isSidebarOpen ? '' : 'hidden'">
+                                    View Company
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/dashboard/companies/create"
+                                :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+                                class="flex w-full items-center border-b px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-600"
+                            >
+                                <i
+                                    :class="isSidebarOpen ? 'ml-4' : ''"
+                                    class="fas fa-plus-circle"
+                                ></i>
+                                <span :class="isSidebarOpen ? '' : 'hidden'">
+                                    Create Company
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </details>
             </li>
 
             <!-- Admin -->
@@ -176,12 +168,10 @@
     </div>
 
     <!-- User Profile -->
-    <div class="relative">
-        <a
-            href="#"
-            @click.prevent="isUserSidebarOpen = !isUserSidebarOpen"
+    <details class="group relative">
+        <summary
             :class="isSidebarOpen ? 'justify-between' : 'justify-center'"
-            class="flex w-full items-center border-t p-4 hover:bg-gray-200 dark:hover:bg-gray-600"
+            class="flex w-full items-center border-t p-4 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer list-none"
         >
             <div class="flex w-full items-center">
                 <i class="fas fa-user-circle mr-4 text-lg"></i>
@@ -191,16 +181,11 @@
             </div>
 
             <i
-                :class="isUserSidebarOpen ? 'rotate-180' : ''"
-                class="fas fa-chevron-down text-sm transition-transform duration-300"
+                class="fas fa-chevron-down text-sm transition-transform duration-300 group-open:rotate-180"
             ></i>
-        </a>
+        </summary>
 
-        <ul
-            x-show="isUserSidebarOpen"
-            x-transition
-            class="absolute bottom-full left-0 z-10 w-full"
-        >
+        <ul class="absolute bottom-full left-0 z-10 w-full">
             <li>
                 <a
                     href="{{ route("dashboard") }}"
@@ -259,5 +244,5 @@
                 </form>
             </li>
         </ul>
-    </div>
+    </details>
 </aside>

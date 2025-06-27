@@ -1,5 +1,5 @@
 <nav
-    class="flex justify-between border-b bg-white transition-all duration-250 ease-in-out dark:bg-gray-900"
+    class="fixed top-0 left-0 right-0 z-50 flex justify-between border-b bg-white transition-all duration-250 ease-in-out dark:bg-gray-900"
 >
     <!-- Sidebar Title & Toggle -->
     <div class="flex">
@@ -22,11 +22,9 @@
             </a>
 
             <!-- Appointments -->
-            <div class="relative">
-                <a
-                    href="#"
-                    @click.prevent="isAppointmentsDropdownOpen = !isAppointmentsDropdownOpen"
-                    class="relative flex items-center justify-center space-x-4 border-r px-6 py-4 hover:bg-gray-200 dark:hover:bg-gray-600"
+            <details class="group relative">
+                <summary
+                    class="relative flex items-center justify-center space-x-4 border-r px-6 py-4 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer list-none"
                 >
                     <div class="flex items-center space-x-4">
                         <i class="fas fa-calendar-check text-lg"></i>
@@ -34,14 +32,11 @@
                     </div>
 
                     <i
-                        :class="isAppointmentsDropdownOpen ? 'rotate-180' : ''"
-                        class="fas fa-chevron-down text-sm transition-transform duration-300"
+                        class="fas fa-chevron-down text-sm transition-transform duration-300 group-open:rotate-180"
                     ></i>
-                </a>
+                </summary>
 
                 <ul
-                    x-show="isAppointmentsDropdownOpen"
-                    x-transition
                     class="absolute left-0 z-10 w-full border bg-white dark:bg-gray-900"
                 >
                     <li>
@@ -63,13 +58,12 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            </details>
 
-            <div class="relative">
-                <a
-                    href="#"
-                    @click.prevent="isCompanyDropdownOpen = !isCompanyDropdownOpen"
-                    class="relative flex items-center justify-center space-x-4 border-r px-6 py-4 hover:bg-gray-200 dark:hover:bg-gray-600"
+            <!-- Company -->
+            <details class="group relative">
+                <summary
+                    class="relative flex items-center justify-center space-x-4 border-r px-6 py-4 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer list-none"
                 >
                     <div class="flex items-center space-x-4">
                         <i class="fas fa-building text-lg"></i>
@@ -77,14 +71,11 @@
                     </div>
 
                     <i
-                        :class="isCompanyDropdownOpen ? 'rotate-180' : ''"
-                        class="fas fa-chevron-down text-sm transition-transform duration-300"
+                        class="fas fa-chevron-down text-sm transition-transform duration-300 group-open:rotate-180"
                     ></i>
-                </a>
+                </summary>
 
                 <ul
-                    x-show="isCompanyDropdownOpen"
-                    x-transition
                     class="absolute left-0 z-10 w-full border bg-white dark:bg-gray-900"
                 >
                     <li>
@@ -106,16 +97,14 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            </details>
         </div>
     </div>
 
     <!-- User Profile -->
-    <div class="relative">
-        <a
-            href="#"
-            @click.prevent="isUserSidebarOpen = !isUserSidebarOpen"
-            class="relative flex items-center justify-center space-x-4 border-r px-6 py-4 hover:bg-gray-200 dark:hover:bg-gray-600"
+    <details class="group relative">
+        <summary
+            class="relative flex items-center justify-center space-x-4 border-r px-6 py-4 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer list-none"
         >
             <div class="flex items-center space-x-4">
                 <i class="fas fa-user-circle text-lg"></i>
@@ -123,14 +112,11 @@
             </div>
 
             <i
-                :class="isUserSidebarOpen ? 'rotate-180' : ''"
-                class="fas fa-chevron-down text-sm transition-transform duration-300"
+                class="fas fa-chevron-down text-sm transition-transform duration-300 group-open:rotate-180"
             ></i>
-        </a>
+        </summary>
 
         <ul
-            x-show="isUserSidebarOpen"
-            x-transition
             class="absolute left-0 z-10 w-full border bg-white dark:bg-gray-900"
         >
             <li>
@@ -173,5 +159,5 @@
                 </form>
             </li>
         </ul>
-    </div>
+    </details>
 </nav>

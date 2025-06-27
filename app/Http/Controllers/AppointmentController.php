@@ -13,9 +13,16 @@ use App\Models\Appointment;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
+use App\Services\TimeslotService;
 
 class AppointmentController extends Controller
 {
+  protected TimeslotService $timeslotService;
+
+  public function __construct(TimeslotService $timeslotService)
+  {
+    $this->timeslotService = $timeslotService;
+  }
   /**
    * Render the index page with a list of appointments.
    * @return View
@@ -125,44 +132,8 @@ class AppointmentController extends Controller
 
     // Timeslots
     $userSettings = auth()->user()->settings ?? [];
-    
-    // Ensure settings is always an array
-    if (is_string($userSettings)) {
-      $userSettings = json_decode($userSettings, true) ?? [];
-    }
-    
-    // Set defaults for timeslot settings
-    $defaultSettings = [
-      'timeslot_start' => '09:00',
-      'timeslot_end' => '17:00', 
-      'timeslot_interval' => 30,
-      'time_format' => '24',
-      'timezone' => 'UTC'
-    ];
-    
-    $settings = array_merge($defaultSettings, $userSettings ?? []);
-    
-    // Set timezone for this user
-    $userTimezone = $settings['timezone'];
-    
-    $startTime = Carbon::createFromTimeString($settings['timeslot_start'], $userTimezone);
-    $endTime = Carbon::createFromTimeString($settings['timeslot_end'], $userTimezone);
-    $interval = (int)$settings['timeslot_interval'];
-    $timeFormat = $settings['time_format'];
-
-    $timeslots = [];
-
-    while ($startTime < $endTime) {
-      // Format based on user preference: 12-hour (g:i A) or 24-hour (H:i)
-      $formattedTime = $timeFormat === '12' ? $startTime->format('g:i A') : $startTime->format('H:i');
-      $timeslots[] = [
-        'value' => $startTime->format('H:i'), // Always store in 24-hour format for consistency
-        'display' => $formattedTime // Display in user's preferred format
-      ];
-      $startTime->addMinutes($interval);
-    }
-
-    $firstTimeslot = count($timeslots) > 0 ? Carbon::parse($timeslots[0]['value']) : Carbon::parse('09:00');
+    $timeslots = $this->timeslotService->generateTimeslots($userSettings);
+    $firstTimeslot = $this->timeslotService->getFirstTimeslot($timeslots);
 
     return view('dashboard.appointments.create-step-two', compact(
       'appointment',
