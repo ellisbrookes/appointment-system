@@ -9,33 +9,25 @@ use Illuminate\View\View;
 class CompanyPublicController extends Controller
 {
     /**
-     * Show the public company calendar page.
+     * Show the public company booking flow.
      */
     public function show(string $companyUrl): View
     {
         $company = Company::where('url', $companyUrl)->firstOrFail();
         
-        // Get upcoming appointments for this company (for availability display)
-        $upcomingAppointments = $company->appointments()
-            ->where('date', '>=', now()->toDateString())
-            ->with('user')
-            ->orderBy('date')
-            ->orderBy('timeslot')
-            ->take(10)
-            ->get();
+        // Get available time slots (you can customize this based on company settings)
+        $availableTimeSlots = [
+            '09:00' => '9:00 AM',
+            '10:00' => '10:00 AM', 
+            '11:00' => '11:00 AM',
+            '14:00' => '2:00 PM',
+            '15:00' => '3:00 PM',
+            '16:00' => '4:00 PM'
+        ];
             
-        return view('company.public.calendar', compact('company', 'upcomingAppointments'));
+        return view('company.public.booking', compact('company', 'availableTimeSlots'));
     }
     
-    /**
-     * Show the public booking form for a company.
-     */
-    public function bookingForm(string $companyUrl): View
-    {
-        $company = Company::where('url', $companyUrl)->firstOrFail();
-        
-        return view('company.public.booking', compact('company'));
-    }
     
     /**
      * Process a public booking request.
@@ -51,13 +43,31 @@ class CompanyPublicController extends Controller
             'phone' => 'required|string|max:20',
             'appointment_date' => 'required|date|after:today',
             'appointment_time' => 'required',
+            'service' => 'nullable|string|max:255',
             'message' => 'nullable|string|max:500'
         ]);
         
-        // Here you would create the appointment or booking request
-        // For now, just redirect with success message
+        // Create the appointment directly
+        $appointment = $company->appointments()->create([
+            'date' => $validated['appointment_date'],
+            'timeslot' => $validated['appointment_time'],
+            'service' => $validated['service'] ?? 'General Appointment',
+            'status' => 'pending', // Set as pending for company approval
+            'user_id' => null, // No user account required for public bookings
+        ]);
+        
+        // Store customer details (you might want a separate customer table)
+        session([
+            'booking_customer' => [
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'message' => $validated['message'] ?? null,
+                'appointment_id' => $appointment->id
+            ]
+        ]);
         
         return redirect()->route('company.public', $companyUrl)
-            ->with('success', 'Your booking request has been submitted successfully!');
+            ->with('success', 'Your appointment has been booked successfully! We will contact you soon to confirm.');
     }
 }

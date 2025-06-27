@@ -103,16 +103,12 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
   })->name('subscription');
 });
 
-// Company Public Calendar Pages - Must be at the end to catch company URLs
+// Company Public Booking Pages - Must be at the end to catch company URLs
 Route::get('/{companyUrl}', [App\Http\Controllers\CompanyPublicController::class, 'show'])
     ->where('companyUrl', '[a-z0-9-]+') // Only match valid company URL patterns
     ->name('company.public');
 
-Route::get('/{companyUrl}/book', [App\Http\Controllers\CompanyPublicController::class, 'bookingForm'])
-    ->where('companyUrl', '[a-z0-9-]+') 
-    ->name('company.public.booking');
-
-Route::post('/{companyUrl}/book', [App\Http\Controllers\CompanyPublicController::class, 'processBooking'])
+Route::post('/{companyUrl}', [App\Http\Controllers\CompanyPublicController::class, 'processBooking'])
     ->where('companyUrl', '[a-z0-9-]+')
     ->name('company.public.booking.submit');
 
