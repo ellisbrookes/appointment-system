@@ -30,21 +30,35 @@ class CompanyMemberController extends Controller
         $this->authorizeCompanyAdmin($company);
         
         $validated = $request->validate([
-            'email' => 'required|email|exists:users,email',
-            'role' => 'required|in:admin,member'
+            'email' => 'required|email|max:255',
+            'role' => 'required|in:admin,member',
         ]);
         
         $user = User::where('email', $validated['email'])->first();
         
-        // Check if user is already a member
-        if ($company->isMember($user->id) || $company->hasPendingInvite($user->id)) {
-            return back()->withErrors(['email' => 'User is already a member or has a pending invitation.']);
+        // If user exists, check if they're already a member
+        if ($user) {
+            if ($company->isMember($user->id) || $company->hasPendingInvite($user->id)) {
+                return back()->withErrors(['email' => 'User is already a member or has a pending invitation.']);
+            }
+        }
+        
+        // Check if there's already an invitation for this email (for non-existing users)
+        $existingInvitation = CompanyMember::where('company_id', $company->id)
+            ->whereNull('user_id')
+            ->where('email', $validated['email'])
+            ->where('status', 'invited')
+            ->first();
+            
+        if ($existingInvitation) {
+            return back()->withErrors(['email' => 'An invitation has already been sent to this email address.']);
         }
         
         // Create invitation
         CompanyMember::create([
             'company_id' => $company->id,
-            'user_id' => $user->id,
+            'user_id' => $user ? $user->id : null,
+            'email' => $validated['email'], // Store email for non-existing users
             'role' => $validated['role'],
             'status' => 'invited',
         ]);

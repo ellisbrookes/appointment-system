@@ -116,7 +116,7 @@
                                                     @endif
                                                 </div>
                                                 <div class="text-sm text-gray-500 dark:text-gray-400">
-                                                    {{ $member->user ? $member->user->email : 'N/A' }}
+                                                    {{ $member->user ? $member->user->email : ($member->email ?: 'N/A') }}
                                                 </div>
                                             </div>
                                         </div>
@@ -170,7 +170,7 @@
                                                 <button
                                                     type="button"
                                                     class="inline-flex items-center px-3 py-1.5 rounded-md text-xs font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-900 dark:text-blue-200 dark:hover:bg-blue-800"
-                                                    onclick="openEditModal({{ $member->id }}, '{{ $member->role }}', '{{ $member->user ? $member->user->email : 'N/A' }}')"
+                                                    onclick="openEditModal({{ $member->id }}, '{{ $member->role }}', '{{ $member->user ? $member->user->email : ($member->email ?: 'N/A') }}')"
                                                 >
                                                     <i class="fas fa-edit mr-1"></i>
                                                     Edit
