@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,7 +28,7 @@
             isCompanyDropdownOpen: false,
             isAppointmentsDropdownOpen: false,
         }"
-        class="text-gray-800 dark:text-white"
+        class="min-h-screen bg-white text-gray-800 dark:bg-gray-900 dark:text-white"
     >
         @if ($navigationStyle === "sidebar")
             <x-dashboard.sidebar />
@@ -41,9 +41,9 @@
             :class="{
                 'ml-64': isSidebarOpen && navigationStyle === 'sidebar',
                 'ml-16': !isSidebarOpen && navigationStyle === 'sidebar',
-                'ml-0': navigationStyle === 'top_nav'
+                'ml-0 pt-16': navigationStyle === 'top_nav'
             }"
-            class="flex h-screen flex-1 flex-col bg-white px-6 py-8 dark:bg-gray-900"
+            class="min-h-screen flex flex-1 flex-col px-6 py-8 transition-all duration-250 ease-in-out bg-inherit"
         >
             @if (session("alert"))
                 <x-shared.alert :type="session('alert')['type']">

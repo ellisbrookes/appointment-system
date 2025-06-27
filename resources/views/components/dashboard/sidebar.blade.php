@@ -1,6 +1,6 @@
 <aside
     :class="isSidebarOpen ? 'w-64' : 'w-16'"
-    class="fixed flex h-screen flex-col border-r bg-white transition-all duration-250 ease-in-out dark:bg-gray-900"
+    class="fixed z-40 flex h-screen flex-col border-r bg-white transition-all duration-250 ease-in-out dark:bg-gray-900"
 >
     <!-- Sidebar Title & Toggle -->
     <div class="flex flex-1 flex-col space-y-4">

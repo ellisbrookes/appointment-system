@@ -1,5 +1,5 @@
 <nav
-    class="flex justify-between border-b bg-white transition-all duration-250 ease-in-out dark:bg-gray-900"
+    class="fixed top-0 left-0 right-0 z-50 flex justify-between border-b bg-white transition-all duration-250 ease-in-out dark:bg-gray-900"
 >
     <!-- Sidebar Title & Toggle -->
     <div class="flex">
