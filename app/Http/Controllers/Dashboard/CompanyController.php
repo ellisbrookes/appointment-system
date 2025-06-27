@@ -14,8 +14,18 @@ class CompanyController extends Controller
 {
   public function index(): View
   {
-    $companies = auth()->user()->activeCompanies()->with(['user', 'members.user'])->get();
-    return view('dashboard.company.index', compact('companies'));
+    $user = auth()->user();
+    
+    // Get active companies (where user is an active member)
+    $activeCompanies = $user->activeCompanies()->with(['user', 'members.user'])->get();
+    
+    // Get pending invitations (where user has been invited but not accepted)
+    $pendingInvitations = $user->companies()
+      ->wherePivot('status', 'invited')
+      ->with(['user', 'members.user'])
+      ->get();
+    
+    return view('dashboard.company.index', compact('activeCompanies', 'pendingInvitations'));
   }
 
   public function create()
