@@ -208,21 +208,13 @@ class CompanyMemberController extends Controller
   public function currentUserCompanyUpdateRole(Request $request, CompanyMember $member)
   {
     $user = auth()->user();
-    $company = $user->company;
     
-    // If they don't own a company, check if they're an admin of any active companies
-    if (!$company) {
-      $adminCompanies = $user->activeCompanies()->wherePivotIn('role', ['admin', 'owner'])->get();
-      
-      if ($adminCompanies->isEmpty()) {
-        return redirect()->route('dashboard.companies.create')
-          ->with('alert', [
-            'type' => 'error',
-            'message' => 'You need admin access to manage members.'
-          ]);
-      }
-      
-      $company = $adminCompanies->first();
+    // Get the company from the member being updated
+    $company = $member->company;
+    
+    // Check if the user has admin access to this specific company
+    if (!$user->isAdminOf($company->id)) {
+      abort(403, 'Unauthorized. You need admin access to manage members in this company.');
     }
     
     return $this->updateRole($request, $company, $member);
@@ -231,21 +223,13 @@ class CompanyMemberController extends Controller
   public function currentUserCompanyRemove(CompanyMember $member)
   {
     $user = auth()->user();
-    $company = $user->company;
     
-    // If they don't own a company, check if they're an admin of any active companies
-    if (!$company) {
-      $adminCompanies = $user->activeCompanies()->wherePivotIn('role', ['admin', 'owner'])->get();
-      
-      if ($adminCompanies->isEmpty()) {
-        return redirect()->route('dashboard.companies.create')
-          ->with('alert', [
-            'type' => 'error',
-            'message' => 'You need admin access to remove members.'
-          ]);
-      }
-      
-      $company = $adminCompanies->first();
+    // Get the company from the member being removed
+    $company = $member->company;
+    
+    // Check if the user has admin access to this specific company
+    if (!$user->isAdminOf($company->id)) {
+      abort(403, 'Unauthorized. You need admin access to remove members from this company.');
     }
     
     return $this->remove($company, $member);

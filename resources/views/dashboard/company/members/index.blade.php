@@ -391,7 +391,7 @@
             const emailSpan = document.getElementById('editMemberEmail');
             const roleSelect = document.getElementById('editRole');
 
-            form.action = `/dashboard/company/members/${memberId}/role`;
+            form.action = `{{ route('dashboard.company.members.update-role', ':member') }}`.replace(':member', memberId);
             emailSpan.textContent = memberEmail;
             roleSelect.value = memberRole;
             
