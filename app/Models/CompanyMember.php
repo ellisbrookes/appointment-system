@@ -12,6 +12,7 @@ class CompanyMember extends Model
     protected $fillable = [
         'company_id',
         'user_id',
+        'email',
         'role',
         'status',
         'joined_at',

@@ -81,6 +81,23 @@
                     </p>
                 </div>
 
+                <div>
+                    <h3
+                        class="mb-2 text-lg font-semibold text-gray-700 dark:text-white"
+                    >
+                        Company URL
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        @if($company->url)
+                            <a href="http://localhost:8000/{{ $company->url }}" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                localhost:8000/{{ $company->url }}
+                            </a>
+                        @else
+                            Not set
+                        @endif
+                    </p>
+                </div>
+
                 <div class="md:col-span-2">
                     <h3
                         class="mb-2 text-lg font-semibold text-gray-700 dark:text-white"

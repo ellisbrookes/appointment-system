@@ -33,6 +33,15 @@
                     class="w-48 rounded-xl border border-gray-300 bg-white px-4 py-3 text-base text-gray-700 shadow-sm transition focus:border-blue-400 focus:ring-2 focus:ring-blue-300 focus:outline-none dark:bg-gray-800 dark:text-white"
                 >
                     <option value="">All</option>
+                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>
+                        Pending
+                        @php
+                            $pendingCount = $appointments->where('status', 'pending')->count();
+                        @endphp
+                        @if($pendingCount > 0)
+                            ({{ $pendingCount }})
+                        @endif
+                    </option>
                     <option value="open" {{ request('status') == 'open' ? 'selected' : '' }}>Open</option>
                     <option value="closed" {{ request('status') == 'closed' ? 'selected' : '' }}>Closed</option>
                     <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
@@ -67,7 +76,18 @@
                                     {{ Carbon::parse($appointment->date)->format('jS F Y') }}
                                 </td>
                                 <td class="border border-gray-300 px-6 py-4">
-                                    {{ $appointment->user->name ?? 'Guest' }}
+                                    @if($appointment->user)
+                                        {{ $appointment->user->name }}
+                                        <small class="text-gray-500 block">{{ $appointment->user->email }}</small>
+                                    @elseif($appointment->customer_name)
+                                        {{ $appointment->customer_name }}
+                                        <small class="text-gray-500 block">{{ $appointment->customer_email }}</small>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mt-1">
+                                            Guest
+                                        </span>
+                                    @else
+                                        Guest
+                                    @endif
                                 </td>
                                 <td class="border border-gray-300 px-6 py-4">
                                     @php
@@ -97,11 +117,39 @@
 
                                     {{ $formattedTime }}
                                 </td>
-                                <td class="border border-gray-300 px-6 py-4 capitalize">
-                                    {{ $appointment->status }}
+                                <td class="border border-gray-300 px-6 py-4">
+                                    @php
+                                        $statusClasses = [
+                                            'pending' => 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                                            'open' => 'bg-green-100 text-green-800 border-green-200',
+                                            'closed' => 'bg-gray-100 text-gray-800 border-gray-200',
+                                            'cancelled' => 'bg-red-100 text-red-800 border-red-200'
+                                        ];
+                                        $class = $statusClasses[$appointment->status] ?? 'bg-gray-100 text-gray-800 border-gray-200';
+                                    @endphp
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border {{ $class }}">
+                                        {{ ucfirst($appointment->status) }}
+                                    </span>
                                 </td>
                                 <td class="border-b border-gray-300 px-6 py-4">
                                     <div class="flex justify-center space-x-2">
+                                        @if($appointment->status === 'pending')
+                                            <form
+                                                method="POST"
+                                                action="{{ route('dashboard.appointments.approve', $appointment->id) }}"
+                                                style="display: inline"
+                                            >
+                                                @csrf
+                                                @method('PATCH')
+                                                <button
+                                                    type="submit"
+                                                    class="focus:ring-opacity-50 flex items-center rounded-md bg-green-600 px-4 py-2 text-white transition duration-200 hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                                >
+                                                    Approve
+                                                </button>
+                                            </form>
+                                        @endif
+                                        
                                         <a
                                             href="{{ route('dashboard.appointments.edit', $appointment->id) }}"
                                             class="focus:ring-opacity-50 flex rounded-md bg-blue-600 px-4 py-2 text-white transition duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"

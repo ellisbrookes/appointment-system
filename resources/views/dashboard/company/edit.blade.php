@@ -95,6 +95,23 @@
                 />
             </div>
 
+            <div class="mb-4">
+                <x-shared.input-label for="url" :value="__('Company URL')" />
+                <div class="flex items-center">
+                    <x-shared.text-input
+                        id="url"
+                        type="text"
+                        name="url"
+                        :value="old('url', $company->url)"
+                        placeholder="company-name"
+                        class="rounded-r-none"
+                    />
+                    <span class="px-3 py-2 bg-gray-50 border border-l-0 border-gray-300 rounded-r-md text-gray-500">localhost:8000/</span>
+                </div>
+                <p class="mt-1 text-sm text-gray-600">This will be your company's unique URL</p>
+                <x-shared.input-error :messages="$errors->get('url')" />
+            </div>
+
             <div class="flex space-x-4">
                 <x-shared.primary-button>
                     {{ __("Update") }}

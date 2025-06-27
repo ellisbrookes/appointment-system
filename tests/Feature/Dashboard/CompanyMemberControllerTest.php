@@ -107,10 +107,10 @@ class CompanyMemberControllerTest extends TestCase
         $response->assertSessionHas('alert.type', 'success');
     }
 
-    public function test_invite_requires_valid_email(): void
+    public function test_invite_requires_valid_email_format(): void
     {
         $response = $this->actingAs($this->admin)->post(route('dashboard.companies.members.invite', $this->company), [
-            'email' => 'nonexistent@example.com',
+            'email' => 'invalid-email-format',
             'role' => 'member',
         ]);
 
@@ -264,7 +264,7 @@ class CompanyMemberControllerTest extends TestCase
         $response = $this->actingAs($user)->get('/dashboard/company/members');
 
         $response->assertRedirect(route('dashboard.companies.create'));
-        $response->assertSessionHas('error');
+        $response->assertSessionHas('alert.type', 'error');
     }
 
     public function test_current_user_company_invite(): void

@@ -16,6 +16,10 @@ class Appointment extends Model
         'user_id',
         'company_id',
         'status',
+        'customer_name',
+        'customer_email',
+        'customer_phone',
+        'customer_message',
     ];
 
     protected $casts = [
@@ -51,12 +55,29 @@ class Appointment extends Model
      */
     public function scopeAccessibleByUser($query, User $user)
     {
-        $companyIds = $user->activeCompanies()->pluck('companies.id');
+        // Get companies the user is a member of
+        $memberCompanyIds = $user->activeCompanies()->pluck('companies.id');
         
-        return $query->whereIn('company_id', $companyIds)
-                    ->orWhere(function($q) use ($user) {
-                        $q->where('user_id', $user->id)
-                          ->whereNull('company_id');
-                    });
+        // Get companies the user owns directly
+        $ownedCompanyIds = $user->ownedCompanies()->pluck('id');
+        
+        // Combine both sets of company IDs
+        $allCompanyIds = $memberCompanyIds->merge($ownedCompanyIds)->unique();
+        
+        // Build the query
+        $query->where(function($q) use ($allCompanyIds, $user) {
+            // Include appointments from companies the user has access to
+            if ($allCompanyIds->isNotEmpty()) {
+                $q->whereIn('company_id', $allCompanyIds);
+            }
+            
+            // Include personal appointments (no company_id)
+            $q->orWhere(function($subQ) use ($user) {
+                $subQ->where('user_id', $user->id)
+                     ->whereNull('company_id');
+            });
+        });
+        
+        return $query;
     }
 }
