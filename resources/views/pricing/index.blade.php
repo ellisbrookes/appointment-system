@@ -1,4 +1,4 @@
-@extends("layouts.layout")
+@extends("layouts.main")
 
 @section("content")
     <section id="pricing" class="py-16">
