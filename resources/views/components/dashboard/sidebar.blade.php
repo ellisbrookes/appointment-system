@@ -31,7 +31,7 @@
 
             <!-- Appointments -->
             <li>
-<details
+                <details class="group">
                     <summary
                         :class="isSidebarOpen ? 'px-4 py-2 justify-between space-x-4' : 'justify-center p-4'"
                         class="flex w-full items-center border-b px-4 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer list-none"
@@ -49,7 +49,7 @@
 
                             <i
                                 :class="isSidebarOpen ? 'ml-4' : ''"
-                                class="fas fa-chevron-down text-sm transition-transform duration-300 open:rotate-180"
+                                class="fas fa-chevron-down text-sm transition-transform duration-300 group-open:rotate-180"
                             ></i>
                         </div>
                     </summary>
@@ -91,7 +91,7 @@
 
             <!-- Company -->
             <li>
-<details class="relative"
+                <details class="group">
                     <summary
                         :class="isSidebarOpen ? 'px-4 py-2 justify-between space-x-4' : 'justify-center p-4'"
                         class="flex w-full items-center border-b px-4 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer list-none"
@@ -109,7 +109,7 @@
 
                             <i
                                 :class="isSidebarOpen ? 'ml-4' : ''"
-                                class="fas fa-chevron-down text-sm transition-transform duration-300 open:rotate-180"
+                                class="fas fa-chevron-down text-sm transition-transform duration-300 group-open:rotate-180"
                             ></i>
                         </div>
                     </summary>
@@ -168,7 +168,7 @@
     </div>
 
     <!-- User Profile -->
-<details class="relative"
+    <details class="group relative">
         <summary
             :class="isSidebarOpen ? 'justify-between' : 'justify-center'"
             class="flex w-full items-center border-t p-4 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer list-none"
@@ -181,7 +181,7 @@
             </div>
 
             <i
-                class="fas fa-chevron-down text-sm transition-transform duration-300 open:rotate-180"
+                class="fas fa-chevron-down text-sm transition-transform duration-300 group-open:rotate-180"
             ></i>
         </summary>
 
