@@ -22,7 +22,7 @@
             </a>
 
             <!-- Appointments -->
-            <details class="group relative">
+<details
                 <summary
                     class="relative flex items-center justify-center space-x-4 border-r px-6 py-4 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer list-none"
                 >
@@ -32,7 +32,7 @@
                     </div>
 
                     <i
-                        class="fas fa-chevron-down text-sm transition-transform duration-300 group-open:rotate-180"
+                        class="fas fa-chevron-down text-sm transition-transform duration-300 open:rotate-180"
                     ></i>
                 </summary>
 
@@ -61,7 +61,7 @@
             </details>
 
             <!-- Company -->
-            <details class="group relative">
+<details class="relative"
                 <summary
                     class="relative flex items-center justify-center space-x-4 border-r px-6 py-4 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer list-none"
                 >
@@ -71,7 +71,7 @@
                     </div>
 
                     <i
-                        class="fas fa-chevron-down text-sm transition-transform duration-300 group-open:rotate-180"
+                        class="fas fa-chevron-down text-sm transition-transform duration-300 open:rotate-180"
                     ></i>
                 </summary>
 
@@ -102,7 +102,7 @@
     </div>
 
     <!-- User Profile -->
-    <details class="group relative">
+<details class="relative"
         <summary
             class="relative flex items-center justify-center space-x-4 border-r px-6 py-4 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer list-none"
         >
@@ -112,7 +112,7 @@
             </div>
 
             <i
-                class="fas fa-chevron-down text-sm transition-transform duration-300 group-open:rotate-180"
+                class="fas fa-chevron-down text-sm transition-transform duration-300 open:rotate-180"
             ></i>
         </summary>
 
