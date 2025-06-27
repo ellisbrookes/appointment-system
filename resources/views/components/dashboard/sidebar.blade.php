@@ -145,6 +145,36 @@
                                 </span>
                             </a>
                         </li>
+                        <li>
+                            <a
+                                href="/dashboard/company/calendar"
+                                :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+                                class="flex w-full items-center border-b px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-600"
+                            >
+                                <i
+                                    :class="isSidebarOpen ? 'ml-4' : ''"
+                                    class="fas fa-calendar-alt"
+                                ></i>
+                                <span :class="isSidebarOpen ? '' : 'hidden'">
+                                    Company Calendar
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/dashboard/company/members"
+                                :class="isSidebarOpen ? 'px-4 py-2 space-x-4' : 'justify-center p-4'"
+                                class="flex w-full items-center border-b px-4 text-sm hover:bg-gray-200 dark:hover:bg-gray-600"
+                            >
+                                <i
+                                    :class="isSidebarOpen ? 'ml-4' : ''"
+                                    class="fas fa-users"
+                                ></i>
+                                <span :class="isSidebarOpen ? '' : 'hidden'">
+                                    Team Members
+                                </span>
+                            </a>
+                        </li>
                     </ul>
                 </details>
             </li>

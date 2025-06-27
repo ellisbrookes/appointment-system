@@ -55,6 +55,10 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
       Route::patch('/{member}/role', 'currentUserCompanyUpdateRole')->name('update-role');
       Route::delete('/{member}', 'currentUserCompanyRemove')->name('destroy');
     });
+    Route::prefix('calendar')->name('calendar.')->controller(App\Http\Controllers\Dashboard\CompanyCalendarController::class)->group(function () {
+      Route::get('/', 'index')->name('index');
+      Route::get('/date/{date}', 'showDate')->name('date');
+    });
   });
 
   // Company Members (Auth Required)
