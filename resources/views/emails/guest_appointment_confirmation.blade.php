@@ -92,7 +92,6 @@
             <h3>📋 What's Next?</h3>
             <ul>
                 <li>Please arrive 5-10 minutes early for your appointment</li>
-                <li>Bring a valid ID and any relevant documents</li>
                 <li>If you need to reschedule or cancel, please contact the company directly</li>
             </ul>
             

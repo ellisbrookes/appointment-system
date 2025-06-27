@@ -86,8 +86,6 @@
                 <h4>📝 Preparation Checklist:</h4>
                 <ul style="margin: 10px 0; padding-left: 20px;">
                     <li>Arrive 5-10 minutes early</li>
-                    <li>Bring a valid form of identification</li>
-                    <li>Bring any relevant documents or previous records</li>
                     <li>Have your appointment reference ready: #{{ $appointment->id }}</li>
                     @if($appointment->customer_message)
                     <li>Your special request: "{{ $appointment->customer_message }}"</li>
