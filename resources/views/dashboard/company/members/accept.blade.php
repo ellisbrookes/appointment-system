@@ -76,7 +76,18 @@
 
                     <!-- Actions -->
                     <div class="space-y-4">
-                        <form method="POST" action="{{ route('dashboard.companies.members.accept.submit', $company) }}">
+                        <!-- Debug Info -->
+                        @if(config('app.debug'))
+                            <div class="text-xs text-gray-500 p-2 bg-gray-100 rounded">
+                                <strong>Debug Info:</strong><br>
+                                Form Action: {{ route('dashboard.companies.members.accept.submit', $company) }}<br>
+                                Company ID: {{ $company->id }}<br>
+                                User ID: {{ auth()->id() }}<br>
+                                Membership ID: {{ $membership->id }}
+                            </div>
+                        @endif
+                        
+                        <form method="POST" action="{{ route('dashboard.companies.members.accept.submit', $company) }}" onsubmit="console.log('Form submitting to:', this.action, 'Method:', this.method)">
                             @csrf
                             <button type="submit" 
                                     class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">

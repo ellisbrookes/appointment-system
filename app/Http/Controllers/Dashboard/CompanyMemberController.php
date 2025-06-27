@@ -114,9 +114,18 @@ class CompanyMemberController extends Controller
     
     public function acceptInvite(Company $company): RedirectResponse
     {
+        // Add debugging
+        \Log::info('acceptInvite method called', [
+            'company_id' => $company->id,
+            'user_id' => auth()->id(),
+            'request_method' => request()->method(),
+            'request_url' => request()->url()
+        ]);
+        
         $user = auth()->user();
         
         if (!$user) {
+            \Log::warning('User not authenticated in acceptInvite');
             return redirect()->route('login')
                 ->with('alert', [
                     'type' => 'error',
