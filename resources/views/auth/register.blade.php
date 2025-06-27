@@ -6,8 +6,8 @@
     >
         <x-shared.header
             type="sidebar"
-            heading="{{ isset($companyInvite) ? 'Join ' . $companyInvite->name : 'Register' }}"
-            subheading="{{ isset($companyInvite) ? 'Create your account to join ' . $companyInvite->name : 'Use this page to register your account' }}"
+            heading="{{ isset($companyInvite) && $companyInvite ? 'Join ' . $companyInvite->name : 'Register' }}"
+            subheading="{{ isset($companyInvite) && $companyInvite ? 'Create your account to join ' . $companyInvite->name : 'Use this page to register your account' }}"
         />
 
         <div class="h-full md:flex md:w-full md:items-center md:justify-center">
@@ -40,16 +40,16 @@
                         type="email"
                         name="email"
                         :value="old('email', $prefilledEmail ?? '')"
-                        {{ isset($prefilledEmail) ? 'readonly' : '' }}
+                        :disabled="isset($prefilledEmail) && $prefilledEmail"
                         required
                     />
-                    @if(isset($prefilledEmail))
+                    @if(isset($prefilledEmail) && $prefilledEmail)
                         <p class="mt-1 text-sm text-gray-600">This email is pre-filled from your invitation.</p>
                     @endif
                     <x-shared.input-error :messages="$errors->get('email')" />
                 </div>
                 
-                @if(isset($companyInvite))
+                @if(isset($companyInvite) && $companyInvite)
                     <!-- Hidden company invitation field -->
                     <input type="hidden" name="company_invite" value="{{ $companyInvite->id }}">
                     

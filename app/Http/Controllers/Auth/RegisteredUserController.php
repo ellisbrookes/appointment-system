@@ -39,10 +39,17 @@ class RegisteredUserController extends Controller
           $companyInvite = null;
           $prefilledEmail = null;
         }
+      } else {
+        // Company not found
+        $companyInvite = null;
+        $prefilledEmail = null;
       }
     }
     
-    return view('auth.register', compact('companyInvite', 'prefilledEmail'));
+    return view('auth.register', [
+      'companyInvite' => $companyInvite,
+      'prefilledEmail' => $prefilledEmail
+    ]);
   }
 
   public function store(Request $request): RedirectResponse {
