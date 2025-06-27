@@ -9,11 +9,13 @@ class TimeslotService
     /**
      * Generate timeslots based on user settings
      */
-    public function generateTimeslots(array $userSettings = []): array
+    public function generateTimeslots($userSettings = []): array
     {
         // Ensure settings is always an array
         if (is_string($userSettings)) {
             $userSettings = json_decode($userSettings, true) ?? [];
+        } elseif (!is_array($userSettings)) {
+            $userSettings = [];
         }
         
         // Set defaults for timeslot settings

@@ -132,6 +132,10 @@ class AppointmentController extends Controller
 
     // Timeslots
     $userSettings = auth()->user()->settings ?? [];
+    // Ensure userSettings is always an array
+    if (!is_array($userSettings)) {
+        $userSettings = [];
+    }
     $timeslots = $this->timeslotService->generateTimeslots($userSettings);
     $firstTimeslot = $this->timeslotService->getFirstTimeslot($timeslots);
 

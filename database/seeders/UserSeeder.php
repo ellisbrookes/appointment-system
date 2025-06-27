@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
       'is_admin' => true,
       'telephone_number' => $faker->phoneNumber(),
       'email_verified_at' => now(),
-      'settings' => json_encode($defaultSettings)
+      'settings' => $defaultSettings
     ]);
 
     // Regular user with different timezone and 12-hour format and active subscription
@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
       'is_admin' => false,
       'telephone_number' => $faker->phoneNumber(),
       'email_verified_at' => now(),
-      'settings' => json_encode($userSettings)
+      'settings' => $userSettings
     ]);
 
     // Create additional test users with various settings and active subscriptions
@@ -69,7 +69,7 @@ class UserSeeder extends Seeder
         'is_admin' => false,
         'telephone_number' => $faker->phoneNumber(),
         'email_verified_at' => now(),
-        'settings' => json_encode($randomSettings)
+        'settings' => $randomSettings
       ]);
     }
   }
