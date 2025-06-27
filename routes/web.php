@@ -18,7 +18,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 
 // Public Company Invitation Routes (No Auth Required)
-Route::get('/companies/{company}/members/accept', [App\Http\Controllers\Dashboard\CompanyMemberController::class, 'showAcceptInvite'])->name('dashboard.companies.members.accept');
+Route::get('/dashboard/companies/{company}/members/accept', [App\Http\Controllers\Dashboard\CompanyMemberController::class, 'showAcceptInvite'])->name('dashboard.companies.members.accept');
 
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
     // Dashboard Home

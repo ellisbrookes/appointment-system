@@ -25,20 +25,6 @@
             </button>
         </div>
 
-        <!-- Alerts -->
-        @if (session("alert"))
-            <x-shared.alert :type="session('alert')['type']">
-                {{ session("alert")["message"] }}
-            </x-shared.alert>
-        @endif
-
-        @if ($errors->any())
-            <x-shared.alert type="error">
-                @foreach ($errors->all() as $error)
-                    {{ $error }}<br>
-                @endforeach
-            </x-shared.alert>
-        @endif
 
         <!-- Members Table -->
         @if ($members->isEmpty())
@@ -311,8 +297,14 @@
     <!-- Edit Role Modal -->
     <div id="editRoleModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="editRoleModalLabel">
         <div class="flex min-h-screen items-center justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="closeEditModal()"></div>
-            <div class="inline-block transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all dark:bg-gray-800 sm:my-8 sm:w-full sm:max-w-lg sm:p-6 sm:align-middle">
+            
+            <!-- This element is to trick the browser into centering the modal contents. -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            
+            <!-- Modal panel -->
+            <div class="relative inline-block transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all dark:bg-gray-800 sm:my-8 sm:w-full sm:max-w-lg sm:p-6 sm:align-middle">
                 <div class="absolute top-0 right-0 pt-4 pr-4">
                     <button type="button" class="rounded-md bg-white text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-500 dark:hover:text-gray-300" 
                             onclick="closeEditModal()">

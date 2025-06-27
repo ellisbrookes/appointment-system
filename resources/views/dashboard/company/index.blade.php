@@ -40,7 +40,7 @@
                                 </p>
                             </div>
                             <div class="flex space-x-2">
-                                <form method="POST" action="{{ route('dashboard.companies.members.accept', $company->id) }}" class="inline">
+                                <form method="POST" action="{{ route('dashboard.companies.members.accept.submit', $company->id) }}" class="inline">
                                     @csrf
                                     <button type="submit" class="rounded-md bg-green-600 px-4 py-2 text-sm text-white transition hover:bg-green-700">
                                         <i class="fas fa-check mr-1"></i>
