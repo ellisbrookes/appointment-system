@@ -58,13 +58,17 @@ class CompanySeeder extends Seeder
                 
                 $owner = $availableUsers->random();
                 
+                $companyName = $faker->randomElement($data['names']) . ($i > 0 ? ' ' . ($i + 1) : '');
+                $companyUrl = strtolower(str_replace([' ', '&', "'"], ['-', 'and', ''], $companyName));
+                
                 $company = Company::create([
-                    'name' => $faker->randomElement($data['names']) . ($i > 0 ? ' ' . ($i + 1) : ''),
+                    'name' => $companyName,
                     'email' => strtolower(str_replace([' ', '&'], ['', 'and'], $faker->randomElement($data['names']))) . '@example.com',
                     'phone_number' => $faker->phoneNumber(),
                     'address' => $faker->streetAddress() . ', ' . $faker->city(),
                     'postcode' => $faker->postcode(),
                     'description' => "Professional {$type} services offering " . implode(', ', $faker->randomElements($data['services'], rand(2, 3))) . '. ' . $faker->sentence(10),
+                    'url' => $companyUrl,
                     'user_id' => $owner->id,
                 ]);
                 

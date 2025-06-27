@@ -48,6 +48,7 @@ class CompanyController extends Controller
         'regex:/^([A-Z]{1,2}[0-9][0-9A-Z]? ?[0-9][A-Z]{2})$/i'
       ],
       'description' => 'nullable|string',
+      'url' => 'nullable|string|max:255|regex:/^[a-z0-9-]+$/|unique:companies,url',
     ]);
 
     $company = Company::create([
@@ -57,6 +58,7 @@ class CompanyController extends Controller
       'address' => $validated['address'],
       'postcode' => $validated['postcode'],
       'description' => $validated['description'] ?? null,
+      'url' => $validated['url'] ?? null,
       'user_id' => auth()->id(),
     ]);
 
@@ -102,6 +104,7 @@ class CompanyController extends Controller
         'regex:/^([A-Z]{1,2}[0-9][0-9A-Z]? ?[0-9][A-Z]{2})$/i'
       ],
       'description' => 'nullable|string',
+      'url' => 'nullable|string|max:255|regex:/^[a-z0-9-]+$/|unique:companies,url,' . $company->id,
     ]);
 
     $company->update($validated);

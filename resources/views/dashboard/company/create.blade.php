@@ -100,6 +100,23 @@
                 />
             </div>
 
+            <div class="mb-4">
+                <x-shared.input-label for="url" :value="__('Company URL')" />
+                <div class="flex items-center">
+                    <x-shared.text-input
+                        id="url"
+                        type="text"
+                        name="url"
+                        :value="old('url')"
+                        placeholder="company-name"
+                        class="rounded-r-none"
+                    />
+                    <span class="px-3 py-2 bg-gray-50 border border-l-0 border-gray-300 rounded-r-md text-gray-500">localhost:8000/</span>
+                </div>
+                <p class="mt-1 text-sm text-gray-600">This will be your company's unique URL</p>
+                <x-shared.input-error :messages="$errors->get('url')" />
+            </div>
+
             <div>
                 <x-shared.primary-button>
                     {{ __("Create") }}
@@ -107,4 +124,28 @@
             </div>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('name');
+            const urlInput = document.getElementById('url');
+            
+            nameInput.addEventListener('input', function() {
+                if (!urlInput.dataset.manuallyEdited) {
+                    const slug = this.value
+                        .toLowerCase()
+                        .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+                        .replace(/\s+/g, '-') // Replace spaces with hyphens
+                        .replace(/-+/g, '-') // Replace multiple hyphens with single
+                        .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+                    
+                    urlInput.value = slug;
+                }
+            });
+            
+            urlInput.addEventListener('input', function() {
+                this.dataset.manuallyEdited = 'true';
+            });
+        });
+    </script>
 @endsection
