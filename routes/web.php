@@ -17,6 +17,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Pricing
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 
+// Public Company Invitation Routes (No Auth Required)
+Route::get('/companies/{company}/members/accept', [App\Http\Controllers\Dashboard\CompanyMemberController::class, 'showAcceptInvite'])->name('dashboard.companies.members.accept');
+
 Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
     // Dashboard Home
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -54,11 +57,10 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     });
   });
 
-  // Company Members
+  // Company Members (Auth Required)
   Route::prefix('companies/{company}/members')->name('dashboard.companies.members.')->controller(App\Http\Controllers\Dashboard\CompanyMemberController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/invite', 'invite')->name('invite');
-    Route::get('/accept', 'showAcceptInvite')->name('accept');
     Route::post('/accept', 'acceptInvite')->name('accept.submit');
     Route::delete('/leave', 'leave')->name('leave');
     Route::patch('/{member}/role', 'updateRole')->name('update-role');

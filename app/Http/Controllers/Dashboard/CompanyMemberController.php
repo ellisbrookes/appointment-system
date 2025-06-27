@@ -87,6 +87,14 @@ class CompanyMemberController extends Controller
     {
         $user = auth()->user();
         
+        // If user is not authenticated, redirect to login with intention to return here
+        if (!$user) {
+            return redirect()->route('login')->with('alert', [
+                'type' => 'info',
+                'message' => 'Please log in to accept your invitation to join ' . $company->name
+            ]);
+        }
+        
         // Check if user has a pending invitation
         $membership = CompanyMember::where('company_id', $company->id)
             ->where('user_id', $user->id)
