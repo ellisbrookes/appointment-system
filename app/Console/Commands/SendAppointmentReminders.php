@@ -29,7 +29,7 @@ class SendAppointmentReminders extends Command
      */
     public function handle()
     {
-        $tomorrow = Carbon::tomorrow()->toDateString();
+        $tomorrow = Carbon::now()->addDay()->toDateString();
         $isDryRun = $this->option('dry-run');
         
         // Get all confirmed appointments for tomorrow

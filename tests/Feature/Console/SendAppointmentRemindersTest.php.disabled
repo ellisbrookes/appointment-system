@@ -47,9 +47,9 @@ class SendAppointmentRemindersTest extends TestCase
             'status' => 'confirmed',
         ]);
 
-        $this->artisan('send:appointment-reminders')
-            ->expectsOutput('Sending appointment reminders...')
-            ->expectsOutput('Reminders sent successfully!')
+        $this->artisan('appointments:send-reminders')
+            ->expectsOutput('Found 1 appointment(s) for tomorrow (' . Carbon::tomorrow()->toDateString() . ')')
+            ->expectsOutput('Sent 1 reminder(s), 0 error(s)')
             ->assertExitCode(0);
 
         Mail::assertSent(AppointmentReminder::class, function ($mail) use ($user) {
@@ -82,9 +82,8 @@ class SendAppointmentRemindersTest extends TestCase
             'status' => 'confirmed',
         ]);
 
-        $this->artisan('send:appointment-reminders')
-            ->expectsOutput('Sending appointment reminders...')
-            ->expectsOutput('Reminders sent successfully!')
+        $this->artisan('appointments:send-reminders')
+            ->expectsOutput('No appointments found for tomorrow (' . Carbon::tomorrow()->toDateString() . ')')
             ->assertExitCode(0);
 
         Mail::assertNotSent(AppointmentReminder::class);
@@ -107,9 +106,8 @@ class SendAppointmentRemindersTest extends TestCase
             'status' => 'cancelled',
         ]);
 
-        $this->artisan('send:appointment-reminders')
-            ->expectsOutput('Sending appointment reminders...')
-            ->expectsOutput('Reminders sent successfully!')
+        $this->artisan('appointments:send-reminders')
+            ->expectsOutput('No appointments found for tomorrow (' . Carbon::tomorrow()->toDateString() . ')')
             ->assertExitCode(0);
 
         Mail::assertNotSent(AppointmentReminder::class);
@@ -132,9 +130,8 @@ class SendAppointmentRemindersTest extends TestCase
             'status' => 'pending',
         ]);
 
-        $this->artisan('send:appointment-reminders')
-            ->expectsOutput('Sending appointment reminders...')
-            ->expectsOutput('Reminders sent successfully!')
+        $this->artisan('appointments:send-reminders')
+            ->expectsOutput('No appointments found for tomorrow (' . Carbon::tomorrow()->toDateString() . ')')
             ->assertExitCode(0);
 
         Mail::assertNotSent(AppointmentReminder::class);
@@ -156,11 +153,10 @@ class SendAppointmentRemindersTest extends TestCase
             'status' => 'confirmed',
         ]);
 
-        $this->artisan('send:appointment-reminders --dry-run')
-            ->expectsOutput('Dry run mode enabled. No emails will be sent.')
-            ->expectsOutput('Sending appointment reminders...')
-            ->expectsOutput('Would send reminder to: ' . $user->email)
-            ->expectsOutput('Dry run completed. No emails were sent.')
+        $this->artisan('appointments:send-reminders --dry-run')
+            ->expectsOutput('Found 1 appointment(s) for tomorrow (' . Carbon::tomorrow()->toDateString() . ')')
+            ->expectsOutputToContain('[DRY RUN] Would send reminder to: ' . $user->email)
+            ->expectsOutput('[DRY RUN] Would send 1 reminder(s), 0 error(s)')
             ->assertExitCode(0);
 
         Mail::assertNotSent(AppointmentReminder::class);
@@ -192,9 +188,9 @@ class SendAppointmentRemindersTest extends TestCase
             'status' => 'confirmed',
         ]);
 
-        $this->artisan('send:appointment-reminders')
-            ->expectsOutput('Sending appointment reminders...')
-            ->expectsOutput('Reminders sent successfully!')
+        $this->artisan('appointments:send-reminders')
+            ->expectsOutput('Found 2 appointment(s) for tomorrow (' . Carbon::tomorrow()->toDateString() . ')')
+            ->expectsOutput('Sent 2 reminder(s), 0 error(s)')
             ->assertExitCode(0);
 
         Mail::assertSent(AppointmentReminder::class, 2);
@@ -224,9 +220,8 @@ class SendAppointmentRemindersTest extends TestCase
             'status' => 'confirmed',
         ]);
 
-        $this->artisan('send:appointment-reminders')
-            ->expectsOutput('Sending appointment reminders...')
-            ->expectsOutput('Reminders sent successfully!')
+        $this->artisan('appointments:send-reminders')
+            ->expectsOutput('No appointments found for tomorrow (' . Carbon::tomorrow()->toDateString() . ')')
             ->assertExitCode(0);
 
         Mail::assertNotSent(AppointmentReminder::class);
@@ -267,10 +262,9 @@ class SendAppointmentRemindersTest extends TestCase
             'status' => 'confirmed',
         ]);
 
-        $this->artisan('send:appointment-reminders')
-            ->expectsOutput('Sending appointment reminders...')
-            ->expectsOutput('Sent 3 reminder(s)')
-            ->expectsOutput('Reminders sent successfully!')
+        $this->artisan('appointments:send-reminders')
+            ->expectsOutput('Found 3 appointment(s) for tomorrow (' . Carbon::tomorrow()->toDateString() . ')')
+            ->expectsOutput('Sent 3 reminder(s), 0 error(s)')
             ->assertExitCode(0);
 
         Mail::assertSent(AppointmentReminder::class, 3);
@@ -281,10 +275,8 @@ class SendAppointmentRemindersTest extends TestCase
     {
         Mail::fake();
 
-        $this->artisan('send:appointment-reminders')
-            ->expectsOutput('Sending appointment reminders...')
-            ->expectsOutput('Sent 0 reminder(s)')
-            ->expectsOutput('Reminders sent successfully!')
+        $this->artisan('appointments:send-reminders')
+            ->expectsOutput('No appointments found for tomorrow (' . Carbon::tomorrow()->toDateString() . ')')
             ->assertExitCode(0);
 
         Mail::assertNotSent(AppointmentReminder::class);
