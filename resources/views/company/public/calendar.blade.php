@@ -21,7 +21,7 @@
                 <ul class="list-disc pl-5">
                     @foreach($upcomingAppointments as $appointment)
                         <li class="mb-2">
-                            <strong>{{ $appointment->start_time->format('l, F j, Y \a\t g:i A') }}</strong>
+                            <strong>{{ \Carbon\Carbon::parse($appointment->date)->format('l, F j, Y') }} at {{ $appointment->timeslot }}</strong>
                             <span>with {{ $appointment->user->name }}</span>
                         </li>
                     @endforeach

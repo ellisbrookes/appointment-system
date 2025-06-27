@@ -17,8 +17,10 @@ class CompanyPublicController extends Controller
         
         // Get upcoming appointments for this company (for availability display)
         $upcomingAppointments = $company->appointments()
-            ->where('start_time', '>=', now())
-            ->orderBy('start_time')
+            ->where('date', '>=', now()->toDateString())
+            ->with('user')
+            ->orderBy('date')
+            ->orderBy('timeslot')
             ->take(10)
             ->get();
             
