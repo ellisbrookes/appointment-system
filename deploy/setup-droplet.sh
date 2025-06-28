@@ -36,10 +36,10 @@ echo "📁 Creating application directory..."
 sudo mkdir -p /opt/appointment-system
 sudo chown $USER:$USER /opt/appointment-system
 
-# Clone repository (you'll need to replace with your repo URL)
+# Clone repository
 echo "📥 Cloning repository..."
 cd /opt/appointment-system
-git clone https://github.com/YOUR_USERNAME/appointment-system.git .
+git clone https://github.com/ellisbrookes/appointment-system.git .
 
 # Switch to production-setup branch
 git checkout production-setup

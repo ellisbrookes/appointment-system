@@ -30,7 +30,7 @@ SSH into your droplet and run the setup script:
 ssh root@YOUR_DROPLET_IP
 
 # Download and run setup script
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/appointment-system/production-setup/deploy/setup-droplet.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ellisbrookes/appointment-system/production-setup/deploy/setup-droplet.sh | bash
 
 # Log out and back in to apply docker group changes
 exit
