@@ -31,12 +31,13 @@ class PasswordResetTest extends TestCase
         $user = User::factory()->create();
         $token = Password::createToken($user);
 
-        $response = $this->post('/auth/reset-password', [
-            'token' => $token,
-            'email' => $user->email,
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
+        $response = $this
+            ->post('/auth/reset-password', [
+                'token' => $token,
+                'email' => $user->email,
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ]);
 
         $response->assertRedirect(route('login'));
         $response->assertSessionHas('alert.type', 'success');
@@ -50,12 +51,13 @@ class PasswordResetTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post('/auth/reset-password', [
-            'token' => 'invalid-token',
-            'email' => $user->email,
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
+        $response = $this
+            ->post('/auth/reset-password', [
+                'token' => 'invalid-token',
+                'email' => $user->email,
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ]);
 
         $response->assertRedirect();
         $response->assertSessionHasErrors(['email']);
@@ -64,12 +66,13 @@ class PasswordResetTest extends TestCase
     #[Test]
     public function password_reset_requires_valid_email()
     {
-        $response = $this->post('/auth/reset-password', [
-            'token' => 'some-token',
-            'email' => 'invalid-email',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
+        $response = $this
+            ->post('/auth/reset-password', [
+                'token' => 'some-token',
+                'email' => 'invalid-email',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ]);
 
         $response->assertSessionHasErrors(['email']);
     }
@@ -80,12 +83,13 @@ class PasswordResetTest extends TestCase
         $user = User::factory()->create();
         $token = Password::createToken($user);
 
-        $response = $this->post('/auth/reset-password', [
-            'token' => $token,
-            'email' => $user->email,
-            'password' => 'password123',
-            'password_confirmation' => 'different-password',
-        ]);
+        $response = $this
+            ->post('/auth/reset-password', [
+                'token' => 'some-token',
+                'email' => 'test@example.com',
+                'password' => 'password123',
+                'password_confirmation' => 'different-password',
+            ]);
 
         $response->assertSessionHasErrors(['password']);
     }
@@ -96,12 +100,13 @@ class PasswordResetTest extends TestCase
         $user = User::factory()->create();
         $token = Password::createToken($user);
 
-        $response = $this->post('/auth/reset-password', [
-            'token' => $token,
-            'email' => $user->email,
-            'password' => '123',
-            'password_confirmation' => '123',
-        ]);
+        $response = $this
+            ->post('/auth/reset-password', [
+                'token' => 'some-token',
+                'email' => 'test@example.com',
+                'password' => '123',
+                'password_confirmation' => '123',
+            ]);
 
         $response->assertSessionHasErrors(['password']);
     }
@@ -109,7 +114,8 @@ class PasswordResetTest extends TestCase
     #[Test]
     public function password_reset_requires_all_fields()
     {
-        $response = $this->post('/auth/reset-password', []);
+        $response = $this
+            ->post('/auth/reset-password', []);
 
         $response->assertSessionHasErrors(['token', 'email', 'password']);
     }

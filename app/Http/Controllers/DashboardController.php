@@ -11,6 +11,11 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
+        // Check if user needs to complete onboarding
+        if (!isset($user->settings['onboarding_completed']) || $user->settings['onboarding_completed'] !== true) {
+            return redirect()->route('onboarding.welcome');
+        }
+
         $appointmentsCount = Appointment::where('user_id', $user->id)
             ->where('status', 'open')
             ->count();

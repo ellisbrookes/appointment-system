@@ -47,34 +47,37 @@ class RegisteredUserControllerTest extends TestCase
 
     public function test_registration_requires_name(): void
     {
-        $response = $this->post('/auth/register', [
-            'email' => 'test@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
+        $response = $this
+            ->post('/auth/register', [
+                'email' => 'test@example.com',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ]);
 
         $response->assertSessionHasErrors('name');
     }
 
     public function test_registration_requires_email(): void
     {
-        $response = $this->post('/auth/register', [
-            'name' => 'Test User',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
+        $response = $this
+            ->post('/auth/register', [
+                'name' => 'Test User',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ]);
 
         $response->assertSessionHasErrors('email');
     }
 
     public function test_registration_requires_valid_email(): void
     {
-        $response = $this->post('/auth/register', [
-            'name' => 'Test User',
-            'email' => 'invalid-email',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
+        $response = $this
+            ->post('/auth/register', [
+                'name' => 'Test User',
+                'email' => 'invalid-email',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ]);
 
         $response->assertSessionHasErrors('email');
     }
@@ -83,34 +86,37 @@ class RegisteredUserControllerTest extends TestCase
     {
         User::factory()->create(['email' => 'test@example.com']);
 
-        $response = $this->post('/auth/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
+        $response = $this
+            ->post('/auth/register', [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ]);
 
         $response->assertSessionHasErrors('email');
     }
 
     public function test_registration_requires_password(): void
     {
-        $response = $this->post('/auth/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $response = $this
+            ->post('/auth/register', [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ]);
 
         $response->assertSessionHasErrors('password');
     }
 
     public function test_registration_requires_password_confirmation(): void
     {
-        $response = $this->post('/auth/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'different-password',
-        ]);
+        $response = $this
+            ->post('/auth/register', [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+                'password' => 'password123',
+                'password_confirmation' => 'different-password',
+            ]);
 
         $response->assertSessionHasErrors('password');
     }
@@ -119,13 +125,14 @@ class RegisteredUserControllerTest extends TestCase
     {
         Event::fake();
 
-        $response = $this->post('/auth/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-            'telephone_number' => null,
-        ]);
+        $response = $this
+            ->post('/auth/register', [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+                'telephone_number' => null,
+            ]);
 
         $this->assertDatabaseHas('users', [
             'name' => 'Test User',
@@ -138,12 +145,13 @@ class RegisteredUserControllerTest extends TestCase
 
     public function test_registration_validates_name_max_length(): void
     {
-        $response = $this->post('/auth/register', [
-            'name' => str_repeat('a', 256), // 256 characters, exceeds max of 255
-            'email' => 'test@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
+        $response = $this
+            ->post('/auth/register', [
+                'name' => str_repeat('a', 256), // 256 characters, exceeds max of 255
+                'email' => 'test@example.com',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ]);
 
         $response->assertSessionHasErrors('name');
     }
@@ -152,12 +160,13 @@ class RegisteredUserControllerTest extends TestCase
     {
         $longEmail = str_repeat('a', 244) . '@example.com'; // 244 + 12 = 256 characters, exceeds max of 255
 
-        $response = $this->post('/auth/register', [
-            'name' => 'Test User',
-            'email' => $longEmail,
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
+        $response = $this
+            ->post('/auth/register', [
+                'name' => 'Test User',
+                'email' => $longEmail,
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ]);
 
         $response->assertSessionHasErrors('email');
     }
@@ -166,12 +175,13 @@ class RegisteredUserControllerTest extends TestCase
     {
         Event::fake();
 
-        $response = $this->post('/auth/register', [
-            'name' => 'Test User',
-            'email' => 'TEST@EXAMPLE.COM',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
+        $response = $this
+            ->post('/auth/register', [
+                'name' => 'Test User',
+                'email' => 'TEST@EXAMPLE.COM',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ]);
 
         $this->assertDatabaseHas('users', [
             'name' => 'Test User',

@@ -163,12 +163,21 @@ class CompanyMemberControllerTest extends TestCase
 
     public function test_admin_can_update_member_role(): void
     {
+        // Get the actual CompanyMember record for this member
+        $memberRecord = CompanyMember::where('company_id', $this->company->id)
+            ->where('user_id', $this->member->id)
+            ->where('role', 'member')
+            ->first();
+
+        $this->assertNotNull($memberRecord, 'Member record should exist');
+
         $response = $this->actingAs($this->admin)->patch(
-            route('dashboard.companies.members.update-role', [$this->company, $this->member]),
+            route('dashboard.companies.members.update-role', [$this->company, $memberRecord]),
             ['role' => 'admin']
         );
 
         $this->assertDatabaseHas('company_members', [
+            'id' => $memberRecord->id,
             'user_id' => $this->member->id,
             'role' => 'admin',
         ]);

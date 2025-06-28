@@ -12,6 +12,9 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        
+        // Disable CSRF verification for all tests
+        $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class);
 
         if (File::exists(base_path('.env.testing.local'))) {
             $contents = file_get_contents(base_path('.env.testing.local'));

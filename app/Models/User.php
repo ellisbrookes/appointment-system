@@ -84,7 +84,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'telephone_number',
-        'settings'
+        'settings',
+        'stripe_connect_id'
     ];
 
     /**
