@@ -47,6 +47,9 @@
                 </x-shared.alert>
             @endif
 
+            {{-- Trial Alert --}}
+            @include('components.trial-alert')
+
             @yield("content")
         </main>
     </body>
