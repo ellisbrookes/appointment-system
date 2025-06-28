@@ -146,7 +146,6 @@ DB_PASSWORD=your_db_password_here" >> .env
           # Stop current containers
           echo "🛑 Stopping current containers..."
           docker-compose -f docker-compose.prod.yml down || true
-          docker-compose -f docker-compose.prod.fixed.yml down || true
           
           # Pull latest changes from git
           echo "📥 Pulling latest changes..."
@@ -163,7 +162,7 @@ DB_PASSWORD=your_db_password_here" >> .env
           
           # Start services
           echo "🔄 Starting services..."
-          docker-compose -f docker-compose.prod.fixed.yml up -d
+          docker-compose -f docker-compose.prod.yml up -d
           
           
           # Wait for services to be ready
@@ -172,7 +171,7 @@ DB_PASSWORD=your_db_password_here" >> .env
           
           # Check if services are running
           echo "✅ Checking service status..."
-          docker-compose -f docker-compose.prod.fixed.yml ps
+          docker-compose -f docker-compose.prod.yml ps
           
           # Clean up old images
           echo "🧹 Cleaning up old images..."
