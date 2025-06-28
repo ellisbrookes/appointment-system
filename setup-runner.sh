@@ -68,9 +68,9 @@ SESSION_DRIVER=redis
 QUEUE_CONNECTION=redis
 
 # Stripe Configuration (replace with your actual keys)
-STRIPE_KEY=pk_test_your_stripe_public_key
-STRIPE_SECRET=sk_test_your_stripe_secret_key
-STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+STRIPE_KEY=pk_test_PLACEHOLDER_REPLACE_WITH_ACTUAL_KEY
+STRIPE_SECRET=sk_test_PLACEHOLDER_REPLACE_WITH_ACTUAL_KEY
+STRIPE_WEBHOOK_SECRET=whsec_PLACEHOLDER_REPLACE_WITH_ACTUAL_KEY
 
 # Mail Configuration
 MAIL_MAILER=smtp

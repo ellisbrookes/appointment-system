@@ -14,7 +14,7 @@
 
 3. Add your Stripe test secret key to `.env.testing`:
    ```
-   STRIPE_SECRET=sk_test_YOUR_ACTUAL_STRIPE_TEST_KEY_HERE
+   STRIPE_SECRET=sk_test_PLACEHOLDER_REPLACE_WITH_ACTUAL_KEY
    ```
    
    **Note:** Replace `YOUR_ACTUAL_STRIPE_TEST_KEY_HERE` with your real Stripe test key.
