@@ -30,9 +30,10 @@ class PasswordForgotTest extends TestCase
 
         $user = User::factory()->create();
 
-        $response = $this->post('/auth/forgot-password', [
-            'email' => $user->email,
-        ]);
+        $response = $this
+            ->post('/auth/forgot-password', [
+                'email' => $user->email,
+            ]);
 
         $response->assertRedirect();
         $response->assertSessionHas('alert.type', 'success');
@@ -44,9 +45,10 @@ class PasswordForgotTest extends TestCase
     #[Test]
     public function password_reset_link_shows_success_message_for_invalid_email()
     {
-        $response = $this->post('/auth/forgot-password', [
-            'email' => 'nonexistent@example.com',
-        ]);
+        $response = $this
+            ->post('/auth/forgot-password', [
+                'email' => 'nonexistent@example.com',
+            ]);
 
         // Should still show success message for security reasons
         $response->assertRedirect();
@@ -56,7 +58,8 @@ class PasswordForgotTest extends TestCase
     #[Test]
     public function password_reset_request_requires_email()
     {
-        $response = $this->post('/auth/forgot-password', []);
+        $response = $this
+            ->post('/auth/forgot-password', []);
 
         $response->assertSessionHasErrors(['email']);
     }
@@ -64,9 +67,10 @@ class PasswordForgotTest extends TestCase
     #[Test]
     public function password_reset_request_requires_valid_email_format()
     {
-        $response = $this->post('/auth/forgot-password', [
-            'email' => 'invalid-email',
-        ]);
+        $response = $this
+            ->post('/auth/forgot-password', [
+                'email' => 'invalid-email',
+            ]);
 
         $response->assertSessionHasErrors(['email']);
     }

@@ -13,7 +13,9 @@ class DashboardTest extends TestCase
     #[Test]
     public function authenticated_user_can_access_dashboard()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'settings' => ['onboarding_completed' => true]
+        ]);
 
         $response = $this->actingAs($user)->get('/dashboard');
 
@@ -24,7 +26,9 @@ class DashboardTest extends TestCase
     #[Test]
     public function dashboard_shows_correct_appointment_counts()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'settings' => ['onboarding_completed' => true]
+        ]);
         
         // Create appointments with different statuses
         Appointment::factory()->create([
@@ -62,7 +66,9 @@ class DashboardTest extends TestCase
     #[Test]
     public function dashboard_shows_recent_appointments()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'settings' => ['onboarding_completed' => true]
+        ]);
         
         // Create 6 appointments (5 should be shown)
         for ($i = 0; $i < 6; $i++) {

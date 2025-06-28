@@ -44,10 +44,9 @@ class SettingsControllerTest extends TestCase
         $response->assertRedirect('/dashboard/settings');
         $response->assertSessionHas('alert.type', 'success');
 
-        $this->assertDatabaseHas('users', [
-            'id' => $user->id,
-            'settings' => json_encode($settingsData['settings']),
-        ]);
+        // Verify settings were saved correctly
+        $user->refresh();
+        $this->assertEquals($settingsData['settings'], $user->settings);
     }
 
     #[Test]
