@@ -89,7 +89,17 @@ class RegisteredUserController extends Controller
 
     event(new Registered($user));
 
-    $message = 'Account successfully created, please verify your email';
+    // Start 10-day free trial
+    try {
+        $user->newSubscription('basic', 'price_1QbtKfGVcskF822y3QlF13vZ')
+            ->trialDays(10)
+            ->create();
+    } catch (\Exception $e) {
+        // Log the error but don't fail registration
+        \Log::warning('Failed to create trial subscription for user ' . $user->id . ': ' . $e->getMessage());
+    }
+
+    $message = 'Account successfully created with 10-day free trial! Please verify your email';
     if ($request->has('company_invite')) {
       $company = Company::find($request->company_invite);
       if ($company) {
