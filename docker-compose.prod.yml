@@ -2,10 +2,9 @@ version: '3.8'
 
 services:
   app:
-    image: ghcr.io/YOUR_USERNAME/appointment-system:alpha-latest
+    image: ghcr.io/ellisbrookes/appointment-system:alpha-latest
     ports:
       - "80:80"
-      - "443:443"
     environment:
       - APP_ENV=production
       - APP_DEBUG=false
@@ -17,6 +16,7 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+      - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - CACHE_DRIVER=redis
@@ -25,7 +25,7 @@ services:
       - STRIPE_KEY=${STRIPE_KEY}
       - STRIPE_SECRET=${STRIPE_SECRET}
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
-      - MAIL_MAILER=${MAIL_MAILER}
+      - MAIL_MAILER=${MAIL_MAILER:-log}
       - MAIL_HOST=${MAIL_HOST}
       - MAIL_PORT=${MAIL_PORT}
       - MAIL_USERNAME=${MAIL_USERNAME}
@@ -35,7 +35,6 @@ services:
       - MAIL_FROM_NAME=${MAIL_FROM_NAME}
     volumes:
       - app_storage:/var/www/html/storage
-      - ./ssl:/etc/ssl/certs/appointment-system
     depends_on:
       - db
       - redis
@@ -53,8 +52,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
-    ports:
-      - "3306:3306"
     restart: unless-stopped
     networks:
       - appointment-network
@@ -63,24 +60,6 @@ services:
     image: redis:7-alpine
     volumes:
       - redis_data:/data
-    ports:
-      - "6379:6379"
-    restart: unless-stopped
-    networks:
-      - appointment-network
-
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./ssl:/etc/ssl/certs/appointment-system
-      - app_storage:/var/www/html/storage
-    depends_on:
-      - app
     restart: unless-stopped
     networks:
       - appointment-network
