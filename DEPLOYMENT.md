@@ -59,8 +59,8 @@ nano .env
 
 Update these important values:
 - `DB_PASSWORD=` (set a strong password)
-- `STRIPE_KEY=pk_test_...` (your Stripe test public key)
-- `STRIPE_SECRET=sk_test_...` (your Stripe test secret key)
+- `STRIPE_KEY=pk_test_YOUR_KEY_HERE` (your Stripe test public key)
+- `STRIPE_SECRET=sk_test_YOUR_KEY_HERE` (your Stripe test secret key)
 - Add any other required credentials
 
 ### 5. Start the Application
