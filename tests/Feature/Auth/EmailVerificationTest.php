@@ -67,7 +67,9 @@ class EmailVerificationTest extends TestCase
 
         $user = User::factory()->unverified()->create();
 
-        $response = $this->actingAs($user)->post('/auth/email/verification-notification');
+        $response = $this->actingAs($user)
+            
+            ->post('/auth/email/verification-notification');
 
         $response->assertRedirect();
         $response->assertSessionHas('alert.type', 'success');
@@ -81,7 +83,9 @@ class EmailVerificationTest extends TestCase
     {
         $user = User::factory()->create(); // Already verified
 
-        $response = $this->actingAs($user)->post('/auth/email/verification-notification');
+        $response = $this->actingAs($user)
+            
+            ->post('/auth/email/verification-notification');
 
         $response->assertRedirect(route('dashboard'));
         $response->assertSessionHas('alert.type', 'info');
@@ -108,7 +112,8 @@ class EmailVerificationTest extends TestCase
     #[Test]
     public function unauthenticated_users_cannot_resend_verification()
     {
-        $response = $this->post('/auth/email/verification-notification');
+        $response = $this
+            ->post('/auth/email/verification-notification');
 
         $response->assertRedirect(route('login'));
     }

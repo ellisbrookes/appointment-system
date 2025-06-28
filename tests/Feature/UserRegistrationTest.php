@@ -21,10 +21,11 @@ class UserRegistrationTest extends TestCase
         ]);
 
         // Attempt login
-        $loginResponse = $this->post('/auth/login', [
-            'email' => $user->email,
-            'password' => 'password123',
-        ]);
+        $loginResponse = $this
+            ->post('/auth/login', [
+                'email' => $user->email,
+                'password' => 'password123',
+            ]);
 
         $loginResponse->assertRedirect('/dashboard');
 
@@ -67,10 +68,11 @@ class UserRegistrationTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        $loginResponse = $this->post('/auth/login', [
-            'email' => $user->email,
-            'password' => 'password123',
-        ]);
+        $loginResponse = $this
+            ->post('/auth/login', [
+                'email' => $user->email,
+                'password' => 'password123',
+            ]);
 
         // Verified user should be redirected to dashboard
         $loginResponse->assertRedirect('/dashboard');
