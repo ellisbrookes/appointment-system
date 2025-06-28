@@ -128,29 +128,49 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Deploy to DigitalOcean Droplet
+    - name: Deploy Application
       run: |
-        # Navigate to application directory
-        cd /opt/appointment-system
+        echo "🚀 Starting deployment..."
         
-        # Create backup of current deployment
+        # Navigate to application directory
+        cd /opt/appointment-system || { echo "❌ Application directory not found"; exit 1; }
+        
+        echo "📁 Current directory: $(pwd)"
+        
+        # Stop current containers
+        echo "🛑 Stopping current containers..."
         docker-compose -f docker-compose.prod.yml down || true
         
-        # Pull latest changes
-        git pull origin production-setup
+        # Pull latest changes from git
+        echo "📥 Pulling latest changes..."
+        git fetch origin
+        git reset --hard origin/production-setup
+        
+        # Login to GitHub Container Registry
+        echo "🔐 Logging into GitHub Container Registry..."
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
         
         # Pull latest Docker image
-        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u github-actions --password-stdin
+        echo "📦 Pulling latest Docker image..."
         docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:alpha-latest
         
-        # Update image tag in docker-compose
-        sed -i 's|image:.*|image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:alpha-latest|' docker-compose.prod.yml
-        
         # Start services
+        echo "🔄 Starting services..."
         docker-compose -f docker-compose.prod.yml up -d
         
+        # Wait for services to be ready
+        echo "⏳ Waiting for services to start..."
+        sleep 10
+        
+        # Check if services are running
+        echo "✅ Checking service status..."
+        docker-compose -f docker-compose.prod.yml ps
+        
         # Clean up old images
+        echo "🧹 Cleaning up old images..."
         docker image prune -f
+        
+        echo "🎉 Deployment completed successfully!"
 
   notify:
     needs: [test, build-and-push, deploy]
