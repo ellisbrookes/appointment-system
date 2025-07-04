@@ -62,7 +62,7 @@ jobs:
     - name: Build assets
       run: npm run build
 
-    - name: Copy environment file
+    - name: Copy environment file for testing
       run: cp .env.example .env
 
     - name: Generate application key
@@ -145,12 +145,25 @@ DB_PASSWORD=your_db_password_here" >> .env
           
           # Stop current containers
           echo "🛑 Stopping current containers..."
-          docker-compose -f docker-compose.prod.yml down || true
+          docker-compose down || true
+          
+          # Backup existing .env file
+          echo "💾 Backing up existing .env file..."
+          if [ -f .env ]; then
+            cp .env .env.backup
+            echo "✅ .env file backed up"
+          fi
           
           # Pull latest changes from git
           echo "📥 Pulling latest changes..."
           git fetch origin
           git reset --hard origin/production-setup
+          
+          # Restore .env file if backup exists
+          if [ -f .env.backup ]; then
+            mv .env.backup .env
+            echo "✅ .env file restored from backup"
+          fi
           
           # Login to GitHub Container Registry
           echo "🔐 Logging into GitHub Container Registry..."
@@ -162,16 +175,15 @@ DB_PASSWORD=your_db_password_here" >> .env
           
           # Start services
           echo "🔄 Starting services..."
-          docker-compose -f docker-compose.prod.yml up -d
-          
+          docker-compose up -d
           
           # Wait for services to be ready
           echo "⏳ Waiting for services to start..."
-          sleep 10
+          sleep 30
           
           # Check if services are running
           echo "✅ Checking service status..."
-          docker-compose -f docker-compose.prod.yml ps
+          docker-compose ps
           
           # Clean up old images
           echo "🧹 Cleaning up old images..."
