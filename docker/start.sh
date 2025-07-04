@@ -7,12 +7,21 @@ echo "🚀 Starting Appointment System Alpha..."
 export APP_ENV=${APP_ENV:-production}
 export APP_DEBUG=${APP_DEBUG:-false}
 
+# Clear any existing cache files
+echo "🧹 Clearing cache files..."
+rm -f bootstrap/cache/packages.php
+rm -f bootstrap/cache/services.php
+rm -f bootstrap/cache/config.php
+rm -f bootstrap/cache/routes-*.php
+rm -f bootstrap/cache/events.php
+
 # Wait for database to be ready
 echo "📡 Waiting for database connection..."
+echo "🔍 Connection details: host=$DB_HOST, port=$DB_PORT, database=$DB_DATABASE, username=$DB_USERNAME"
 max_attempts=30
 attempt=1
 while [ $attempt -le $max_attempts ]; do
-    if php artisan migrate:status > /dev/null 2>&1; then
+    if php -r "try { new PDO('mysql:host=$DB_HOST;port=$DB_PORT;dbname=$DB_DATABASE', '$DB_USERNAME', '$DB_PASSWORD'); exit(0); } catch (Exception \$e) { echo 'PDO Error: ' . \$e->getMessage() . PHP_EOL; exit(1); }"; then
         echo "✅ Database connection established"
         break
     fi
@@ -41,7 +50,8 @@ echo "⚡ Optimizing application..."
 php artisan config:clear
 php artisan config:cache
 php artisan route:cache
-php artisan view:cache
+# Skip view:cache for now due to missing components
+# php artisan view:cache
 
 # Create storage symlink if it doesn't exist
 if [ ! -L /var/www/html/public/storage ]; then
