@@ -27,7 +27,16 @@ class PricingService
             $products = $this->stripe->products->all(['active' => true]);
             $prices = $this->stripe->prices->all(['active' => true]);
 
-            return collect($products->data)->map(function ($product) use ($prices) {
+            return collect($products->data)
+                ->filter(function ($product) {
+                    // Filter out test products
+                    $name = strtolower($product->name ?? '');
+                    $description = strtolower($product->description ?? '');
+                    
+                    // Exclude products with "test" in name or description
+                    return !str_contains($name, 'test') && !str_contains($description, 'test');
+                })
+                ->map(function ($product) use ($prices) {
                 $productPrices = collect($prices->data)->filter(function ($price) use ($product) {
                     return $price->product === $product->id;
                 })->map(function ($price) {
