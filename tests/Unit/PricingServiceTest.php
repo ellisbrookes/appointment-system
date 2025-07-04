@@ -126,8 +126,8 @@ class PricingServiceTest extends TestCase
         $mockProducts->data = [
             (object) [
                 'id' => 'prod_no_price',
-                'name' => 'Product Without Price',
-                'description' => 'This product has no prices'
+                'name' => 'Test Product Without Price',
+                'description' => 'This test product has no prices'
             ]
         ];
 
@@ -167,8 +167,8 @@ class PricingServiceTest extends TestCase
         $mockProducts->data = [
             (object) [
                 'id' => 'prod_one_time',
-                'name' => 'One Time Product',
-                'description' => 'Product with one-time pricing'
+                'name' => 'Test One Time Product',
+                'description' => 'Test product with one-time pricing'
             ]
         ];
 
