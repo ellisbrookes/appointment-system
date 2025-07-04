@@ -18,6 +18,9 @@ nano .env.production
 - `MYSQL_ROOT_PASSWORD` - MySQL root password
 - `APP_KEY` - Laravel application key (generate with: `php artisan key:generate --show`)
 - `APP_URL` - Your server URL (e.g., http://159.65.226.91)
+- `STRIPE_KEY` - Stripe publishable key (pk_test_... or pk_live_...)
+- `STRIPE_SECRET` - Stripe secret key (sk_test_... or sk_live_...)
+- `STRIPE_WEBHOOK_SECRET` - Stripe webhook secret (whsec_...)
 
 ### 3. Deploy
 ```bash
