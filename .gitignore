@@ -7,9 +7,9 @@
 /storage/pail
 /vendor
 .env
-.env.backup
-.env.production
-.env.testing
+.env.*
+!.env.example
+!.env.testing.example
 .phpactor.json
 .phpunit.result.cache
 Homestead.json
@@ -23,3 +23,24 @@ yarn-error.log
 /.vscode
 /.zed
 /coverage
+
+# Security - never commit these
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Backup and temporary files
+*.backup
+*.tmp
+*.log
+
+# Docker files that may contain secrets
+docker-compose.override.yml
+docker-compose.prod.yml
+docker-compose.local.yml
+
+# Deployment scripts with potential secrets
+quick-droplet-setup.sh
+setup-runner.sh
+deploy/
