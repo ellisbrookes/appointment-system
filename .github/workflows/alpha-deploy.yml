@@ -76,8 +76,7 @@ jobs:
         echo "DB_PORT=3306" >> .env
         echo "DB_DATABASE=testing" >> .env
         echo "DB_USERNAME=root" >> .env
-        echo "
-DB_PASSWORD=your_db_password_here" >> .env
+        echo "DB_PASSWORD=your_db_password_here" >> .env
 
     - name: Run database migrations
       run: php artisan migrate --force
