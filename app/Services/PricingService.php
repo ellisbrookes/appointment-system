@@ -29,12 +29,18 @@ class PricingService
 
             return collect($products->data)
                 ->filter(function ($product) {
-                    // Filter out test products
                     $name = strtolower($product->name ?? '');
                     $description = strtolower($product->description ?? '');
                     
-                    // Exclude products with "test" in name or description
-                    return !str_contains($name, 'test') && !str_contains($description, 'test');
+                    $isTestProduct = str_contains($name, 'test') || str_contains($description, 'test');
+                    
+                    // In production, exclude test products
+                    // In test/local environments, include test products
+                    if (app()->environment('production')) {
+                        return !$isTestProduct; // Exclude test products in production
+                    } else {
+                        return $isTestProduct; // Only show test products in test/local
+                    }
                 })
                 ->map(function ($product) use ($prices) {
                 $productPrices = collect($prices->data)->filter(function ($price) use ($product) {
