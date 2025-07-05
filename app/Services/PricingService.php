@@ -15,14 +15,23 @@ class PricingService
         $stripeSecret = config('cashier.secret');
         
         if (empty($stripeSecret)) {
-            throw new \RuntimeException('Stripe secret key is not configured. Please set STRIPE_SECRET in your .env file.');
+            $this->stripe = null;
+            return;
         }
         
-        $this->stripe = new StripeClient($stripeSecret);
+        try {
+            $this->stripe = new StripeClient($stripeSecret);
+        } catch (Exception $e) {
+            $this->stripe = null;
+        }
     }
 
     public function getProductsWithPrices(): Collection
     {
+        if ($this->stripe === null) {
+            throw new \RuntimeException('Stripe is not configured');
+        }
+        
         try {
             $products = $this->stripe->products->all(['active' => true]);
             $prices = $this->stripe->prices->all(['active' => true]);
