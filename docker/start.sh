@@ -53,6 +53,11 @@ php artisan route:cache
 # Skip view:cache for now due to missing components
 # php artisan view:cache
 
+# Clear view cache to prevent 500 errors from stale cached Blade templates
+echo "🧹 Clearing view cache to prevent template errors..."
+php artisan view:clear
+php artisan cache:clear
+
 # Create storage symlink if it doesn't exist
 if [ ! -L /var/www/html/public/storage ]; then
     echo "🔗 Creating storage symlink..."
