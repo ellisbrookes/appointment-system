@@ -23,10 +23,10 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable()->change();
             
             // Add customer fields
-            $table->string('customer_name')->nullable()->after('user_id');
-            $table->string('customer_email')->nullable()->after('customer_name');
-            $table->string('customer_phone')->nullable()->after('customer_email');
-            $table->text('customer_message')->nullable()->after('customer_phone');
+            $table->string('customer_name')->nullable();
+            $table->string('customer_email')->nullable();
+            $table->string('customer_phone')->nullable();
+            $table->text('customer_message')->nullable();
         });
     }
 

@@ -43,8 +43,13 @@
             >
                 @foreach ($productsWithPrices as $product)
                     @php
-                        $price = collect($product->prices)->firstWhere("interval", "month") ?? $product->prices[0];
+                        $price = isset($product->prices) ? collect($product->prices)->firstWhere("interval", "month") : null;
+                        if (!$price && isset($product->prices) && is_array($product->prices) && count($product->prices) > 0) {
+                            $price = (isset($product->prices) && is_array($product->prices) && count($product->prices) > 0) ? $product->prices[0] : null;
+                        }
                     @endphp
+
+                    @if($price)
 
                     <div
                         class="flex flex-col items-center rounded-xl bg-white px-6 py-10 text-center shadow-md transition hover:shadow-lg dark:bg-gray-800"
@@ -65,6 +70,7 @@
                             <li>✔ Feature 3</li>
                         </ul>
                     </div>
+                    @endif
                 @endforeach
             </div>
 
@@ -89,8 +95,8 @@
 
             @php
                 $stats = [
-                    ["Users", number_format($userCount), "users"],
-                    ["Appointments", number_format($appointmentCount), "calendar-check"],
+                    ["Users", number_format($userCount ?? 0), "users"],
+                    ["Appointments", number_format($appointmentCount ?? 0), "calendar-check"],
                 ];
             @endphp
 

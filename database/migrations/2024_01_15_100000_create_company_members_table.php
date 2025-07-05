@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('email')->nullable()->after('user_id');
+            $table->string('email')->nullable();
             $table->enum('role', ['owner', 'admin', 'member'])->default('member');
             $table->enum('status', ['active', 'invited', 'inactive'])->default('invited');
             $table->timestamp('joined_at')->nullable();

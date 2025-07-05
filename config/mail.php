@@ -30,7 +30,7 @@ return [
     | your mailers below. You may also add additional mailers if needed.
     |
     | Supported: "smtp", "sendmail", "mailgun", "ses", "ses-v2",
-    |            "postmark", "resend", "log", "array",
+    |            "postmark", "resend", "sendgrid", "log", "array",
     |            "failover", "roundrobin"
     |
     */
@@ -63,6 +63,11 @@ return [
 
         'resend' => [
             'transport' => 'resend',
+        ],
+
+        'sendgrid' => [
+            'transport' => 'sendgrid',
+            'api_key' => env('SENDGRID_API_KEY'),
         ],
 
         'sendmail' => [

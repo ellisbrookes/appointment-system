@@ -1,0 +1,207 @@
+name: Alpha Release Deployment
+
+on:
+  push:
+    branches: [ production-setup ]
+  pull_request:
+    branches: [ master ]
+    types: [ closed ]
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: testing
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, dom, fileinfo, mysql, gd, zip
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install NPM dependencies
+      run: npm ci
+
+    - name: Build assets
+      run: npm run build
+
+    - name: Copy environment file for testing
+      run: cp .env.example .env
+
+    - name: Generate application key
+      run: php artisan key:generate
+
+    - name: Set database configuration
+      run: |
+        php artisan config:clear
+        echo "DB_CONNECTION=mysql" >> .env
+        echo "DB_HOST=127.0.0.1" >> .env
+        echo "DB_PORT=3306" >> .env
+        echo "DB_DATABASE=testing" >> .env
+        echo "DB_USERNAME=root" >> .env
+        echo "DB_PASSWORD=password" >> .env
+
+    - name: Run database migrations
+      run: php artisan migrate --force
+
+    - name: Run tests
+      run: php artisan test
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/production-setup' || (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master')
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=raw,value=alpha-latest
+          type=raw,value=alpha-{{date 'YYYYMMDD-HHmmss'}}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/production-setup' || (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master')
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Deploy to DigitalOcean Droplet
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.DO_HOST }}
+        username: ${{ secrets.DO_USERNAME }}
+        key: ${{ secrets.DO_SSH_KEY }}
+        script: |
+          echo "🚀 Starting deployment..."
+          
+          # Navigate to application directory
+          cd /opt/appointment-system || { echo "❌ Application directory not found"; exit 1; }
+          
+          echo "📁 Current directory: $(pwd)"
+          
+          # Stop current containers
+          echo "🛑 Stopping current containers..."
+          docker-compose down || true
+          
+          # Backup existing .env file
+          echo "💾 Backing up existing .env file..."
+          if [ -f .env ]; then
+            cp .env .env.backup
+            echo "✅ .env file backed up"
+          fi
+          
+          # Pull latest changes from git
+          echo "📥 Pulling latest changes..."
+          git fetch origin
+          git reset --hard origin/production-setup
+          
+          # Restore .env file if backup exists
+          if [ -f .env.backup ]; then
+            mv .env.backup .env
+            echo "✅ .env file restored from backup"
+          fi
+          
+          # Login to GitHub Container Registry
+          echo "🔐 Logging into GitHub Container Registry..."
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          
+          # Pull latest Docker image
+          echo "📦 Pulling latest Docker image..."
+          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:alpha-latest
+          
+          # Start services
+          echo "🔄 Starting services..."
+          docker-compose up -d
+          
+          # Wait for services to be ready
+          echo "⏳ Waiting for services to start..."
+          sleep 30
+          
+          # Check if services are running
+          echo "✅ Checking service status..."
+          docker-compose ps
+          
+          # Clean up old images
+          echo "🧹 Cleaning up old images..."
+          docker image prune -f
+          
+          echo "🎉 Deployment completed successfully!"
+
+  notify:
+    needs: [test, build-and-push, deploy]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Notify deployment status
+      run: |
+        if [ "${{ needs.deploy.result }}" == "success" ]; then
+          echo "✅ Alpha release deployed successfully!"
+          echo "🚀 Your appointment system alpha is live at: https://${{ secrets.DO_HOST }}"
+          echo "📝 Ready for user feedback and testing"
+        else
+          echo "❌ Deployment failed. Please check the logs."
+        fi

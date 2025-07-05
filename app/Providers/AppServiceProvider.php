@@ -22,5 +22,6 @@ class AppServiceProvider extends ServiceProvider
     {
         // Register Blade components
         Blade::component('alert', \App\View\Components\Shared\Alert::class);
+        Blade::component('text-input', \App\View\Components\Shared\TextInput::class);
     }
 }
