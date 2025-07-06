@@ -26,9 +26,8 @@ return new class extends Migration
             // Add stripe_connect_id column
             $table->string('stripe_connect_id')->nullable()->after('stripe_id');
             
-            // Add company_id column with foreign key
+            // Add company_id column (foreign key constraint added in separate migration)
             $table->unsignedBigInteger('company_id')->nullable()->after('id');
-            $table->foreign('company_id')->references('id')->on('companies')->onDelete('set null');
         });
     }
 
@@ -38,8 +37,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Drop foreign key and company_id
-            $table->dropForeign(['company_id']);
+            // Drop company_id (foreign key constraint dropped in separate migration)
             $table->dropColumn('company_id');
             
             // Drop stripe_connect_id
