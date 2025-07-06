@@ -15,19 +15,43 @@ class PricingService
         $stripeSecret = config('cashier.secret');
         
         if (empty($stripeSecret)) {
-            throw new \RuntimeException('Stripe secret key is not configured. Please set STRIPE_SECRET in your .env file.');
+            $this->stripe = null;
+            return;
         }
         
-        $this->stripe = new StripeClient($stripeSecret);
+        try {
+            $this->stripe = new StripeClient($stripeSecret);
+        } catch (Exception $e) {
+            $this->stripe = null;
+        }
     }
 
     public function getProductsWithPrices(): Collection
     {
+        if ($this->stripe === null) {
+            throw new \RuntimeException('Stripe is not configured');
+        }
+        
         try {
             $products = $this->stripe->products->all(['active' => true]);
             $prices = $this->stripe->prices->all(['active' => true]);
 
-            return collect($products->data)->map(function ($product) use ($prices) {
+            return collect($products->data)
+                ->filter(function ($product) {
+                    $name = strtolower($product->name ?? '');
+                    $description = strtolower($product->description ?? '');
+                    
+                    $isTestProduct = str_contains($name, 'test') || str_contains($description, 'test');
+                    
+                    // In production, exclude test products
+                    // In test/local environments, include test products
+                    if (app()->environment('production')) {
+                        return !$isTestProduct; // Exclude test products in production
+                    } else {
+                        return $isTestProduct; // Only show test products in test/local
+                    }
+                })
+                ->map(function ($product) use ($prices) {
                 $productPrices = collect($prices->data)->filter(function ($price) use ($product) {
                     return $price->product === $product->id;
                 })->map(function ($price) {
@@ -35,7 +59,7 @@ class PricingService
                         'id' => $price->id,
                         'currency' => $price->currency,
                         'unit_amount' => $price->unit_amount,
-                        'interval' => $price->recurring->interval ?? null,
+                        'interval' => $price->recurring ? $price->recurring->interval : null,
                     ];
                 });
 
