@@ -138,7 +138,7 @@ jobs:
           echo "🚀 Starting deployment..."
           
           # Navigate to application directory
-          cd /opt/appointment-system || { echo "❌ Application directory not found"; exit 1; }
+          cd /opt/skedulaa || { echo "❌ Application directory not found"; exit 1; }
           
           echo "📁 Current directory: $(pwd)"
           
@@ -200,7 +200,7 @@ jobs:
       run: |
         if [ "${{ needs.deploy.result }}" == "success" ]; then
           echo "✅ Alpha release deployed successfully!"
-          echo "🚀 Your appointment system alpha is live at: https://${{ secrets.DO_HOST }}"
+          echo "🚀 Your Skedulaa alpha is live at: https://${{ secrets.DO_HOST }}"
           echo "📝 Ready for user feedback and testing"
         else
           echo "❌ Deployment failed. Please check the logs."

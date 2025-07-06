@@ -19,7 +19,7 @@
 2. **SSH into your Digital Ocean server:**
    ```bash
    ssh root@your-server-ip
-   cd /opt/appointment-system
+   cd /opt/skedulaa
    ```
 
 3. **Run the deployment script:**

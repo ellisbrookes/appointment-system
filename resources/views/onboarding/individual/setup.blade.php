@@ -25,7 +25,7 @@
                         </div>
                         <h1 class="text-2xl font-bold text-gray-900 mb-2">Set Up Your Individual Account</h1>
                         <p class="text-gray-600">
-                            Let's configure your personal appointment system
+                            Let's configure your personal Skedulaa
                         </p>
                     </div>
 

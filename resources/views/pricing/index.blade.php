@@ -134,7 +134,7 @@
                     <div class="bg-white rounded-xl shadow-lg p-8">
                         <h2 class="text-2xl font-bold text-gray-900 mb-4">Ready to Get Started?</h2>
                         <p class="text-gray-600 mb-6">
-                            Join thousands of professionals who trust our appointment system to manage their business.
+                            Join thousands of professionals who trust Skedulaa to manage their business.
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4 justify-center">
                             @auth

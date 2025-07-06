@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Deployment script for appointment system
+# Deployment script for Skedulaa
 set -e  # Exit on any error
 
 echo "🚀 Starting deployment..."

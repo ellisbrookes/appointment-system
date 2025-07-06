@@ -25,9 +25,9 @@ class TestEmail extends Command
         $this->info('Mail host: ' . config('mail.mailers.' . config('mail.default') . '.host'));
 
         try {
-            Mail::raw('This is a test email from your appointment system. If you received this, your email configuration is working correctly!', function (Message $message) use ($email) {
+            Mail::raw('This is a test email from your Skedulaa system. If you received this, your email configuration is working correctly!', function (Message $message) use ($email) {
                 $message->to($email)
-                        ->subject('Test Email - Appointment System')
+                        ->subject('Test Email - Skedulaa')
                         ->from(config('mail.from.address'), config('mail.from.name'));
             });
 
