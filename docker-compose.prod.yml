@@ -15,7 +15,7 @@ services:
       - DB_CONNECTION=mysql
       - DB_HOST=db
       - DB_PORT=3306
-      - DB_DATABASE=${DB_DATABASE:-appointments}
+      - DB_DATABASE=${DB_DATABASE:-skedulaa}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - REDIS_HOST=redis
@@ -44,21 +44,21 @@ services:
       - db
       - redis
     networks:
-      - appointment-network
+      - skedulaa-network
     restart: unless-stopped
 
   db:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_DATABASE:-appointments}
+      MYSQL_DATABASE: ${DB_DATABASE:-skedulaa}
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
     networks:
-      - appointment-network
+      - skedulaa-network
     restart: unless-stopped
 
   redis:
@@ -66,7 +66,7 @@ services:
     volumes:
       - redis_data:/data
     networks:
-      - appointment-network
+      - skedulaa-network
     restart: unless-stopped
 
 volumes:
@@ -74,5 +74,5 @@ volumes:
   redis_data:
 
 networks:
-  appointment-network:
+  skedulaa-network:
     driver: bridge

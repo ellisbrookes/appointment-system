@@ -40,7 +40,7 @@ services:
       - redis
     restart: unless-stopped
     networks:
-      - appointment-network
+      - skedulaa-network
 
   db:
     image: mysql:8.0
@@ -54,7 +54,7 @@ services:
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
     restart: unless-stopped
     networks:
-      - appointment-network
+      - skedulaa-network
 
   redis:
     image: redis:7-alpine
@@ -62,12 +62,12 @@ services:
       - redis_data:/data
     restart: unless-stopped
     networks:
-      - appointment-network
+      - skedulaa-network
 
 volumes:
   db_data:
   redis_data:
 
 networks:
-  appointment-network:
+  skedulaa-network:
     driver: bridge
