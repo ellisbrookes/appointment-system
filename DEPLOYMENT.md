@@ -65,3 +65,4 @@ Make sure your `.env` file has all required variables:
 - Stripe keys
 - Mail configuration
 - App keys
+# Skedulaa deployment test
