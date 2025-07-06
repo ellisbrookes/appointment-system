@@ -3,7 +3,7 @@
 >
     <div class="container mx-auto flex items-center justify-between">
         <p class="text-xl font-bold text-black dark:text-white">
-            Appointment System
+            Skedulaa
         </p>
 
         <div class="flex items-center gap-6">

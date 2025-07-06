@@ -119,7 +119,7 @@
                 "
             >
                 <p style="margin: 0">
-                    &copy; {{ date("Y") }} Appointment System. All rights
+                    &copy; {{ date("Y") }} Skedulaa. All rights
                     reserved.
                 </p>
             </div>

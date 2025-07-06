@@ -3,7 +3,7 @@
 @section("content")
     {{-- Hero Section --}}
     <div class="border-b border-gray-400 py-24 text-center dark:border-white">
-        <h1 class="text-4xl font-bold">Welcome to Appointment System</h1>
+        <h1 class="text-4xl font-bold">Welcome to Skedulaa</h1>
         <p class="mt-6 text-lg">
             Your reliable tool for managing appointments effectively.
         </p>

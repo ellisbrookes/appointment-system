@@ -39,7 +39,7 @@
                 "
             >
                 <h1 style="margin: 0; font-size: 28px; font-weight: bold">
-                    Appointment System
+                    Skedulaa
                 </h1>
                 <p style="margin: 8px 0 0; font-size: 16px">
                     Thank you for booking with us!
@@ -124,7 +124,7 @@
                 "
             >
                 <p style="margin: 0">
-                    &copy; {{ date("Y") }} Appointment System. All rights
+                    &copy; {{ date("Y") }} Skedulaa. All rights
                     reserved.
                 </p>
             </div>
