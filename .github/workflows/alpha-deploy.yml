@@ -143,11 +143,99 @@ jobs:
           echo "🛑 Stopping current containers..."
           docker compose down || docker-compose down || true
           
+          # Create docker-compose.yml file
+          echo "📄 Creating docker-compose.yml..."
+          cat > docker-compose.yml << 'EOF'
+          version: '3.8'
+          
+          services:
+            app:
+              image: ghcr.io/ellisbrookes/skedulaa:alpha-latest
+              container_name: skedulaa-app-1
+              ports:
+                - "80:80"
+              depends_on:
+                - db
+                - redis
+              volumes:
+                - ./skedulaa-config/.env:/var/www/html/.env
+              networks:
+                - skedulaa
+          
+            db:
+              image: mysql:8.0
+              container_name: skedulaa-db-1
+              environment:
+                - MYSQL_ROOT_PASSWORD=rootpassword
+                - MYSQL_DATABASE=appointments
+                - MYSQL_USER=app
+                - MYSQL_PASSWORD=apppassword
+              volumes:
+                - db_data:/var/lib/mysql
+              networks:
+                - skedulaa
+          
+            redis:
+              image: redis:7-alpine
+              container_name: skedulaa-redis-1
+              volumes:
+                - redis_data:/data
+              networks:
+                - skedulaa
+          
+          volumes:
+            db_data:
+            redis_data:
+          
+          networks:
+            skedulaa:
+              driver: bridge
+          EOF
+          
+          # Create skedulaa-config directory if it doesn't exist
+          mkdir -p skedulaa-config
+          
           # Backup existing .env file
           echo "💾 Backing up existing .env file..."
           if [ -f skedulaa-config/.env ]; then
             cp skedulaa-config/.env skedulaa-config/.env.backup
             echo "✅ .env file backed up"
+          else
+            echo "📄 Creating default .env file..."
+            cat > skedulaa-config/.env << 'ENVEOF'
+          # Application Configuration
+          APP_NAME="Skedulaa"
+          APP_ENV=production
+          APP_KEY=base64:1GXTK4h5Sxlto5RGNf+T7ml1zLcS+sLs0BP5V/O7Hsc=
+          APP_DEBUG=false
+          APP_URL=https://skedulaa.com
+          
+          # Database Configuration
+          DB_CONNECTION=mysql
+          DB_HOST=skedulaa-db-1
+          DB_PORT=3306
+          DB_DATABASE=appointments
+          DB_USERNAME=app
+          DB_PASSWORD=apppassword
+          
+          # Redis Configuration
+          REDIS_HOST=skedulaa-redis-1
+          REDIS_PORT=6379
+          
+          # Cache Configuration
+          CACHE_DRIVER=redis
+          SESSION_DRIVER=redis
+          QUEUE_CONNECTION=redis
+          
+          # Mail Configuration
+          MAIL_MAILER=log
+          MAIL_FROM_ADDRESS=hello@ebrookes.dev
+          MAIL_FROM_NAME="Skedulaa"
+          
+          # Logging
+          LOG_CHANNEL=single
+          LOG_LEVEL=error
+          ENVEOF
           fi
           
           # Login to GitHub Container Registry
