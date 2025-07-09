@@ -32,6 +32,7 @@ Route::controller(OnboardingController::class)->prefix('onboarding')->name('onbo
 
 // Pricing & Subscription
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
+Route::post('/pricing/select-plan', [PricingController::class, 'selectPlan'])->name('pricing.select-plan')->middleware(['auth', 'verified']);
 Route::prefix('subscription')->name('subscription.')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [App\Http\Controllers\SubscriptionController::class, 'index'])->name('index');
     Route::post('/checkout', [App\Http\Controllers\SubscriptionController::class, 'checkout'])->name('checkout');

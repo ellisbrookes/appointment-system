@@ -268,6 +268,7 @@ class OnboardingController extends Controller
         $user = Auth::user();
         $accountType = session('onboarding.account_type');
         $company = null;
+        $selectedPlan = session('selected_plan');
 
         if ($accountType === 'company') {
             $companyId = session('onboarding.company_id');
@@ -276,10 +277,19 @@ class OnboardingController extends Controller
             }
         }
 
-        // Clear onboarding session data
+        // Get all available plans for comparison
+        $pricingService = new \App\Services\PricingService();
+        $productsWithPrices = null;
+        try {
+            $productsWithPrices = $pricingService->getProductsWithPrices();
+        } catch (\Exception $e) {
+            // Handle error gracefully
+        }
+
+        // Clear onboarding session data but keep selected plan
         session()->forget(['onboarding.account_type', 'onboarding.company_id']);
 
-        return view('onboarding.complete', compact('user', 'accountType', 'company'));
+        return view('onboarding.complete', compact('user', 'accountType', 'company', 'selectedPlan', 'productsWithPrices'));
     }
 
     /**

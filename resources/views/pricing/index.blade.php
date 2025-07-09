@@ -121,9 +121,9 @@
                                                     Manage Subscription
                                                 </a>
                                             @else
-                                                <form action="{{ route('subscription.checkout') }}" method="POST" class="w-full">
+                                                <form action="{{ route('pricing.select-plan') }}" method="POST" class="w-full">
                                                     @csrf
-                                                    <input type="hidden" name="price_id" value="{{ $price['id'] }}">
+                                                    <input type="hidden" name="plan_id" value="{{ $price['id'] }}">
                                                     <button type="submit" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md transition-colors">
                                                         Start Free Trial
                                                     </button>

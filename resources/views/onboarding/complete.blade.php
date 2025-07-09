@@ -129,12 +129,24 @@
                     <!-- Subscription Step -->
                     @if(!$user->subscribed('default'))
                         <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-8 mb-8 border border-purple-200">
-                            <div class="text-center mb-6">
-                                <h3 class="text-2xl font-semibold text-purple-900 mb-2">🚀 Choose Your Plan</h3>
-                                <p class="text-purple-700 mb-6">
-                                    Your setup is complete! Now select a plan to unlock all features and start accepting appointments.
-                                </p>
-                            </div>
+                            @if($selectedPlan)
+                                <div class="text-center mb-6">
+                                    <h3 class="text-2xl font-semibold text-purple-900 mb-2">🎯 Confirm Your Plan Selection</h3>
+                                    <p class="text-purple-700 mb-2">
+                                        You've selected a plan! Complete your setup and start your free trial.
+                                    </p>
+                                    <div class="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                                        ✓ Plan selected - Ready to start!
+                                    </div>
+                                </div>
+                            @else
+                                <div class="text-center mb-6">
+                                    <h3 class="text-2xl font-semibold text-purple-900 mb-2">🚀 Choose Your Plan</h3>
+                                    <p class="text-purple-700 mb-6">
+                                        Your setup is complete! Now select a plan to unlock all features and start accepting appointments.
+                                    </p>
+                                </div>
+                            @endif
                             
                             <!-- Pricing Toggle -->
                             <div x-data="{ yearly: false }" class="mb-8">
@@ -151,9 +163,61 @@
                                 </div>
                                 
                                 <!-- Pricing Cards -->
-                                <div class="grid md:grid-cols-2 gap-6">
+                                @if($selectedPlan)
+                                    <!-- Selected Plan Display -->
+                                    @if($productsWithPrices)
+                                        @foreach($productsWithPrices as $product)
+                                            @foreach($product->prices as $price)
+                                                @if($price['id'] === $selectedPlan)
+                                                    <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6 mb-6 border-2 border-green-400">
+                                                        <div class="flex items-center justify-between mb-4">
+                                                            <div class="flex items-center">
+                                                                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                                                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                                    </svg>
+                                                                </div>
+                                                                <div>
+                                                                    <h4 class="text-lg font-semibold text-gray-900">{{ $product->name }} Plan Selected</h4>
+                                                                    <p class="text-sm text-gray-600">{{ $product->description }}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="text-right">
+                                                                <div class="text-2xl font-bold text-gray-900">${{ number_format($price['unit_amount'] / 100, 0) }}</div>
+                                                                <div class="text-sm text-gray-600">/{{ $price['interval'] }}</div>
+                                                                <div class="text-xs text-green-600 font-semibold">🎉 10-day free trial</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex items-center justify-between">
+                                                            <div class="text-sm text-gray-600">Ready to start your free trial</div>
+                                                            <form action="{{ route('subscription.checkout') }}" method="POST">
+                                                                @csrf
+                                                                <input type="hidden" name="price_id" value="{{ $price['id'] }}">
+                                                                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                                                                    Start Free Trial
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    @break
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    @endif
+                                    
+                                    <!-- Suggestion Section -->
+                                    <div class="bg-blue-50 rounded-lg p-4 mb-6 border border-blue-200">
+                                        <h5 class="font-semibold text-blue-900 mb-2">💡 Not sure about your choice?</h5>
+                                        <p class="text-sm text-blue-800 mb-3">Here are all available plans. You can always change your mind!</p>
+                                        <button onclick="document.getElementById('all-plans').style.display = document.getElementById('all-plans').style.display === 'none' ? 'block' : 'none'" class="text-blue-600 hover:text-blue-500 text-sm font-medium underline">
+                                            View all plans
+                                        </button>
+                                    </div>
+                                @endif
+                                
+                                <div id="all-plans" class="grid md:grid-cols-2 gap-6" style="{{ $selectedPlan ? 'display: none;' : '' }}">
                                     <!-- Basic Plan -->
-                                    <div class="bg-white rounded-lg shadow-md border-2 border-gray-200 p-6">
+                                    <div class="bg-white rounded-lg shadow-md border-2 {{ $selectedPlan === 'price_1QbtKfGVcskF822y3QlF13vZ' ? 'border-green-400' : 'border-gray-200' }} p-6">
                                         <div class="text-center mb-4">
                                             <h4 class="text-lg font-semibold text-gray-900 mb-2">Basic</h4>
                                             <div class="mb-3">
@@ -189,14 +253,14 @@
                                         <form action="{{ route('subscription.checkout') }}" method="POST">
                                             @csrf
                                             <input x-bind:value="yearly ? 'price_1QbtSWGVcskF822ymbFZfxnq' : 'price_1QbtKfGVcskF822y3QlF13vZ'" type="hidden" name="price_id">
-                                            <button type="submit" class="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors">
-                                                Start Free Trial - Basic
+                                            <button type="submit" class="w-full py-2 px-4 {{ $selectedPlan === 'price_1QbtKfGVcskF822y3QlF13vZ' ? 'bg-green-600 hover:bg-green-700' : 'bg-purple-600 hover:bg-purple-700' }} text-white font-medium rounded-md transition-colors">
+                                                {{ $selectedPlan === 'price_1QbtKfGVcskF822y3QlF13vZ' ? '✓ Selected - Start Trial' : 'Start Free Trial - Basic' }}
                                             </button>
                                         </form>
                                     </div>
                                     
                                     <!-- Advanced Plan -->
-                                    <div class="bg-white rounded-lg shadow-md border-2 border-purple-500 p-6 relative">
+                                    <div class="bg-white rounded-lg shadow-md border-2 {{ $selectedPlan === 'price_1R8mXPGVcskF822yADPUQuSB' ? 'border-green-400' : 'border-purple-500' }} p-6 relative">
                                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
                                             <span class="bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">Most Popular</span>
                                         </div>
@@ -241,8 +305,8 @@
                                         <form action="{{ route('subscription.checkout') }}" method="POST">
                                             @csrf
                                             <input x-bind:value="yearly ? 'price_1R8mYFGVcskF822yLuwAycjz' : 'price_1R8mXPGVcskF822yADPUQuSB'" type="hidden" name="price_id">
-                                            <button type="submit" class="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors">
-                                                Start Free Trial - Advanced
+                                            <button type="submit" class="w-full py-2 px-4 {{ $selectedPlan === 'price_1R8mXPGVcskF822yADPUQuSB' ? 'bg-green-600 hover:bg-green-700' : 'bg-purple-600 hover:bg-purple-700' }} text-white font-medium rounded-md transition-colors">
+                                                {{ $selectedPlan === 'price_1R8mXPGVcskF822yADPUQuSB' ? '✓ Selected - Start Trial' : 'Start Free Trial - Advanced' }}
                                             </button>
                                         </form>
                                     </div>
