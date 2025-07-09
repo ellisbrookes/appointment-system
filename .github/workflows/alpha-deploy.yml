@@ -3,9 +3,6 @@ name: Alpha Release Deployment
 on:
   push:
     branches: [ alpha ]
-  pull_request:
-    branches: [ alpha ]
-    types: [ closed ]
 
 permissions:
   contents: read
@@ -87,7 +84,7 @@ jobs:
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/alpha' || (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'alpha')
+    if: github.ref == 'refs/heads/alpha'
     
     steps:
     - name: Checkout repository
@@ -122,7 +119,7 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/alpha' || (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'alpha')
+    if: github.ref == 'refs/heads/alpha'
 
     steps:
     - name: Checkout repository
