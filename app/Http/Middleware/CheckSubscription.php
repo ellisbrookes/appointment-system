@@ -20,7 +20,7 @@ class CheckSubscription
         }
 
         // Check subscription status
-        if ($user && $user->subscribed('basic')) {
+        if ($user && $user->subscribed('default')) {
             return $next($request);
         }
 
