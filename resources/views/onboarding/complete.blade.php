@@ -216,100 +216,92 @@
                                 @endif
                                 
                                 <div id="all-plans" class="grid md:grid-cols-2 gap-6" style="{{ $selectedPlan ? 'display: none;' : '' }}">
-                                    <!-- Basic Plan -->
-                                    <div class="bg-white rounded-lg shadow-md border-2 {{ $selectedPlan === 'price_1QbtKfGVcskF822y3QlF13vZ' ? 'border-green-400' : 'border-gray-200' }} p-6">
-                                        <div class="text-center mb-4">
-                                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Basic</h4>
-                                            <div class="mb-3">
-                                                <span x-show="!yearly" class="text-2xl font-bold text-gray-900">$10</span>
-                                                <span x-show="yearly" class="text-2xl font-bold text-gray-900">$120</span>
-                                                <span x-show="!yearly" class="text-gray-600">/month</span>
-                                                <span x-show="yearly" class="text-gray-600">/year</span>
-                                                <div class="mt-2 text-sm text-green-600 font-semibold">
-                                                    🎉 10-day free trial
+                                    @if($productsWithPrices)
+                                        @foreach($productsWithPrices as $product)
+                                            @php
+                                                $monthlyPrice = $product->prices->where('interval', 'month')->first();
+                                                $yearlyPrice = $product->prices->where('interval', 'year')->first();
+                                            @endphp
+                                            @if($monthlyPrice)
+                                                <div class="bg-white rounded-lg shadow-md border-2 {{ $selectedPlan === $monthlyPrice['id'] ? 'border-green-400' : ($product->name === 'Advanced' ? 'border-purple-500' : 'border-gray-200') }} p-6 {{ $product->name === 'Advanced' ? 'relative' : '' }}">
+                                                    @if($product->name === 'Advanced')
+                                                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                                                            <span class="bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">Most Popular</span>
+                                                        </div>
+                                                    @endif
+                                                    <div class="text-center mb-4">
+                                                        <h4 class="text-lg font-semibold text-gray-900 mb-2">{{ $product->name }}</h4>
+                                                        <div class="mb-3">
+                                                            <span x-show="!yearly" class="text-2xl font-bold text-gray-900">${{ number_format($monthlyPrice['unit_amount'] / 100, 0) }}</span>
+                                                            @if($yearlyPrice)
+                                                                <span x-show="yearly" class="text-2xl font-bold text-gray-900">${{ number_format($yearlyPrice['unit_amount'] / 100, 0) }}</span>
+                                                            @endif
+                                                            <span x-show="!yearly" class="text-gray-600">/month</span>
+                                                            @if($yearlyPrice)
+                                                                <span x-show="yearly" class="text-gray-600">/year</span>
+                                                            @endif
+                                                            <div class="mt-2 text-sm text-green-600 font-semibold">
+                                                                🎉 10-day free trial
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="space-y-2 mb-6 text-sm text-gray-600">
+                                                        <li class="flex items-center">
+                                                            <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                            </svg>
+                                                            @if($product->name === 'Advanced')
+                                                                Everything in Basic
+                                                            @else
+                                                                Unlimited appointments
+                                                            @endif
+                                                        </li>
+                                                        @if($product->name === 'Basic')
+                                                            <li class="flex items-center">
+                                                                <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                                </svg>
+                                                                Calendar management
+                                                            </li>
+                                                            <li class="flex items-center">
+                                                                <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                                </svg>
+                                                                Email notifications
+                                                            </li>
+                                                        @endif
+                                                        @if($product->name === 'Advanced')
+                                                            <li class="flex items-center">
+                                                                <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                                </svg>
+                                                                Team management
+                                                            </li>
+                                                            <li class="flex items-center">
+                                                                <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                                </svg>
+                                                                Advanced analytics
+                                                            </li>
+                                                            <li class="flex items-center">
+                                                                <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                                </svg>
+                                                                Priority support
+                                                            </li>
+                                                        @endif
+                                                    </ul>
+                                                    <form action="{{ route('subscription.checkout') }}" method="POST">
+                                                        @csrf
+                                                        <input x-bind:value="yearly ? '{{ $yearlyPrice ? $yearlyPrice['id'] : $monthlyPrice['id'] }}' : '{{ $monthlyPrice['id'] }}'" type="hidden" name="price_id">
+                                                        <button type="submit" class="w-full py-2 px-4 {{ $selectedPlan === $monthlyPrice['id'] ? 'bg-green-600 hover:bg-green-700' : 'bg-purple-600 hover:bg-purple-700' }} text-white font-medium rounded-md transition-colors">
+                                                            {{ $selectedPlan === $monthlyPrice['id'] ? '✓ Selected - Start Trial' : 'Start Free Trial - ' . $product->name }}
+                                                        </button>
+                                                    </form>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <ul class="space-y-2 mb-6 text-sm text-gray-600">
-                                            <li class="flex items-center">
-                                                <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                                Unlimited appointments
-                                            </li>
-                                            <li class="flex items-center">
-                                                <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                                Calendar management
-                                            </li>
-                                            <li class="flex items-center">
-                                                <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                                Email notifications
-                                            </li>
-                                        </ul>
-                                        <form action="{{ route('subscription.checkout') }}" method="POST">
-                                            @csrf
-                                            <input x-bind:value="yearly ? 'price_1QbtSWGVcskF822ymbFZfxnq' : 'price_1QbtKfGVcskF822y3QlF13vZ'" type="hidden" name="price_id">
-                                            <button type="submit" class="w-full py-2 px-4 {{ $selectedPlan === 'price_1QbtKfGVcskF822y3QlF13vZ' ? 'bg-green-600 hover:bg-green-700' : 'bg-purple-600 hover:bg-purple-700' }} text-white font-medium rounded-md transition-colors">
-                                                {{ $selectedPlan === 'price_1QbtKfGVcskF822y3QlF13vZ' ? '✓ Selected - Start Trial' : 'Start Free Trial - Basic' }}
-                                            </button>
-                                        </form>
-                                    </div>
-                                    
-                                    <!-- Advanced Plan -->
-                                    <div class="bg-white rounded-lg shadow-md border-2 {{ $selectedPlan === 'price_1R8mXPGVcskF822yADPUQuSB' ? 'border-green-400' : 'border-purple-500' }} p-6 relative">
-                                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                                            <span class="bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">Most Popular</span>
-                                        </div>
-                                        <div class="text-center mb-4">
-                                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Advanced</h4>
-                                            <div class="mb-3">
-                                                <span x-show="!yearly" class="text-2xl font-bold text-gray-900">$25</span>
-                                                <span x-show="yearly" class="text-2xl font-bold text-gray-900">$300</span>
-                                                <span x-show="!yearly" class="text-gray-600">/month</span>
-                                                <span x-show="yearly" class="text-gray-600">/year</span>
-                                                <div class="mt-2 text-sm text-green-600 font-semibold">
-                                                    🎉 10-day free trial
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <ul class="space-y-2 mb-6 text-sm text-gray-600">
-                                            <li class="flex items-center">
-                                                <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                                Everything in Basic
-                                            </li>
-                                            <li class="flex items-center">
-                                                <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                                Team management
-                                            </li>
-                                            <li class="flex items-center">
-                                                <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                                Advanced analytics
-                                            </li>
-                                            <li class="flex items-center">
-                                                <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                                Priority support
-                                            </li>
-                                        </ul>
-                                        <form action="{{ route('subscription.checkout') }}" method="POST">
-                                            @csrf
-                                            <input x-bind:value="yearly ? 'price_1R8mYFGVcskF822yLuwAycjz' : 'price_1R8mXPGVcskF822yADPUQuSB'" type="hidden" name="price_id">
-                                            <button type="submit" class="w-full py-2 px-4 {{ $selectedPlan === 'price_1R8mXPGVcskF822yADPUQuSB' ? 'bg-green-600 hover:bg-green-700' : 'bg-purple-600 hover:bg-purple-700' }} text-white font-medium rounded-md transition-colors">
-                                                {{ $selectedPlan === 'price_1R8mXPGVcskF822yADPUQuSB' ? '✓ Selected - Start Trial' : 'Start Free Trial - Advanced' }}
-                                            </button>
-                                        </form>
-                                    </div>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                             
