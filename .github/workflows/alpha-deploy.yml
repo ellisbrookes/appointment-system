@@ -141,7 +141,7 @@ jobs:
           
           # Stop current containers
           echo "🛑 Stopping current containers..."
-          docker-compose down || true
+          docker compose down || docker-compose down || true
           
           # Backup existing .env file
           echo "💾 Backing up existing .env file..."
@@ -160,7 +160,7 @@ jobs:
           
           # Start services
           echo "🔄 Starting services..."
-          docker-compose up -d
+          docker compose up -d || docker-compose up -d
           
           # Wait for services to be ready
           echo "⏳ Waiting for services to start..."
@@ -168,7 +168,7 @@ jobs:
           
           # Check if services are running
           echo "✅ Checking service status..."
-          docker-compose ps
+          docker compose ps || docker-compose ps
           
           # Clean up old images
           echo "🧹 Cleaning up old images..."
