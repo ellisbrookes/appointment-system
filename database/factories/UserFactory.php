@@ -47,7 +47,7 @@ class UserFactory extends Factory
     /**
      * Create a user with an active subscription.
      */
-    public function subscribed(string $plan = 'basic'): static
+    public function subscribed(string $plan = 'default'): static
     {
         return $this->afterCreating(function (User $user) use ($plan) {
             // Create a fake subscription record without hitting Stripe API
@@ -55,7 +55,7 @@ class UserFactory extends Factory
                 'type' => $plan,
                 'stripe_id' => 'sub_' . Str::random(14),
                 'stripe_status' => 'active',
-                'stripe_price' => 'price_basic',
+                'stripe_price' => 'price_1QbtKfGVcskF822y3QlF13vZ',
                 'quantity' => 1,
                 'trial_ends_at' => null,
                 'ends_at' => null,

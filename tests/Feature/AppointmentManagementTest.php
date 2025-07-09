@@ -382,6 +382,9 @@ class AppointmentManagementTest extends TestCase
     #[Test]
     public function authenticated_user_can_create_appointment_through_multi_step_form()
     {
+        // Ensure mail driver is set to array for testing
+        config(['mail.default' => 'array']);
+        
         $user = User::factory()->subscribed()->create();
 
         // Simulate the session data that would be stored in steps 1 and 2
