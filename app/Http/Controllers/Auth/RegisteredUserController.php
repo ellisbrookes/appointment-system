@@ -92,7 +92,7 @@ class RegisteredUserController extends Controller
     // Start 10-day free trial (skip in testing environment)
     if (app()->environment() !== 'testing') {
         try {
-            $user->newSubscription('basic', 'price_1QbtKfGVcskF822y3QlF13vZ')
+            $user->newSubscription('default', 'price_1QbtKfGVcskF822y3QlF13vZ')
                 ->trialDays(10)
                 ->create();
         } catch (\Exception $e) {

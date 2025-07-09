@@ -45,6 +45,7 @@ class SubscriptionController extends Controller
         try {
             return $user
                 ->newSubscription('default', $priceId)
+                ->trialDays(10)
                 ->allowPromotionCodes()
                 ->checkout([
                     'success_url' => route('subscription.success'),

@@ -336,9 +336,9 @@ class OnboardingController extends Controller
     private function ensureTrialSubscription(User $user): void
     {
         // Check if user already has a subscription
-        if (!$user->subscription('basic')) {
+        if (!$user->subscription('default')) {
             try {
-                $user->newSubscription('basic', 'price_1QbtKfGVcskF822y3QlF13vZ')
+                $user->newSubscription('default', 'price_1QbtKfGVcskF822y3QlF13vZ')
                     ->trialDays(10)
                     ->create();
             } catch (\Exception $e) {

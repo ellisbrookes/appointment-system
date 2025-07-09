@@ -1,7 +1,7 @@
 @auth
     @php
         $user = Auth::user();
-        $subscription = $user->subscription('basic');
+        $subscription = $user->subscription('default');
         $showTrialAlert = false;
         $trialDaysLeft = 0;
         $alertType = 'warning';

@@ -7,9 +7,12 @@
                 <!-- Header -->
                 <div class="text-center mb-12">
                     <h1 class="text-4xl font-bold text-gray-900 mb-4">Simple, Transparent Pricing</h1>
-                    <p class="text-xl text-gray-600">
+                    <p class="text-xl text-gray-600 mb-4">
                         Choose the perfect plan for your appointment management needs
                     </p>
+                    <div class="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                        🎉 All plans include a 10-day free trial - no credit card required!
+                    </div>
                 </div>
 
                 <!-- Pricing Toggle -->
@@ -46,6 +49,9 @@
                                             <div class="mb-4">
                                                 <span class="text-4xl font-bold text-gray-900">${{ number_format($price['unit_amount'] / 100, 0) }}</span>
                                                 <span class="text-gray-600">/{{ $price['interval'] }}</span>
+                                                <div class="mt-2 text-sm text-green-600 font-semibold">
+                                                    🎉 10-day free trial included
+                                                </div>
                                             </div>
                                             @if($product->description)
                                                 <p class="text-gray-600">{{ $product->description }}</p>
@@ -54,6 +60,12 @@
 
                                         <!-- Features -->
                                         <ul class="space-y-3 mb-8">
+                                            <li class="flex items-center">
+                                                <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                <span class="text-gray-700 font-semibold">10-day free trial</span>
+                                            </li>
                                             <li class="flex items-center">
                                                 <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -113,13 +125,13 @@
                                                     @csrf
                                                     <input type="hidden" name="price_id" value="{{ $price['id'] }}">
                                                     <button type="submit" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md transition-colors">
-                                                        Get Started
+                                                        Start Free Trial
                                                     </button>
                                                 </form>
                                             @endif
                                         @else
                                             <a href="{{ route('register') }}" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md transition-colors text-center block">
-                                                Get Started
+                                                Start Free Trial
                                             </a>
                                         @endauth
                                     </div>

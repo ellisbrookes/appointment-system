@@ -161,6 +161,9 @@
                                                 <span x-show="yearly" class="text-2xl font-bold text-gray-900">$120</span>
                                                 <span x-show="!yearly" class="text-gray-600">/month</span>
                                                 <span x-show="yearly" class="text-gray-600">/year</span>
+                                                <div class="mt-2 text-sm text-green-600 font-semibold">
+                                                    🎉 10-day free trial
+                                                </div>
                                             </div>
                                         </div>
                                         <ul class="space-y-2 mb-6 text-sm text-gray-600">
@@ -187,7 +190,7 @@
                                             @csrf
                                             <input x-bind:value="yearly ? 'price_1QbtSWGVcskF822ymbFZfxnq' : 'price_1QbtKfGVcskF822y3QlF13vZ'" type="hidden" name="price_id">
                                             <button type="submit" class="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors">
-                                                Choose Basic
+                                                Start Free Trial - Basic
                                             </button>
                                         </form>
                                     </div>
@@ -204,6 +207,9 @@
                                                 <span x-show="yearly" class="text-2xl font-bold text-gray-900">$300</span>
                                                 <span x-show="!yearly" class="text-gray-600">/month</span>
                                                 <span x-show="yearly" class="text-gray-600">/year</span>
+                                                <div class="mt-2 text-sm text-green-600 font-semibold">
+                                                    🎉 10-day free trial
+                                                </div>
                                             </div>
                                         </div>
                                         <ul class="space-y-2 mb-6 text-sm text-gray-600">
@@ -236,7 +242,7 @@
                                             @csrf
                                             <input x-bind:value="yearly ? 'price_1R8mYFGVcskF822yLuwAycjz' : 'price_1R8mXPGVcskF822yADPUQuSB'" type="hidden" name="price_id">
                                             <button type="submit" class="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors">
-                                                Choose Advanced
+                                                Start Free Trial - Advanced
                                             </button>
                                         </form>
                                     </div>

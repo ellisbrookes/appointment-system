@@ -60,6 +60,7 @@ class PricingService
                         'currency' => $price->currency,
                         'unit_amount' => $price->unit_amount,
                         'interval' => $price->recurring ? $price->recurring->interval : null,
+                        'trial_days' => 10, // 10-day free trial for all plans
                     ];
                 });
 
