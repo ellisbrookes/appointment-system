@@ -2,9 +2,9 @@ name: Alpha Release Deployment
 
 on:
   push:
-    branches: [ production-setup ]
+    branches: [ alpha ]
   pull_request:
-    branches: [ master ]
+    branches: [ alpha ]
     types: [ closed ]
 
 permissions:
@@ -87,7 +87,7 @@ jobs:
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/production-setup' || (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master')
+    if: github.ref == 'refs/heads/alpha' || (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'alpha')
     
     steps:
     - name: Checkout repository
@@ -122,7 +122,7 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/production-setup' || (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master')
+    if: github.ref == 'refs/heads/alpha' || (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'alpha')
 
     steps:
     - name: Checkout repository
@@ -156,7 +156,7 @@ jobs:
           # Pull latest changes from git
           echo "📥 Pulling latest changes..."
           git fetch origin
-          git reset --hard origin/production-setup
+          git reset --hard origin/alpha
           
           # Restore .env file if backup exists
           if [ -f .env.backup ]; then

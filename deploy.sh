@@ -7,7 +7,7 @@ echo "🚀 Starting deployment..."
 
 # Pull latest changes
 echo "📥 Pulling latest changes from Git..."
-git pull origin production-setup
+git pull origin alpha
 
 # Backup current containers
 echo "💾 Stopping current containers..."
