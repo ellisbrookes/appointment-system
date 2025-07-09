@@ -111,6 +111,7 @@ class PricingServiceTest extends TestCase
         $this->assertEquals('usd', $firstPrice['currency']);
         $this->assertEquals(999, $firstPrice['unit_amount']);
         $this->assertEquals('month', $firstPrice['interval']);
+        $this->assertEquals(10, $firstPrice['trial_days']);
 
         // Check second product
         $secondProduct = $result->last();

@@ -19,6 +19,10 @@ class PricingController extends Controller
 
     public function selectPlan(Request $request)
     {
+        $request->validate([
+            'plan_id' => 'required|string',
+        ]);
+
         $planId = $request->input('plan_id');
 
         // Store selected plan in session

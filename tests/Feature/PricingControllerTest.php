@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\Attributes\Test;
 use Mockery;
+use App\Models\User;
 
 class PricingControllerTest extends TestCase
 {
@@ -264,6 +265,49 @@ class PricingControllerTest extends TestCase
         $this->assertCount(2, $prices);
         $this->assertEquals('usd', $prices->first()['currency']);
         $this->assertEquals('eur', $prices->last()['currency']);
+    }
+
+    #[Test]
+    public function test_authenticated_user_can_select_plan(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $planId = 'price_test123';
+        
+        // Act
+        $response = $this->actingAs($user)
+            ->post('/pricing/select-plan', ['plan_id' => $planId]);
+        
+        // Assert
+        $response->assertRedirect(route('onboarding.complete'));
+        $this->assertEquals($planId, session('selected_plan'));
+    }
+
+    #[Test]
+    public function test_unauthenticated_user_cannot_select_plan(): void
+    {
+        // Arrange
+        $planId = 'price_test123';
+        
+        // Act
+        $response = $this->post('/pricing/select-plan', ['plan_id' => $planId]);
+        
+        // Assert
+        $response->assertRedirect(route('login'));
+    }
+
+    #[Test]
+    public function test_select_plan_requires_plan_id(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        
+        // Act
+        $response = $this->actingAs($user)
+            ->post('/pricing/select-plan', []);
+        
+        // Assert
+        $response->assertSessionHasErrors(['plan_id']);
     }
 
     protected function tearDown(): void
