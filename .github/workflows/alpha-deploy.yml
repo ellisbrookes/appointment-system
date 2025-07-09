@@ -135,7 +135,7 @@ jobs:
           echo "🚀 Starting deployment..."
           
           # Navigate to application directory
-          cd /opt/skedulaa || { echo "❌ Application directory not found"; exit 1; }
+          cd /root || { echo "❌ Application directory not found"; exit 1; }
           
           echo "📁 Current directory: $(pwd)"
           
@@ -145,20 +145,9 @@ jobs:
           
           # Backup existing .env file
           echo "💾 Backing up existing .env file..."
-          if [ -f .env ]; then
-            cp .env .env.backup
+          if [ -f skedulaa-config/.env ]; then
+            cp skedulaa-config/.env skedulaa-config/.env.backup
             echo "✅ .env file backed up"
-          fi
-          
-          # Pull latest changes from git
-          echo "📥 Pulling latest changes..."
-          git fetch origin
-          git reset --hard origin/alpha
-          
-          # Restore .env file if backup exists
-          if [ -f .env.backup ]; then
-            mv .env.backup .env
-            echo "✅ .env file restored from backup"
           fi
           
           # Login to GitHub Container Registry
