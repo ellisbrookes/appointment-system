@@ -82,7 +82,7 @@ class CheckSubscriptionTest extends TestCase
             ->setConstructorArgs([['id' => 1, 'name' => 'Test User', 'email' => 'test@example.com']])
             ->getMock();
         
-        $user->method('subscribed')->with('basic')->willReturn(true);
+        $user->method('subscribed')->with('default')->willReturn(true);
         
         $request = Request::create('/protected-route', 'GET');
         $request->setUserResolver(function () use ($user) {
@@ -115,7 +115,7 @@ class CheckSubscriptionTest extends TestCase
             ->setConstructorArgs([['id' => 1, 'name' => 'Test User', 'email' => 'test@example.com']])
             ->getMock();
         
-        $user->method('subscribed')->with('basic')->willReturn(false);
+        $user->method('subscribed')->with('default')->willReturn(false);
         
         $request = Request::create('/protected-route', 'GET');
         $request->setUserResolver(function () use ($user) {
@@ -206,7 +206,7 @@ class CheckSubscriptionTest extends TestCase
         $mockUser->created_at = $user->created_at;
         $mockUser->updated_at = $user->updated_at;
         
-        $mockUser->method('subscribed')->with('basic')->willReturn(false);
+        $mockUser->method('subscribed')->with('default')->willReturn(false);
 
         $response = $this->actingAs($mockUser)->get('/dashboard/appointments');
 
