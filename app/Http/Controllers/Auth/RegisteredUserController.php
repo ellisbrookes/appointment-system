@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\PricingService;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Company;
@@ -92,9 +93,25 @@ class RegisteredUserController extends Controller
     // Start 10-day free trial (skip in testing environment)
     if (app()->environment() !== 'testing') {
         try {
-            $user->newSubscription('default', 'price_1QbtKfGVcskF822y3QlF13vZ')
-                ->trialDays(10)
-                ->create();
+            $pricingService = new PricingService();
+            $productsWithPrices = $pricingService->getProductsWithPrices();
+            
+            // Get the first available price for trial subscription
+            $defaultPrice = null;
+            foreach ($productsWithPrices as $product) {
+                if ($product->prices && $product->prices->isNotEmpty()) {
+                    $defaultPrice = $product->prices->first()['id'];
+                    break;
+                }
+            }
+            
+            if ($defaultPrice) {
+                $user->newSubscription('default', $defaultPrice)
+                    ->trialDays(10)
+                    ->create();
+            } else {
+                \Log::warning('No valid price found for trial subscription for user ' . $user->id);
+            }
         } catch (\Exception $e) {
             // Log the error but don't fail registration
             \Log::warning('Failed to create trial subscription for user ' . $user->id . ': ' . $e->getMessage());

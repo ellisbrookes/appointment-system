@@ -51,11 +51,23 @@ class UserFactory extends Factory
     {
         return $this->afterCreating(function (User $user) use ($plan) {
             // Create a fake subscription record without hitting Stripe API
+            $pricingService = new \App\Services\PricingService();
+            $productsWithPrices = $pricingService->getProductsWithPrices();
+
+            // Get the first available price for trial subscription
+            $defaultPrice = 'price_1QbtKfGVcskF822y3QlF13vZ'; // Default to a known value if nothing else found
+            if ($productsWithPrices->isNotEmpty()) {
+                $firstProductWithPrices = $productsWithPrices->first();
+                if (isset($firstProductWithPrices->prices) && $firstProductWithPrices->prices->isNotEmpty()) {
+                    $defaultPrice = $firstProductWithPrices->prices->first()['id'];
+                }
+            }
+
             $user->subscriptions()->create([
                 'type' => $plan,
                 'stripe_id' => 'sub_' . Str::random(14),
                 'stripe_status' => 'active',
-                'stripe_price' => 'price_1QbtKfGVcskF822y3QlF13vZ',
+                'stripe_price' => $defaultPrice,
                 'quantity' => 1,
                 'trial_ends_at' => null,
                 'ends_at' => null,
