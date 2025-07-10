@@ -51,15 +51,24 @@ class UserFactory extends Factory
     {
         return $this->afterCreating(function (User $user) use ($plan) {
             // Create a fake subscription record without hitting Stripe API
-            $pricingService = new \App\Services\PricingService();
-            $productsWithPrices = $pricingService->getProductsWithPrices();
-
-            // Get the first available price for trial subscription
-            $defaultPrice = 'price_1QbtKfGVcskF822y3QlF13vZ'; // Default to a known value if nothing else found
-            if ($productsWithPrices->isNotEmpty()) {
-                $firstProductWithPrices = $productsWithPrices->first();
-                if (isset($firstProductWithPrices->prices) && $firstProductWithPrices->prices->isNotEmpty()) {
-                    $defaultPrice = $firstProductWithPrices->prices->first()['id'];
+            // In testing environment, use a known test price ID to avoid Stripe API calls
+            $defaultPrice = 'price_1QbtKfGVcskF822y3QlF13vZ'; // Test mode price ID
+            
+            // Only try to fetch real prices in non-testing environments
+            if (!app()->environment('testing')) {
+                try {
+                    $pricingService = new \App\Services\PricingService();
+                    $productsWithPrices = $pricingService->getProductsWithPrices();
+                    
+                    if ($productsWithPrices->isNotEmpty()) {
+                        $firstProductWithPrices = $productsWithPrices->first();
+                        if (isset($firstProductWithPrices->prices) && $firstProductWithPrices->prices->isNotEmpty()) {
+                            $defaultPrice = $firstProductWithPrices->prices->first()['id'];
+                        }
+                    }
+                } catch (\Exception $e) {
+                    // Fall back to test price if API call fails
+                    $defaultPrice = 'price_1QbtKfGVcskF822y3QlF13vZ';
                 }
             }
 
