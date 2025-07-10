@@ -3,19 +3,61 @@
 # Deployment script for Skedulaa
 set -e  # Exit on any error
 
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Function to print colored output
+print_status() {
+    echo -e "${GREEN}✅ $1${NC}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠️  $1${NC}"
+}
+
+print_error() {
+    echo -e "${RED}❌ $1${NC}"
+}
+
 echo "🚀 Starting deployment..."
 
+# Check if .env file exists
+if [ ! -f ".env" ]; then
+    print_error ".env file not found!"
+    echo "Please create a .env file based on .env.example"
+    exit 1
+fi
+
+print_status ".env file found"
+
+# Test docker-compose configuration BEFORE pulling/deploying
+echo ""
+echo "🔍 Testing Docker Compose Configuration..."
+print_status "Testing unified docker-compose configuration..."
+if docker-compose -f docker-compose.yml -f docker-compose.production.yml config > /dev/null 2>&1; then
+    print_status "Configuration is valid"
+else
+    print_error "Docker compose configuration has errors"
+    docker-compose -f docker-compose.yml -f docker-compose.production.yml config
+    exit 1
+fi
+
 # Pull latest changes
+echo ""
 echo "📥 Pulling latest changes from Git..."
 git pull origin alpha
 
 # Backup current containers
 echo "💾 Stopping current containers..."
-docker-compose -f docker-compose.production.yml down
+docker-compose -f docker-compose.yml -f docker-compose.production.yml down
 
-# Rebuild and start containers
-echo "🔨 Building and starting new containers..."
-docker-compose -f docker-compose.production.yml up -d --build
+# Pull latest images and start containers
+echo "🔨 Pulling latest images and starting containers..."
+docker-compose -f docker-compose.yml -f docker-compose.production.yml pull
+docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
 
 # Wait for health check
 echo "⏳ Waiting for containers to be healthy..."
