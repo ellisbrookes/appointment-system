@@ -7,7 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-<!-- Deployment test: Pipeline verification -->
+<!-- Deployment test: SSH key verification -->
 
 ## About Laravel
 
