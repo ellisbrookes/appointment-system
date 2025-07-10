@@ -139,41 +139,19 @@ jobs:
           
           echo "📁 Current directory: $(pwd)"
           
-          # Check if docker-compose.server.yml exists (persistent config)
-          if [ ! -f "docker-compose.server.yml" ]; then
-            echo "❌ Server configuration not found! Please set up docker-compose.server.yml first."
+          # Check if .env file exists
+          if [ ! -f ".env" ]; then
+            echo "❌ .env file not found! Please set up .env file first."
             exit 1
           fi
-          
-          # Stop current containers using server config
-          echo "🛑 Stopping current containers..."
-          docker-compose -f docker-compose.server.yml down || true
           
           # Login to GitHub Container Registry
           echo "🔐 Logging into GitHub Container Registry..."
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           
-          # Pull latest Docker image
-          echo "📦 Pulling latest Docker image..."
-          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:alpha-latest
-          
-          # Start services
-          echo "🔄 Starting services..."
-          docker compose up -d || docker-compose up -d
-          
-          # Wait for services to be ready
-          echo "⏳ Waiting for services to start..."
-          sleep 30
-          
-          # Check if services are running
-          echo "✅ Checking service status..."
-          docker compose ps || docker-compose ps
-          
-          # Clean up old images
-          echo "🧹 Cleaning up old images..."
-          docker image prune -f
-          
-          echo "🎉 Deployment completed successfully!"
+          # Run the deployment script
+          echo "🚀 Running deployment script..."
+          ./deploy.sh
 
   notify:
     needs: [test, build-and-push, deploy]
