@@ -2,9 +2,8 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/ellisbrookes/skedulaa:alpha-latest
+    container_name: skedulaa-app-1
     ports:
       - "80:80"
     environment:
@@ -13,12 +12,12 @@ services:
       - APP_KEY=${APP_KEY}
       - APP_URL=${APP_URL}
       - DB_CONNECTION=mysql
-      - DB_HOST=db
+      - DB_HOST=skedulaa-db-1
       - DB_PORT=3306
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
-      - REDIS_HOST=redis
+      - REDIS_HOST=skedulaa-redis-1
       - REDIS_PORT=6379
       - CACHE_DRIVER=redis
       - SESSION_DRIVER=redis
@@ -40,10 +39,11 @@ services:
       - redis
     restart: unless-stopped
     networks:
-      - skedulaa-network
+      - skedulaa
 
   db:
     image: mysql:8.0
+    container_name: skedulaa-db-1
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -51,23 +51,23 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
-      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
     restart: unless-stopped
     networks:
-      - skedulaa-network
+      - skedulaa
 
   redis:
     image: redis:7-alpine
+    container_name: skedulaa-redis-1
     volumes:
       - redis_data:/data
     restart: unless-stopped
     networks:
-      - skedulaa-network
+      - skedulaa
 
 volumes:
   db_data:
   redis_data:
 
 networks:
-  skedulaa-network:
+  skedulaa:
     driver: bridge
