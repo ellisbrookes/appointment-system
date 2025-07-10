@@ -48,6 +48,9 @@ fi
 # Pull latest changes
 echo ""
 echo "📥 Pulling latest changes from Git..."
+# Handle any local file conflicts by stashing them first
+git add -A
+git stash push -m "Auto-stash before deployment $(date)"
 git pull origin alpha
 
 # Backup current containers
