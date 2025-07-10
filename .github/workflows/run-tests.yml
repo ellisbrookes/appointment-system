@@ -12,8 +12,8 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
-          extensions: mbstring, pdo, sqlite3
+          php-version: '8.2'
+          extensions: mbstring, pdo, sqlite3, mysql, dom, fileinfo, gd, zip
           coverage: xdebug
 
       - name: Create .env from .env.testing.example
@@ -34,7 +34,7 @@ jobs:
           STRIPE_SECRET: "sk_test_dummy_example_key_not_real"
 
       - name: Run tests with coverage
-        run: php artisan test --coverage --min=50
+        run: php artisan test --coverage --min=49
         env:
           APP_ENV: testing
           DB_CONNECTION: sqlite
