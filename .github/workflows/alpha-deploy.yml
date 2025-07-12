@@ -125,6 +125,19 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Test SSH Connection
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.DO_HOST }}
+        username: ${{ secrets.DO_USERNAME }}
+        key: ${{ secrets.DO_SSH_KEY }}
+        script: |
+          echo "✅ SSH connection successful!"
+          echo "🖥️  Server info: $(uname -a)"
+          echo "📁 Working directory: $(pwd)"
+          echo "👤 Current user: $(whoami)"
+          echo "🐳 Docker status: $(docker --version)"
+
     - name: Deploy to DigitalOcean Droplet
       uses: appleboy/ssh-action@v1.0.3
       with:
