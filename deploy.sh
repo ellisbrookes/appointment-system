@@ -66,16 +66,42 @@ docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
 echo "⏳ Waiting for containers to be healthy..."
 sleep 30
 
+# Check if containers are healthy first
+echo "🔍 Checking container health..."
+CONTAINER_HEALTH=$(docker inspect --format='{{.State.Health.Status}}' skedulaa-app-production)
+echo "📊 Container health status: $CONTAINER_HEALTH"
+
+# Wait a bit longer if still starting
+if [ "$CONTAINER_HEALTH" = "starting" ]; then
+    echo "⏳ Container still starting, waiting additional 30 seconds..."
+    sleep 30
+    CONTAINER_HEALTH=$(docker inspect --format='{{.State.Health.Status}}' skedulaa-app-production)
+    echo "📊 Updated container health status: $CONTAINER_HEALTH"
+fi
+
+# Check if health endpoint is working
+echo "🔍 Testing health endpoint..."
+HEALTH_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/health)
+echo "📊 Health endpoint returned: $HEALTH_CODE"
+
 # Check if homepage is working
 echo "🔍 Testing homepage..."
 HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost)
+echo "📊 Homepage returned: $HTTP_CODE"
+
+# Show recent logs if there's an issue
+if [ "$HTTP_CODE" != "200" ]; then
+    echo "⚠️  Non-200 response, checking recent logs..."
+    echo "📋 Last 10 lines of application logs:"
+    docker logs --tail 10 skedulaa-app-production
+fi
 
 if [ "$HTTP_CODE" = "200" ]; then
     echo "✅ Deployment successful! Homepage is responding with 200."
 else
     echo "❌ Deployment failed! Homepage returned $HTTP_CODE"
     echo "🔄 Rolling back..."
-    docker-compose -f docker-compose.production.yml down
+    docker-compose -f docker-compose.yml -f docker-compose.production.yml down
     exit 1
 fi
 
