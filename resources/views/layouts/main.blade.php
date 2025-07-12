@@ -16,9 +16,7 @@
         />
 
         <!-- Styles / Scripts -->
-        @if (file_exists(public_path("build/manifest.json")) || file_exists(public_path("hot")))
-            @vite(["resources/css/app.css", "resources/js/app.js"])
-        @endif
+        @vite(["resources/css/app.css", "resources/js/app.js"])
     </head>
     <body class="flex h-screen flex-col bg-white text-gray-900">
         <x-website.navigation />
